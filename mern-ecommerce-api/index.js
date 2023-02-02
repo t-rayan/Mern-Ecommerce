@@ -34,9 +34,9 @@ app.use(
     extended: false,
   })
 );
-app.use("/api", (req, res) => {
-  res.send("Welcome to Ecommerce API");
-});
+// app.use("/api", (req, res) => {
+//   res.send("Welcome to Ecommerce API");
+// });
 app.use("/api/user", userRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/product", productRouter);
