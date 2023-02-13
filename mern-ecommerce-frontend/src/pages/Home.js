@@ -18,15 +18,14 @@ const Home = () => {
   const dispatch = useDispatch();
   const { isSuccess } = useSelector((state) => state.auth);
   const { products, isLoading } = useSelector((state) => state.products);
-  const { isMobile, isTablet, isLargeDevice } = useMedia();
 
   useEffect(() => {
     dispatch(getAllProducts());
   }, [dispatch]);
 
-  // if (isLoading) {
-  //   return <LoadingState />;
-  // }
+  if (isLoading) {
+    return <LoadingState />;
+  }
 
   return (
     <Grid gap="3rem">

@@ -29,6 +29,7 @@ export const createCategoryValidation = Joi.object({
 // create a product validation
 export const createProductValidation = Joi.object({
   name: Joi.string().min(2).required(),
+  brand: Joi.string().min(2).required(),
   inventory: Joi.number().required(),
   price: Joi.number().required(),
   size: Joi.string(),

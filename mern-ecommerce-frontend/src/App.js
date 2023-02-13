@@ -55,7 +55,7 @@ function App() {
         {/* shop routes */}
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
-          <Route path="products/" element={<Checkout />} />
+          <Route path="category/:name" element={<CatAndProducts />} />
           <Route path="products/:productId" element={<ProductView />} />
 
           <Route path="products/search" element={<SearchResults />} />

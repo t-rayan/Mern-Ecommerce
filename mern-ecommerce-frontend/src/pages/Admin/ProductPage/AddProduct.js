@@ -48,6 +48,7 @@ const AddProduct = () => {
   // defining states
   const [values, setValues] = useState({
     name: "",
+    brand: "",
     inventory: "",
     price: "",
     color: "",
@@ -110,6 +111,7 @@ const AddProduct = () => {
     if (id && product) {
       setValues({
         name: product?.name || "",
+        brand: product?.brand || "",
         price: product?.price || "",
         inventory: product?.inventory || "",
         desc: product?.desc || "",
@@ -294,6 +296,14 @@ const AddProduct = () => {
                   placeholder="Price"
                   onChange={handleChange}
                   value={values?.price}
+                />
+                <AppInput
+                  name="brand"
+                  label="Brand Name"
+                  type="text"
+                  placeholder="Enter product brand"
+                  onChange={handleChange}
+                  value={values?.brand}
                 />
               </VStack>
 

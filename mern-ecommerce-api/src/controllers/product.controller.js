@@ -96,7 +96,7 @@ export const searchProducts = async (req, res) => {
 };
 
 export const addProduct = async (req, res) => {
-  const { name, inventory, price, size, color, category, desc, imgs } =
+  const { name, brand, inventory, price, size, color, category, desc, imgs } =
     req.body;
   const addImgs = req.files?.imgs;
   const imagesToUpload = generateImgArray(addImgs);
@@ -120,6 +120,7 @@ export const addProduct = async (req, res) => {
           : [];
       const newProduct = await Product.create({
         name,
+        brand,
         inventory,
         price,
         size,

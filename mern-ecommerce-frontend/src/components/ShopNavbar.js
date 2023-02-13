@@ -22,7 +22,13 @@ import { MdArrowDropDown } from "react-icons/md";
 import Searchbar from "./Searchbar";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSidebar } from "../features/ui/uiSlice";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import {
+  Link,
+  Navigate,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import FiltersDrawer from "./FiltersDrawer";
 import GetInitials from "../utils/GetInitials";
 import { ChevronDownIcon } from "@chakra-ui/icons";
@@ -37,13 +43,11 @@ const ShopNavbar = () => {
   const { categories } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { name } = useParams();
   const location = useLocation();
 
   const handleMenuItemClick = (val) => {
-    const newSearchParams = new URLSearchParams();
-    newSearchParams.set("category", val);
-    // navigate(`/${val?.replace(/\s/g, "")}/products`);
-    navigate(`/products`);
+    navigate(`category/${val}`);
   };
 
   const handleLogout = () => {

@@ -9,18 +9,20 @@ const CatAndProducts = () => {
   const dispatch = useDispatch();
   const { products } = useSelector((state) => state.products);
 
-  const { category } = useParams();
+  const { name } = useParams();
+
+  console.log("name:", name);
 
   const filterByCategory = products?.filter(
-    (product) => product?.category?.name === category
+    (product) => product?.category?.name === name
   );
 
   useEffect(() => {
-    dispatch(getAllProducts());
-  }, [dispatch]);
+    dispatch(getAllProducts({ category: name }));
+  }, [dispatch, name]);
   return (
     <Box>
-      <Heading size="md"> {category}</Heading>
+      <Heading size="md"> {name}</Heading>
       <Box
         mt={5}
         display="grid"
