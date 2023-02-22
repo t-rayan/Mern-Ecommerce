@@ -14,6 +14,10 @@ import {
   Flex,
   Image,
 } from "@chakra-ui/react";
+import ReactQuill from "react-quill";
+import JoditEditor from "jodit-react";
+
+import "react-quill/dist/quill.snow.css";
 import { MdHighlightOff } from "react-icons/md";
 import { useEffect, useState, useRef } from "react";
 import FormLayout from "../../../layouts/FormLayout";
@@ -36,6 +40,9 @@ import useMedia from "../../../hooks/useMedia";
 import AppInput from "../../../components/AppInput";
 import { useNavigate, useParams } from "react-router-dom";
 import LoadingState from "../../../components/LoadingState";
+import { getAllBrands } from "../../../features/brand/brandSlice";
+import BrandSelector from "../../../components/BrandSelector";
+import RichTextEditor from "../../../components/RichTextEditor";
 
 const AddProduct = () => {
   // custom hooks
@@ -44,24 +51,28 @@ const AddProduct = () => {
   const navigate = useNavigate();
   const multiFileRef = useRef();
   const { id } = useParams();
+  const joEditor = useRef(null);
 
   // defining states
   const [values, setValues] = useState({
     name: "",
     brand: "",
+    desc: "",
     inventory: "",
     price: "",
     color: "",
     size: "",
     category: "",
-    desc: "",
     imgs: [],
   });
+
+  // defining state for rich text editor
+  const [productDesc, setProductDesc] = useState("");
 
   const [images, setImages] = useState([]);
 
   // importing states from store
-  const { isError, message, isLoading, isEdit, product, isDel } = useSelector(
+  const { isError, message, isLoading, isEdit, product } = useSelector(
     (state) => state.products
   );
 
@@ -73,6 +84,8 @@ const AddProduct = () => {
     for (let property in values) {
       formData.append(property, values[property]);
     }
+    // setting product data to formData
+    formData.append("desc", productDesc);
 
     for (let i = 0; i < images.length; i++) {
       formData.append("imgs", images[i]);
@@ -103,6 +116,7 @@ const AddProduct = () => {
   // getting categories and product
   useEffect(() => {
     dispatch(getAllCategories());
+    dispatch(getAllBrands());
     id && dispatch(getProduct(id));
   }, [dispatch, id]);
 
@@ -114,17 +128,19 @@ const AddProduct = () => {
         brand: product?.brand || "",
         price: product?.price || "",
         inventory: product?.inventory || "",
-        desc: product?.desc || "",
         size: product?.size || "",
         category: product?.category?._id || "",
         color: product?.color || "",
         imgs: product?.images || [],
       });
     }
-  }, [id, product]);
+    if (id && product) {
+      setProductDesc(product?.desc || "");
+    }
+  }, [id, product, productDesc]);
 
   if (isLoading) {
-    return <LoadingState title="Deleting...." />;
+    return <LoadingState title="Please Wait...." />;
   }
 
   return (
@@ -150,7 +166,7 @@ const AddProduct = () => {
 
               <FormControl>
                 <FormLabel htmlFor="cat-name"> Desc</FormLabel>
-                <Textarea
+                {/* <Textarea
                   size="lg"
                   name="desc"
                   type="text"
@@ -159,6 +175,16 @@ const AddProduct = () => {
                   placeholder="Product Description.."
                   onChange={handleChange}
                   value={values?.desc}
+                /> */}
+                <JoditEditor
+                  ref={joEditor}
+                  value={productDesc}
+                  // config={config}
+                  tabIndex={1} // tabIndex of textarea
+                  // onBlur={newContent => setProductDesc(newContent)} // preferred to use only this option to update the content for performance reasons
+                  onChange={(newContent) => {
+                    setProductDesc(newContent);
+                  }}
                 />
               </FormControl>
 
@@ -297,14 +323,33 @@ const AddProduct = () => {
                   onChange={handleChange}
                   value={values?.price}
                 />
-                <AppInput
-                  name="brand"
-                  label="Brand Name"
-                  type="text"
-                  placeholder="Enter product brand"
-                  onChange={handleChange}
-                  value={values?.brand}
+
+                {/* select brand */}
+                <BrandSelector
+                  handleChange={handleChange}
+                  value={values.brand}
                 />
+                {/* <FormControl>
+                  <FormLabel htmlFor="product-cat"> Brand </FormLabel>
+                  <HStack>
+                    <Select
+                      name="category"
+                      borderColor="gray.300"
+                      placeholder="Select Brand"
+                      fontSize=".9rem"
+                      size="lg"
+                      onChange={handleChange}
+                      value={values?.category}
+                    >
+                      {brands?.map((brand) => (
+                        <option value={brand?._id} key={brand?._id}>
+                          {brand?.name}
+                        </option>
+                      ))}
+                    </Select>
+                    <Button>Add</Button>
+                  </HStack>
+                </FormControl> */}
               </VStack>
 
               <VStack spacing={10} shadow="lg" p="1.5rem" borderRadius="10px">

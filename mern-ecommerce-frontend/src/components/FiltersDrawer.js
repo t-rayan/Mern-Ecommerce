@@ -19,6 +19,8 @@ import {
 import React, { useEffect, useState } from "react";
 import { RiDeleteBin4Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
+import { getAllBrands } from "../features/brand/brandSlice";
+import { getAllCategories } from "../features/category/categorySlice";
 import {
   getAllProducts,
   setBrandFilters,
@@ -30,6 +32,7 @@ const FiltersDrawer = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
   const [isFilter, setIsFilter] = useState(false);
   const { categories } = useSelector((state) => state.categories);
+  const { brands } = useSelector((state) => state.brand);
 
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [brandFilter, setBrandFilter] = useState("");
@@ -62,6 +65,8 @@ const FiltersDrawer = ({ isOpen, onClose }) => {
   };
 
   useEffect(() => {
+    dispatch(getAllCategories());
+    dispatch(getAllBrands());
     if (isFilter) {
       // dispatch(setCategoryFilters(categoryFilter));
       // dispatch(setBrandFilters(brandFilter));
@@ -101,14 +106,7 @@ const FiltersDrawer = ({ isOpen, onClose }) => {
                     <Stack direction="column">
                       <Radio value="All">All</Radio>
 
-                      {[
-                        "Smarthphones",
-                        "Laptops",
-                        "Camera",
-                        "Headphones",
-                        "Earbuds",
-                        "Smartwatch",
-                      ].map((name, index) => (
+                      {categories?.map((name, index) => (
                         <Radio key={index} value={name}>
                           {name}
                         </Radio>
@@ -126,7 +124,7 @@ const FiltersDrawer = ({ isOpen, onClose }) => {
                 colorScheme="green"
               >
                 <Stack spacing={[5]} direction={["column"]}>
-                  {categories?.map((cat) => (
+                  {brands?.map((cat) => (
                     <Checkbox key={cat._id} value={cat._id}>
                       {cat.name}
                     </Checkbox>

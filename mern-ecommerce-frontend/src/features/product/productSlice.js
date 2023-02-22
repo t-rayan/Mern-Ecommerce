@@ -15,14 +15,11 @@ export const getAllProducts = createAsyncThunk(
       },
     };
 
-    console.log(payload);
-
     try {
       const { data, status } = await productServices.getProductsService(
         allFilters
       );
 
-      console.log(data);
       if (status === 200) {
         return data;
       }
@@ -32,7 +29,6 @@ export const getAllProducts = createAsyncThunk(
         (error.response && error.response.data && error.response.data.msg) ||
         error.message ||
         error.toString();
-      console.log(message);
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -235,7 +231,6 @@ export const productSlice = createSlice({
     },
 
     productSearch: (state, action) => {
-      console.log(action.payload);
       // const regex = /[A-Z]/g;
 
       // state.products = state.products.filter((product) =>

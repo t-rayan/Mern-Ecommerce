@@ -3,13 +3,9 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  PopoverHeader,
   PopoverBody,
-  PopoverArrow,
-  PopoverCloseButton,
   Button,
   Icon,
-  Stack,
 } from "@chakra-ui/react";
 import { FaEllipsisH } from "react-icons/fa";
 

@@ -31,6 +31,7 @@ import { useEffect } from "react";
 import useMedia from "./hooks/useMedia";
 import { useDispatch } from "react-redux";
 import { setCurrentDevice } from "./features/ui/uiSlice";
+import EditProduct from "./pages/Admin/ProductPage/EditProduct";
 
 function App() {
   const { isMobile, isLargeDevice, isTablet } = useMedia();
@@ -108,7 +109,7 @@ function App() {
           <Route path="products" element={<InnerLayout />}>
             <Route index element={<Products />} />
             <Route path="add" element={<AddProduct />} />
-            <Route path=":id" element={<AddProduct />} />
+            <Route path=":id" element={<EditProduct />} />
           </Route>
           {/* <Route path="products" element={<Products />} /> */}
           <Route path="orders" element={<InnerLayout />}>

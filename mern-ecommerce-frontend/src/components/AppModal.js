@@ -28,7 +28,7 @@ const AppModal = ({ children }) => {
         bg="white"
         zIndex="999"
       >
-        {children}
+        {/* {children} */}
       </Box>
     </>
   );

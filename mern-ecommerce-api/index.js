@@ -10,6 +10,7 @@ import cors from "cors";
 import fileUpload from "express-fileupload";
 import orderRouter from "./src/routes/order.route.js";
 import { verifyToken } from "./src/middlewares/auth.middleware.js";
+import brandRouter from "./src/routes/brand.route.js";
 
 const port = process.env.PORT || 5000;
 
@@ -41,6 +42,8 @@ app.use("/api/user", userRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/product", productRouter);
 app.use("/api/order", orderRouter);
+app.use("/api/brand", brandRouter);
+
 app.use("/api/config/paypal", verifyToken, (req, res) =>
   res.send(process.env.PAYPAL_CLIENT_ID)
 );

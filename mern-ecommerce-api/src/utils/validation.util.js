@@ -35,7 +35,6 @@ export const createProductValidation = Joi.object({
   size: Joi.string(),
   color: Joi.string(),
   desc: Joi.string(),
-  thumbnail: Joi.any(),
   category: Joi.string(),
   imgs: Joi.any(),
 });
@@ -45,10 +44,10 @@ export const updateProductValidation = Joi.object({
   name: Joi.string().min(2).required(),
   inventory: Joi.number().required(),
   price: Joi.number().required(),
+  brand: Joi.string().min(2),
   size: Joi.string(),
   color: Joi.string(),
   desc: Joi.string(),
-  thumbnail: Joi.any(),
   category: Joi.string(),
   images: Joi.any(),
 });

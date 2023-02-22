@@ -20,7 +20,6 @@ export const uiSlice = createSlice({
       state.currentDevice = action.payload;
     },
     toggleSidebar: (state, action) => {
-      console.log(action.payload);
       state.isSidebar = !state.isSidebar;
     },
     hideSidebar: (state) => {

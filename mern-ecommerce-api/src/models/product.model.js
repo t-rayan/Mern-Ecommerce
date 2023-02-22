@@ -5,9 +5,6 @@ const productSchema = mongoose.Schema(
     name: {
       type: String,
     },
-    brand: {
-      type: String,
-    },
     inventory: {
       type: Number,
     },
@@ -35,6 +32,10 @@ const productSchema = mongoose.Schema(
     ],
     category: {
       ref: "Category",
+      type: mongoose.Schema.Types.ObjectId,
+    },
+    brand: {
+      ref: "Brand",
       type: mongoose.Schema.Types.ObjectId,
     },
   },

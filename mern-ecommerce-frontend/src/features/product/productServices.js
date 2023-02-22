@@ -12,8 +12,6 @@ const getProductsService = async (filters) => {
 
   const { brand, category, price } = filters;
 
-  console.log(filters);
-
   const res = await instance.get(
     `/product?category=${category}&brand=${brand}&minPrice=${price.minPrice}&maxPrice=${price.maxPrice}`
   );

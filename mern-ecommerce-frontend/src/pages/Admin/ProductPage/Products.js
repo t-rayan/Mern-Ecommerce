@@ -27,7 +27,6 @@ import {
   removeProduct,
   reset,
   resetFilter,
-  searchProducts,
 } from "../../../features/product/productSlice";
 import LoadingState from "../../../components/LoadingState";
 import { RiAddFill } from "react-icons/ri";
@@ -48,7 +47,6 @@ const Products = () => {
   const { isMobile } = useMedia();
 
   const [processedData] = useDataSort(products, searchQuery);
-  console.log(processedData);
 
   useEffect(() => {
     if (filteredProducts?.length > 0) {
@@ -65,7 +63,7 @@ const Products = () => {
     } else {
       dispatch(productSearch(searchQuery));
     }
-  }, [dispatch]);
+  }, [dispatch, searchQuery]);
 
   if (isDel) {
     return <LoadingState title="Deleting product" />;

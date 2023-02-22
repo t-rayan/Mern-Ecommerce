@@ -164,10 +164,15 @@ export const getProduct = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const product = await Product.findOne({ _id: id }).populate({
-      path: "category",
-      select: "name _id",
-    });
+    const product = await Product.findOne({ _id: id })
+      .populate({
+        path: "category",
+        select: "name _id",
+      })
+      .populate({
+        path: "brand",
+        select: "name _id",
+      });
     if (product) {
       return res.status(200).json({ product });
     } else {
@@ -180,8 +185,9 @@ export const getProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
   const { id } = req.params;
-  const { name, inventory, price, size, color, desc, category } = req.body;
-  let newImages = req.files?.imgs;
+  const { name, inventory, brand, price, size, color, desc, category } =
+    req.body;
+  let newImages = req.files?.newImgs;
 
   const imagesToUpload = generateImgArray(newImages);
   const rawProductData = {
@@ -191,6 +197,7 @@ export const updateProduct = async (req, res) => {
     size,
     color,
     desc,
+    brand,
     category,
     images: newImages,
   };

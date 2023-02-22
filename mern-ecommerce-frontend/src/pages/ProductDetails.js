@@ -115,18 +115,11 @@ const ProductDetails = () => {
           </Box>
         </Box>
       </Box>
-      <Box
-        mt={"4rem"}
-        border="1px solid"
-        borderColor="gray.300"
-        borderRadius="10px"
-        p={5}
-        minH="200px"
-      >
-        <Heading textDecor="underline" size="lg">
-          Description
-        </Heading>
-        <Text mt={1}>{product?.desc}</Text>
+      <Box maxW={"600px"} mt={"4rem"} minH="200px">
+        <Heading size="md">Product Specifications</Heading>
+        {/* <Text  mt={1}>{product?.desc}</Text> */}
+
+        <Text mt={1} dangerouslySetInnerHTML={{ __html: product?.desc }} />
       </Box>
     </Box>
   );

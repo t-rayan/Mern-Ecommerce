@@ -8,114 +8,118 @@ import {
   Stack,
   Textarea,
   Select,
-  Image,
-  Flex,
-  Icon,
   Text,
+  Icon,
   VStack,
+  Flex,
+  Image,
 } from "@chakra-ui/react";
-import { FaUpload, FaMinus } from "react-icons/fa";
+import ReactQuill from "react-quill";
+import JoditEditor from "jodit-react";
 
+import "react-quill/dist/quill.snow.css";
+import { MdHighlightOff } from "react-icons/md";
 import { useEffect, useState, useRef } from "react";
 import FormLayout from "../../../layouts/FormLayout";
-import { useParams } from "react-router-dom";
 import Alertbox from "../../../components/Alertbox";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getProduct,
+  removeAndUpdateProductImage,
   reset,
   updateProduct,
 } from "../../../features/product/productSlice";
+import { addProduct } from "../../../features/product/productSlice";
 import { getAllCategories } from "../../../features/category/categorySlice";
 import {
   RiCheckboxCircleLine,
   RiCloseLine,
   RiUpload2Line,
 } from "react-icons/ri";
-import AppButton from "../../../components/AppButton";
 import useMedia from "../../../hooks/useMedia";
+import AppInput from "../../../components/AppInput";
+import { useNavigate, useParams } from "react-router-dom";
+import LoadingState from "../../../components/LoadingState";
+import { getAllBrands } from "../../../features/brand/brandSlice";
+import BrandSelector from "../../../components/BrandSelector";
 
 const EditProduct = () => {
-  const multiFileRef = useRef();
+  // custom hooks
   const { isMobile } = useMedia();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const multiFileRef = useRef();
+  const { id } = useParams();
+  const joEditor = useRef(null);
 
+  // getting current product to edit
+  const [currentProduct, setCurrentProduct] = useState(null);
+
+  const [images, setImages] = useState([]);
+
+  // importing states from store
   const { isError, message, isLoading, isEdit, product } = useSelector(
     (state) => state.products
   );
 
-  const [images, setImages] = useState([]);
-
-  const [productData, setProductData] = useState({
-    name: "",
-    inventory: "",
-    desc: "",
-    price: "",
-    size: "",
-    color: "",
-    category: "",
-    thumbnail: "",
-    images: [],
-  });
-
-  const dispatch = useDispatch();
-  const { id } = useParams();
-
   const { categories } = useSelector((state) => state.categories);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setProductData((prevState) => {
-      return {
-        ...prevState,
-        [name]: value,
-      };
+  // handling input change
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setCurrentProduct({
+      ...currentProduct,
+      [name]: value,
     });
   };
-  const onSubmit = async (e) => {
-    e.preventDefault();
 
+  // creating product data
+  const productData = () => {
     const formData = new FormData();
-    formData.append("name", productData?.name);
-    formData.append("inventory", productData?.inventory);
-    formData.append("price", productData?.price);
-    formData.append("size", productData?.size);
-    formData.append("color", productData?.color);
-    formData.append("desc", productData?.desc);
-    formData.append("category", productData?.category);
-    // formData.append("thumbnail", thumbnailFile);
+    for (let property in currentProduct) {
+      formData.append(property, currentProduct[property]);
+    }
 
     for (let i = 0; i < images.length; i++) {
-      formData.append("images", images[i]);
+      formData.append("newImgs", images[i]);
     }
-    dispatch(updateProduct({ id, formData }));
+    return formData;
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formData = productData();
+
+    dispatch(updateProduct({ id, formData, navigate }));
+  };
+
+  // getting categories and product
   useEffect(() => {
     dispatch(getAllCategories());
+    dispatch(getAllBrands());
     id && dispatch(getProduct(id));
   }, [dispatch, id]);
 
+  // getting default values for inputs
   useEffect(() => {
-    if (product) {
-      setProductData({
-        name: product?.name,
-        inventory: product?.inventory,
-        price: product?.price,
-        desc: product?.desc,
-        size: product?.size,
-        color: product?.color,
+    if (id && product) {
+      let data = {
+        ...product,
+        brand: product?.brand?._id,
         category: product?.category?._id,
-        thumbnail: product?.thumbnail,
-        images: product?.images,
-      });
+      };
+      setCurrentProduct(data);
     }
-    dispatch(getAllCategories);
-  }, [product, dispatch]);
+  }, [id, product]);
+
+  if (isLoading) {
+    return <LoadingState title="Please Wait...." />;
+  }
 
   return (
-    <FormLayout title={"Edit Product"}>
+    <FormLayout title="Edit Product">
       <Box borderRadius="md">
-        <form onSubmit={onSubmit}>
+        <form onSubmit={handleSubmit}>
           {/* main form */}
           <Box
             display="grid"
@@ -123,44 +127,69 @@ const EditProduct = () => {
             gridTemplateColumns={!isMobile ? "1fr .5fr" : "1fr"}
           >
             {/* left form controls */}
-
             <Stack spacing={8} shadow="lg" p={"1.5rem"} borderRadius="10px">
-              <FormControl>
-                <FormLabel htmlFor="cat-name"> Name</FormLabel>
-                <Input
-                  size="lg"
-                  name="name"
-                  defaultValue={productData?.name}
-                  type="text"
-                  borderColor="gray.300"
-                  placeholder="Product Name"
-                />
-              </FormControl>
+              <AppInput
+                name="name"
+                label="Product Name"
+                type="text"
+                placeholder="Enter Product Name"
+                onChange={handleChange}
+                value={currentProduct?.name}
+              />
 
               <FormControl>
                 <FormLabel htmlFor="cat-name"> Desc</FormLabel>
-                <Textarea
-                  size="lg"
-                  type="text"
-                  name="desc"
-                  defaultValue={productData?.desc}
-                  borderColor="gray.300"
-                  rows="8"
-                  placeholder="Product Description.."
+
+                <JoditEditor
+                  ref={joEditor}
+                  value={currentProduct?.desc}
+                  // config={config}
+                  tabIndex={1} // tabIndex of textarea
+                  // onBlur={newContent => setProductDesc(newContent)} // preferred to use only this option to update the content for performance reasons
+                  onChange={(newContent) => {
+                    setCurrentProduct({ ...currentProduct, desc: newContent });
+                  }}
                 />
               </FormControl>
 
               {/* multiple image upload */}
               <FormControl>
-                <FormLabel htmlFor="cat-name"> Images</FormLabel>
-                <Flex my={5} wrap="wrap">
-                  {productData?.images?.map((img) => (
-                    <Image w="3rem" key={img._id} src={img.img_url} />
+                <FormLabel htmlFor="product-images"> Images</FormLabel>
+
+                <Flex my={5} gap={5} wrap="wrap">
+                  {currentProduct?.images?.map((img) => (
+                    <Box
+                      key={img._id}
+                      border="1px solid"
+                      borderColor="gray.300"
+                      borderRadius="4px"
+                      p="2"
+                      pos="relative"
+                    >
+                      <Box pos="absolute" top={0} right={1}>
+                        <Icon
+                          color="gray.500"
+                          as={MdHighlightOff}
+                          w="1.1rem"
+                          h="1.1rem"
+                          _hover={{ color: "red.400" }}
+                          cursor="pointer"
+                          onClick={() =>
+                            dispatch(
+                              removeAndUpdateProductImage({
+                                productId: id,
+                                imageId: img.pub_id,
+                              })
+                            )
+                          }
+                        />
+                      </Box>
+                      <Image w="3rem" h="3rem" src={img.img_url} />
+                    </Box>
                   ))}
                 </Flex>
                 <Box display="flex" flexDir="column">
                   <Input
-                    // {...register("myimages")}
                     ref={multiFileRef}
                     type="file"
                     hidden="hidden"
@@ -169,7 +198,7 @@ const EditProduct = () => {
                   />
                   <Box
                     w="100%"
-                    p={"5rem"}
+                    p={10}
                     borderStyle="dotted"
                     borderColor="gray.300"
                     borderWidth="2px"
@@ -188,26 +217,29 @@ const EditProduct = () => {
                         multiFileRef.current.click();
                       }}
                       cursor="pointer"
-                      _focus={{ outline: "none" }}
                       display="flex"
                       placeItems="center"
                       fontSize=".8rem"
+                      _focus={{ outline: "none" }}
                       fontWeight="medium"
                     >
                       <Icon as={RiUpload2Line} w="4" h="4" marginRight={2} />
-                      Upload
+                      Browse
                     </Button>
                   </Box>
                 </Box>
-                <Box my="1rem">
+
+                {/* images list */}
+                <Box mt={5}>
                   {images.length > 0 ? (
                     images.map((im, index) => (
                       <Box
+                        key={index}
                         display="grid"
                         gridTemplateColumns=".06fr 1fr .1fr"
                         alignItems={"center"}
-                        color="green.400"
-                        my={3}
+                        color="gray.700"
+                        my={2}
                         gap={3}
                         justifyContent="space-between"
                       >
@@ -238,74 +270,66 @@ const EditProduct = () => {
 
             <Stack spacing={8}>
               <VStack shadow="lg" p="1.5rem" borderRadius="10px" spacing={10}>
-                <FormControl>
-                  <FormLabel htmlFor="cat-name"> Inventory</FormLabel>
-                  <Input
-                    // {...register("inventory")}
-                    type="number"
-                    name="inventory"
-                    defaultValue={productData.inventory}
-                    borderColor="gray.300"
-                    placeholder="Product in stock"
-                    size="lg"
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel htmlFor="cat-name"> Price</FormLabel>
-                  <Input
-                    // {...register("price")}
-                    type="number"
-                    name="price"
-                    defaultValue={productData?.price}
-                    borderColor="gray.300"
-                    placeholder="Product Price"
-                    size="lg"
-                  />
-                </FormControl>
+                <AppInput
+                  name="inventory"
+                  label="Inventory"
+                  type="text"
+                  placeholder="Product inventory"
+                  onChange={handleChange}
+                  value={currentProduct?.inventory}
+                />
+
+                <AppInput
+                  name="price"
+                  label="Price"
+                  type="number"
+                  placeholder="Price"
+                  onChange={handleChange}
+                  value={currentProduct?.price}
+                />
+
+                {/* select brand */}
+                <BrandSelector
+                  handleChange={handleChange}
+                  value={currentProduct?.brand}
+                />
               </VStack>
 
               <VStack spacing={10} shadow="lg" p="1.5rem" borderRadius="10px">
                 <HStack spacing={5}>
-                  <FormControl>
-                    <FormLabel htmlFor="cat-name"> Storage</FormLabel>
-                    <Input
-                      // {...register("size")}
-                      type="text"
-                      name="size"
-                      defaultValue={productData?.size}
-                      borderColor="gray.300"
-                      placeholder="Storage"
-                      size="lg"
-                    />
-                  </FormControl>
-                  <FormControl>
-                    <FormLabel htmlFor="cat-name"> Color</FormLabel>
-                    <Input
-                      // {...register("color")}
-                      type="text"
-                      name="color"
-                      defaultValue={productData?.color}
-                      borderColor="gray.300"
-                      placeholder="Color"
-                      size="lg"
-                    />
-                  </FormControl>
+                  <AppInput
+                    name="size"
+                    label="Storage"
+                    type="text"
+                    placeholder="Storage"
+                    onChange={handleChange}
+                    value={currentProduct?.size}
+                  />
+
+                  <AppInput
+                    name="color"
+                    label="Color"
+                    type="text"
+                    placeholder="Product color"
+                    onChange={handleChange}
+                    value={currentProduct?.color}
+                  />
                 </HStack>
 
                 <FormControl>
                   <FormLabel htmlFor="product-cat"> Category </FormLabel>
                   <Select
-                    // {...register("category")}
                     name="category"
-                    defaultValue={productData?.category}
                     borderColor="gray.300"
                     placeholder="Select category"
                     fontSize=".9rem"
                     size="lg"
+                    onChange={handleChange}
+                    value={currentProduct?.category}
                   >
                     {categories?.map((category) => (
-                      <option key={category._id} defaultValue={category.name}>
-                        {category.name}
+                      <option value={category?._id} key={category?._id}>
+                        {category?.name}
                       </option>
                     ))}
                   </Select>
@@ -328,7 +352,7 @@ const EditProduct = () => {
                 }
                 loadingText="Saving"
               >
-                Save Changes
+                Update Product
               </Button>
             </Stack>
           </Box>

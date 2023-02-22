@@ -40,7 +40,7 @@ export const addCategory = createAsyncThunk(
 
       if (status === 201) {
         navigate(-1);
-        toast.success("Product added", {
+        toast.success("Category added", {
           position: "bottom-left",
         });
         return data;
@@ -62,7 +62,7 @@ export const removeCategory = createAsyncThunk(
     try {
       const { status, data } = await categoryServices.removeCategoryService(id);
       if (status === 200) {
-        toast.error("Product deleted", {
+        toast.error("Category deleted", {
           position: "bottom-left",
         });
         return data;
@@ -88,7 +88,7 @@ export const updateCategory = createAsyncThunk(
       );
       if (status === 201) {
         navigate(-1);
-        toast.info("Product updated", {
+        toast.info("Category updated", {
           position: "bottom-left",
         });
         return data;
