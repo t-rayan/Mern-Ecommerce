@@ -7,11 +7,12 @@ export const getAllProducts = createAsyncThunk(
   "product/getAll",
   async (payload, thunkAPI) => {
     let allFilters = {
-      category: payload?.categoryFilter || "All",
-      brand: payload?.brandFilter || "",
+      category: payload?.categoryFilter || "",
+      brand: payload?.brandFilter || "All",
+      search: payload?.searchFilter || "",
       price: {
-        minPrice: payload?.filterPrice?.minPrice || "",
-        maxPrice: payload?.filterPrice?.maxPrice || "",
+        minPrice: payload?.priceFilter?.minPrice || "",
+        maxPrice: payload?.priceFilter?.maxPrice || "",
       },
     };
 
@@ -198,10 +199,12 @@ export const productSlice = createSlice({
     isLoading: false,
     message: "",
     product: null,
-    isEdit: false,
-    priceFilter: null,
-    categoryFilter: "All",
-    brandFilter: null,
+    filterGroup: {
+      categoryFilter: "",
+      brandFilter: "",
+      priceFilter: "",
+      searchFilter: "",
+    },
   },
   reducers: {
     reset: (state) => {
@@ -214,20 +217,46 @@ export const productSlice = createSlice({
       state.isEdit = false;
     },
 
-    resetFilters: (state) => {
-      state.priceFilter = null;
-      state.categoryFilter = null;
-      state.brandFilter = null;
+    setFilterGroup: (state, action) => {
+      let data = action.payload;
+
+      state.filterGroup = { ...data, ...state.filterGroup };
+    },
+    resetFilter: (state) => {
+      state.filterGroup = {
+        categoryFilter: "",
+        brandFilter: "",
+        priceFilter: "",
+        searchFilter: "",
+      };
     },
 
+    setSearchFilters: (state, action) => {
+      state.filterGroup = {
+        ...state.filterGroup,
+        categoryFilter: "",
+        searchFilter: action.payload,
+      };
+    },
     setPriceFilters: (state, action) => {
-      state.priceFilter = action.payload;
+      state.filterGroup = {
+        ...state.filterGroup,
+        priceFilter: action.payload.priceFilter,
+      };
     },
     setCategoryFilters: (state, action) => {
-      state.categoryFilter = action.payload;
+      state.filterGroup = {
+        ...state.filterGroup,
+        brandFilter: "",
+        priceFilter: "",
+        categoryFilter: action.payload,
+      };
     },
     setBrandFilters: (state, action) => {
-      state.brandFilter = action.payload;
+      state.filterGroup = {
+        ...state.filterGroup,
+        brandFilter: action.payload,
+      };
     },
 
     productSearch: (state, action) => {
@@ -241,9 +270,6 @@ export const productSlice = createSlice({
           product.name.toLowerCase().includes(action.payload) ||
           product.category?.name.toLowerCase().includes(action.payload)
       );
-    },
-    resetFilter: (state) => {
-      state.filteredProducts = undefined;
     },
   },
   extraReducers: {
@@ -394,5 +420,7 @@ export const {
   setCategoryFilters,
   productSearch,
   resetFilter,
+  setFilterGroup,
+  setSearchFilters,
 } = productSlice.actions;
 export default productSlice.reducer;

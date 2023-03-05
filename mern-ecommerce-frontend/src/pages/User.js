@@ -28,13 +28,15 @@ const User = () => {
     <Box display="grid" gridTemplateColumns={"1fr"} gap={10} alignItems="start">
       <Box display="grid" gap={10}>
         <Box borderRadius="10px">
-          <Heading color="green.400" size="md">
-            Hello
+          <Heading color="gray.700" size="md">
+            Hello {userInfo?.fullname} ,
           </Heading>
-          <Heading size="md" my={2} textTransform="capitalize">
+          {/* <Heading size="md" my={2} textTransform="capitalize">
             {userInfo?.fullname}
-          </Heading>
-          <Text color="gray.500">{userInfo?.id}</Text>
+          </Heading> */}
+          <Text mt={2} color="gray.500">
+            Welcome to your dashboard, here you can view your orders.{" "}
+          </Text>
         </Box>
         {!order && (
           <Box>

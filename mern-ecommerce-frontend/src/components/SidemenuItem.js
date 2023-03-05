@@ -14,24 +14,34 @@ const SidemenuItem = ({ menuTitle, linkIcon, place }) => {
     <NavLink
       to={`${place}`}
       end
-      onClick={() => isSidebar && isMobile && dispatch(hideSidebar())}
+      onClick={() => isSidebar && dispatch(hideSidebar())}
     >
       {({ isActive }) => (
-        <Grid>
-          <Flex
-            alignItems="center"
-            color={isActive ? "gray.700" : "gray.500"}
-            _hover={{ color: "gray.700" }}
-            fontSize={[".8rem", ".9rem", ".9rem"]}
-            gap={3}
-            mb={5}
-          >
-            <Icon as={linkIcon} w="18px" h="18px" />
-            <Box>
-              <Text fontWeight="medium">{menuTitle}</Text>
-            </Box>
-          </Flex>
-        </Grid>
+        <Flex
+          alignItems="center"
+          justifyContent="start"
+          color={isActive ? "gray.700" : "gray.500"}
+          borderRight={isActive && "3px solid"}
+          borderRightColor={isActive && "orange"}
+          py={2}
+          px={"2rem"}
+          _hover={{ color: "gray.700" }}
+          fontSize={[".8rem", ".9rem", ".9rem"]}
+          gap={3}
+          mb={5}
+        >
+          {/* <Icon
+              as={linkIcon}
+              w="20px"
+              h="20px"
+              color={isActive && "orange.400"}
+            /> */}
+          <Box>
+            <Text fontWeight="bold" ml={2}>
+              {menuTitle}
+            </Text>
+          </Box>
+        </Flex>
       )}
     </NavLink>
   );

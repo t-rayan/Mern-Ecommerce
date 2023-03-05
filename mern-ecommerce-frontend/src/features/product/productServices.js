@@ -10,10 +10,10 @@ const getProductsService = async (filters) => {
   //   `/product?category=${category}&brand=${brand}&price=${price}`
   // );
 
-  const { brand, category, price } = filters;
+  const { brand, category, price, search } = filters;
 
   const res = await instance.get(
-    `/product?category=${category}&brand=${brand}&minPrice=${price.minPrice}&maxPrice=${price.maxPrice}`
+    `/product?search=${search}&category=${category}&brand=${brand}&minPrice=${price.minPrice}&maxPrice=${price.maxPrice}`
   );
   return res;
 };

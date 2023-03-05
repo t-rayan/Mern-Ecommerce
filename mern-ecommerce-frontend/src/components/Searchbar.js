@@ -1,41 +1,56 @@
-import { Box, Button, Input } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { SearchIcon } from "@chakra-ui/icons";
+import {
+  Box,
+  Button,
+  Input,
+  InputGroup,
+  InputLeftElement,
+} from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { searchProducts } from "../features/product/productSlice";
+import { Form, useNavigate } from "react-router-dom";
+import {
+  searchProducts,
+  setSearchFilters,
+} from "../features/product/productSlice";
+import useMedia from "../hooks/useMedia";
 
 const Searchbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [searchQuery, setSearchQuery] = useState("");
+  const { sm } = useMedia();
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(setSearchFilters(searchQuery));
+    navigate({
+      pathname: "/products/search",
+      search: `?q=${searchQuery}`,
+    });
+  };
 
   return (
-    <Box display="flex" gap={2}>
-      <Input
-        size="lg"
-        borderRadius="md"
-        border="1.8px solid"
-        borderColor="gray.400"
-        _focus={{ border: "2px solid", borderColor: "green.300" }}
-        type="text"
-        placeholder="Search producsts ...."
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-      {/* <Button
-        size="lg"
-        colorScheme="green"
-        // disabled={searchQuery ? false : true}
-        onClick={() =>
-          navigate({
-            pathname: "products/search/",
-            search: `?query=${searchQuery}`,
-          })
-        }
-      >
-        Search
-      </Button> */}
-    </Box>
+    <form onSubmit={submitHandler} display="flex" gap={2}>
+      <InputGroup size={sm ? "md" : "lg"} bg="gray.100" rounded="lg">
+        <InputLeftElement
+          pointerEvents="none"
+          children={<SearchIcon color="gray.500" />}
+        />
+        <Input
+          size={sm ? "md" : "lg"}
+          rounded="lg"
+          // borderRadius="md"
+          value={searchQuery}
+          borderColor="inherit"
+          _focus={{ border: "2px solid", borderColor: "inherit" }}
+          type="text"
+          placeholder="Search producsts ...."
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </InputGroup>
+    </form>
   );
 };
 

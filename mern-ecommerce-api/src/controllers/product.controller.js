@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 import cloudinary from "../configs/cloudinary.config.js";
 import Product from "../models/product.model.js";
+import Category from "../models/category.model.js";
+import Brand from "../models/brand.model.js";
+
 import {
   createProductValidation,
   updateProductValidation,
@@ -9,13 +12,25 @@ import {
 export const getAllProducts = async (req, res) => {
   try {
     const category = req.query.category || "All";
-    const brand = req.query.brand || null;
+    const search = req.query.search || "";
+    const brand = req.query.brand || "All";
     const minPrice = parseInt(req.query.minPrice) || null;
     const maxPrice = parseInt(req.query.maxPrice) || null;
 
     let query = {};
-    if (req.query.brand) {
-      query.category = req.query.brand;
+
+    if (req.query.search) {
+      query.name = { $regex: search, $options: "i" };
+    }
+
+    if (brand && brand !== "All") {
+      const b = await Brand.find({ name: req.query.brand });
+      query.brand = b[0]?._id;
+    }
+
+    if (req.query.category && req.query.category !== "All") {
+      const c = await Category.find({ name: req.query.category });
+      query.category = c[0]._id;
     }
     if (req.query.minPrice && req.query.maxPrice) {
       query.price = { $gte: req.query.minPrice, $lte: req.query.maxPrice };
@@ -25,12 +40,14 @@ export const getAllProducts = async (req, res) => {
       query.price = { $lte: req.query.maxPrice };
     }
 
+    console.log(brand);
+
     const products = await Product.find(query).populate({
       path: "category",
       select: "name -_id",
     });
-
     if (products) {
+      console.log(products.length);
       return res.status(200).json({ products });
     }
   } catch (error) {

@@ -28,27 +28,9 @@ import User from "./pages/User";
 import Protected from "./utils/Protected";
 import OrderDetails from "./components/OrderDetails";
 import { useEffect } from "react";
-import useMedia from "./hooks/useMedia";
-import { useDispatch } from "react-redux";
-import { setCurrentDevice } from "./features/ui/uiSlice";
 import EditProduct from "./pages/Admin/ProductPage/EditProduct";
 
 function App() {
-  const { isMobile, isLargeDevice, isTablet } = useMedia();
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (isMobile) {
-      dispatch(setCurrentDevice("mobile"));
-    }
-    if (isTablet) {
-      dispatch(setCurrentDevice("tablet"));
-    }
-    if (isLargeDevice) {
-      dispatch(setCurrentDevice("large"));
-    }
-  }, [dispatch, isMobile, isLargeDevice, isTablet]);
-
   return (
     <Box minH="100vh">
       <ToastContainer />

@@ -9,6 +9,12 @@ import useMedia from "../hooks/useMedia";
 import AppSkeleton from "./AppSkeleton";
 import SideMenu from "./SideMenu";
 import { motion } from "framer-motion";
+import {
+  resetFilter,
+  setCategoryFilters,
+} from "../features/product/productSlice";
+import SidemenuItem from "./SidemenuItem";
+import { FaMobile } from "react-icons/fa";
 
 const UserSideMenu = () => {
   const dispatch = useDispatch();
@@ -17,11 +23,17 @@ const UserSideMenu = () => {
   const { isSidebar, currentDevice } = useSelector((state) => state.ui);
   const { categories, isLoading } = useSelector((state) => state.categories);
 
+  let results;
+
+  if (categories.length > 0) {
+    results = categories.map((cat) => cat.name);
+  }
+
   useEffect(() => {
     dispatch(getAllCategories());
-    if (currentDevice !== "mobile") {
-      dispatch(hideSidebar());
-    }
+    // if (currentDevice !== "mobile") {
+    //   dispatch(hideSidebar());
+    // }
   }, [dispatch, currentDevice]);
 
   const itemVariants = {
@@ -48,114 +60,28 @@ const UserSideMenu = () => {
   };
 
   return (
-    isSidebar && (
-      <Box
-        as={motion.div}
-        initial={{ width: 0 }}
-        animate={{ width: 300 }}
-        h="100vh"
-        maxH="100vh"
-        // borderRight="2px"
-        borderRightColor="gray.200"
-        pos="fixed"
-        bg="white"
-        shadow="md"
-        top={0}
-        left={0}
-        zIndex="1111"
-        // w="300px"
-        backdropBlur={5}
-      >
-        <Box display="grid" gridTemplateRows="5rem 1fr">
-          <Box
-            w="100%"
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            // borderBottom="1px"
-            // borderBottomColor="gray.100"
-            px={5}
-          >
-            <Heading color="green.500" size="md">
-              {" "}
-              SmartHive{" "}
-            </Heading>
-            <Icon
-              as={RiCloseLine}
-              w={"20px"}
-              h={"20px"}
-              color="gray.400"
-              cursor="pointer"
-              _hover={{ color: "black" }}
-              onClick={() => dispatch(hideSidebar())}
-            />
-          </Box>
-          <Box>
-            <Box
-              display="flex"
-              flexDir="column"
-              alignItems={"start"}
-              px={5}
-              py={10}
-            >
-              <Text
-                mb={3}
-                fontWeight="bold"
-                fontSize="1.1rem"
-                cursor="pointer"
-                color="gray.600"
-                px={3}
-                onClick={() => navigate("/")}
-              >
-                All Categories
-              </Text>
-              <Box
-                as={motion.div}
-                initial="closed"
-                animate="open"
-                variants={sideVariants}
-                display="grid"
-                gap={2}
-                w="100%"
-              >
-                {isLoading && <AppSkeleton />}
-
-                {categories?.map((cat) => (
-                  <Box as={motion.div} variants={itemVariants} key={cat._id}>
-                    <NavLink
-                      to={`/${cat?.name.replace(/\s/g, "")}/products`}
-                      cursor={"pointer"}
-                      fontWeight="medium"
-                      key={cat?._id}
-                      onClick={() => {
-                        dispatch(hideSidebar());
-                      }}
-                    >
-                      {({ isActive }) => (
-                        <Box
-                          p={3}
-                          borderRadius="5px"
-                          bg={isActive && "orange.100"}
-                          _hover={{ bg: "gray.100" }}
-                          shadow={isActive && "sm"}
-                        >
-                          <Text
-                            fontWeight={isActive && "medium"}
-                            color={isActive ? "orange.600" : "gray.500"}
-                          >
-                            {cat?.name}
-                          </Text>
-                        </Box>
-                      )}
-                    </NavLink>
-                  </Box>
-                ))}
-              </Box>
-            </Box>
-          </Box>
-        </Box>
+    <>
+      <Box textAlign="left" px={"2rem"} py={5}>
+        <Heading fontWeight="bold" fontSize="1.7rem">
+          TECH-HIVE
+        </Heading>
       </Box>
-    )
+      <Box my={5}>
+        <SidemenuItem
+          menuTitle="Shop"
+          // linkIcon={FaMobile}
+          place={`/`}
+        />
+        {categories?.map((cat) => (
+          <SidemenuItem
+            menuTitle={cat.name}
+            key={cat._id}
+            // linkIcon={FaMobile}
+            place={`category/${cat.name}`}
+          />
+        ))}
+      </Box>
+    </>
   );
 };
 

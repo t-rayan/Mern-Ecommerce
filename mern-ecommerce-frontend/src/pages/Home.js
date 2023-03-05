@@ -17,18 +17,20 @@ import ShopBanner from "../components/ShopBanner";
 const Home = () => {
   const dispatch = useDispatch();
   const { isSuccess } = useSelector((state) => state.auth);
-  const { products, isLoading } = useSelector((state) => state.products);
+  const { products, filterGroup, isLoading } = useSelector(
+    (state) => state.products
+  );
 
   useEffect(() => {
-    dispatch(getAllProducts());
-  }, [dispatch]);
+    dispatch(getAllProducts(filterGroup));
+  }, [dispatch, filterGroup]);
 
   if (isLoading) {
     return <LoadingState />;
   }
 
   return (
-    <Grid gap="3rem">
+    <Grid>
       <ShopBanner />
       <Box>
         {/* <UtilityBar /> */}
@@ -36,10 +38,11 @@ const Home = () => {
           <Heading size="md">All Products</Heading>
 
           <Box
-            mt={5}
+            mt={10}
             display="grid"
-            gap={5}
-            gridTemplateColumns="repeat( auto-fit, minmax(250px, 1fr) );"
+            rowGap={"4rem"}
+            columnGap={"2rem"}
+            gridTemplateColumns="repeat( auto-fit, minmax(15rem, 1fr) );"
           >
             {products?.map((product) => (
               <SingleProduct key={product?._id} product={product} />

@@ -1,50 +1,91 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Button, Heading, Spinner } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { getAllProducts } from "../features/product/productSlice";
+import { useEffect, useState } from "react";
+import {
+  getAllProducts,
+  reset,
+  resetFilter,
+  setCategoryFilters,
+  setFilterGroup,
+} from "../features/product/productSlice";
 import SingleProduct from "../components/SingleProduct";
 import FilterPanel from "../components/FilterPanel";
+import LoadingState from "../components/LoadingState";
 
 const CatAndProducts = () => {
   const dispatch = useDispatch();
-  const { products } = useSelector((state) => state.products);
+  const { filterGroup, products, isLoading } = useSelector(
+    (state) => state.products
+  );
 
   const { name } = useParams();
 
-  const filterByCategory = products?.filter(
-    (product) => product?.category?.name === name
-  );
+  const { categoryFilter } = filterGroup;
+
+  // const [filterGroup, setFilterGroup] = useState(null);
 
   useEffect(() => {
-    dispatch(getAllProducts({ category: name }));
-  }, [dispatch, name]);
+    name && dispatch(setCategoryFilters(name));
+    categoryFilter && dispatch(getAllProducts(filterGroup));
+
+    return () => {
+      dispatch(reset());
+      dispatch(resetFilter());
+    };
+  }, [name, categoryFilter, dispatch]);
+
   return (
-    <Box minH="100vh">
-      <Heading size="md"> {name}</Heading>
+    <Box>
+      <Heading size="lg"> {name}</Heading>
       <Box
-        mt={10}
+        mt={5}
         display="grid"
-        gap={"4rem"}
-        gridTemplateColumns=".25fr 1fr"
+        gap={"1rem"}
+        gridTemplateRows=".25fr 1fr"
         alignItems="start"
         w="100%"
-        h="100%"
+        height={"100%"}
       >
-        <Box bg="gray.100" borderRadius={10}>
-          <FilterPanel />
+        <Box borderRadius={10}>
+          <FilterPanel
+          // filterGroup={filterGroup}
+          // setFilterGroup={setFilterGroup}
+          />
         </Box>
-
-        <Box
-          display="grid"
-          gap={5}
-          alignItems="stretch"
-          gridTemplateColumns="repeat( auto-fill, minmax(230px, 1fr) );"
-        >
-          {filterByCategory.map((prod) => (
-            <SingleProduct product={prod} key={prod?._id} />
-          ))}
-        </Box>
+        {isLoading ? (
+          <LoadingState />
+        ) : (
+          <>
+            <Box display="grid">
+              {products?.length > 0 ? (
+                <Box
+                  display="grid"
+                  rowGap={"2rem"}
+                  columnGap="4rem"
+                  alignItems="stretch"
+                  gridTemplateColumns="repeat( auto-fit, minmax(15rem, 1fr) );"
+                >
+                  {products?.map((prod) => (
+                    <SingleProduct product={prod} key={prod?._id} />
+                  ))}
+                </Box>
+              ) : (
+                <Box display={"grid"} placeItems="center">
+                  <Box textAlign="center">
+                    <Heading size="sm"> No product found </Heading>
+                    <Button
+                      variant="link"
+                      onClick={() => window.location.reload(false)}
+                    >
+                      Go Back
+                    </Button>
+                  </Box>
+                </Box>
+              )}
+            </Box>
+          </>
+        )}
       </Box>
     </Box>
   );

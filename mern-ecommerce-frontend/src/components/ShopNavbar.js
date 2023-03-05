@@ -10,12 +10,16 @@ import {
   MenuItem,
   MenuList,
   Portal,
+  Select,
   Text,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
+  RiAccountBoxFill,
+  RiAccountBoxLine,
   RiFilter3Fill,
   RiMenu2Line,
+  RiShoppingBag2Line,
   RiShoppingCart2Fill,
 } from "react-icons/ri";
 import { MdArrowDropDown } from "react-icons/md";
@@ -33,21 +37,20 @@ import FiltersDrawer from "./FiltersDrawer";
 import GetInitials from "../utils/GetInitials";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { logoutUser } from "../features/auth/authSlice";
+import { setCategoryFilters } from "../features/product/productSlice";
 
 const ShopNavbar = () => {
   const { currentDevice } = useSelector((state) => state.ui);
   const { cartItems } = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.auth);
 
-  const [isFilterDrawer, setIsFilterDrawer] = useState(false);
   const { categories } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { name } = useParams();
-  const location = useLocation();
 
   const handleMenuItemClick = (val) => {
     navigate(`category/${val}`);
+    dispatch(setCategoryFilters(val));
   };
 
   const handleLogout = () => {
@@ -57,16 +60,8 @@ const ShopNavbar = () => {
 
   return (
     <>
-      {/* showing filter drawer if filter is true */}
-      <FiltersDrawer
-        isOpen={isFilterDrawer}
-        onClose={() => setIsFilterDrawer(false)}
-      />
-
       {/* main content goes here */}
       <Box
-        display="grid"
-        alignItems="center"
         pos="fixed"
         top="0"
         left={0}
@@ -74,10 +69,10 @@ const ShopNavbar = () => {
         zIndex="1"
         w="100%"
         bg="#fff"
-        py={5}
+        py={3}
         gap={3}
         borderBottom="1px solid"
-        borderColor="gray.300"
+        borderColor="inherit"
       >
         <Grid
           width="inherit"
@@ -102,30 +97,49 @@ const ShopNavbar = () => {
               />
             )}
 
-            <Text
-              fontWeight="bold"
-              color="green.800"
-              fontSize={currentDevice === "mobile" ? "1.3rem" : "1.5rem"}
-              cursor="pointer"
-              onClick={() => navigate("/")}
-            >
-              SmartHive
-            </Text>
+            <Box bg="orange">
+              <Text
+                fontWeight="bold"
+                color="gray.800"
+                p={1}
+                fontSize={currentDevice === "mobile" ? "1.3rem" : "1.1rem"}
+                letterSpacing={1.7}
+                cursor="pointer"
+                onClick={() => navigate("/")}
+              >
+                smart hive
+              </Text>
+            </Box>
           </Flex>
 
           {/* main nav bar */}
 
           {currentDevice !== "mobile" && (
             <Grid
-              templateColumns={currentDevice === "large" ? ".2fr 1fr " : "1fr"}
+              templateColumns={currentDevice === "large" ? ".3fr 1fr " : "1fr"}
               justifyContent="space-between"
               alignItems="center"
-              gap={5}
+              gap="5"
             >
               {currentDevice === "large" && (
                 <Box zIndex="1111">
                   <Menu>
-                    <MenuButton as={Button} rightIcon={<MdArrowDropDown />}>
+                    <MenuButton
+                      size="md"
+                      as={Button}
+                      // py="1.5rem"
+                      w="full"
+                      fontWeight="normal"
+                      fontSize=".9rem"
+                      // textAlign="left"
+                      color={"gray.700"}
+                      bg="none"
+                      borderColor="inherit"
+                      _hover={{ bg: "none" }}
+                      _active={{ bg: "none" }}
+                      _focus={{ boxShadow: "none" }}
+                      rightIcon={<MdArrowDropDown />}
+                    >
                       All Categories
                     </MenuButton>
                     <Portal>
@@ -133,13 +147,16 @@ const ShopNavbar = () => {
                         {categories?.map((cat) => (
                           <Box key={cat._id}>
                             <MenuItem
+                              _hover={{ bg: "orange.300" }}
+                              fontSize=".9rem"
+                              fontweight="light"
                               key={cat._id}
                               onClick={() => handleMenuItemClick(cat.name)}
                             >
                               {" "}
                               {cat.name}{" "}
                             </MenuItem>
-                            <MenuDivider />
+                            {/* <MenuDivider /> */}
                           </Box>
                         ))}
                       </MenuList>
@@ -148,19 +165,12 @@ const ShopNavbar = () => {
                 </Box>
               )}
               <Grid
-                templateColumns="1fr .1fr"
+                templateColumns="1fr"
                 justifyContent="space-between"
                 alignItems="center"
                 gap={3}
               >
                 <Searchbar />
-                <Icon
-                  cursor="pointer"
-                  as={RiFilter3Fill}
-                  w={5}
-                  h={5}
-                  onClick={() => setIsFilterDrawer(true)}
-                />
               </Grid>
             </Grid>
           )}
@@ -174,8 +184,8 @@ const ShopNavbar = () => {
               cursor="pointer"
               onClick={() => navigate("/checkout")}
             >
-              <Box pos="relative">
-                <Icon as={RiShoppingCart2Fill} w={5} h={5} />
+              <Box display={"flex"} flexDir="row" pos="relative">
+                <Icon as={RiShoppingBag2Line} w={5} h={5} color="gray.700" />
                 {/* if cart items length is greater than 0 */}
                 {cartItems.length > 0 && (
                   <Box
@@ -189,11 +199,22 @@ const ShopNavbar = () => {
                   ></Box>
                 )}
               </Box>
-              <Text fontWeight="bold">Cart</Text>
+              <Text fontWeight="normal" color="gray.700">
+                Cart
+              </Text>
             </Flex>
 
             {/* if user is not logged in then display login button */}
-            {!userInfo && <Link to="/login">Login</Link>}
+            {!userInfo && (
+              <Button
+                bg="none"
+                fontWeight={"normal"}
+                // leftIcon={<Icon as={RiAccountBoxLine} w={6} h={6} />}
+                onClick={() => navigate("/login")}
+              >
+                Account
+              </Button>
+            )}
 
             {/* else if user is logged in and user is not an admin then display user links */}
             {/* Menu button icon */}
@@ -236,19 +257,12 @@ const ShopNavbar = () => {
         <Box>
           {currentDevice === "mobile" && (
             <Grid
-              templateColumns="1fr .1fr"
+              templateColumns="1fr"
               justifyContent="space-between"
               alignItems="center"
               gap={3}
             >
               <Searchbar />
-              <Icon
-                cursor="pointer"
-                as={RiFilter3Fill}
-                w={5}
-                h={5}
-                onClick={() => setIsFilterDrawer(true)}
-              />
             </Grid>
           )}
         </Box>

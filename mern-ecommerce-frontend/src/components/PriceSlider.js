@@ -1,3 +1,4 @@
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Flex,
   Heading,
@@ -11,116 +12,140 @@ import {
   Text,
   Tooltip,
   VStack,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
+  Button,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { setPriceFilters } from "../features/product/productSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllProducts,
+  setPriceFilters,
+} from "../features/product/productSlice";
 
 const PriceSlider = ({
   isFilter,
-  setIsFilter,
   filterPrice,
   setFilterPrice,
+  // setFilterGroup,
 }) => {
   const dispatch = useDispatch();
-  // const [filterPrice, setFilterPrice] = useState({
-  //   minPrice: 500,
-  //   maxPrice: 2000,
-  // });
+  const { filterGroup } = useSelector((state) => state.products);
+  const { priceFilter } = filterGroup;
 
   const [showTooltip, setShowTooltip] = useState(false);
 
   const handleOnChange = (val) => {
-    setIsFilter(true);
-    setFilterPrice({
-      ...filterPrice,
-      minPrice: val[0],
-      maxPrice: val[1],
-    });
+    dispatch(
+      setPriceFilters({ priceFilter: { minPrice: val[0], maxPrice: val[1] } })
+    );
   };
 
   useEffect(() => {
-    isFilter && dispatch(setPriceFilters(filterPrice));
-  }, [dispatch, filterPrice, isFilter]);
+    priceFilter && dispatch(getAllProducts(filterGroup));
+  }, [dispatch, priceFilter]);
 
   return (
     <>
-      <VStack spacing={5} alignItems={"start"}>
-        <Heading size="sm">Price</Heading>
-        <Flex gap={5}>
-          <HStack>
-            <Text color="gray.400" fontSize=".8rem">
-              Min ($)
-            </Text>
-            <Input
-              type="number"
-              borderRadius="5px"
-              size={"sm"}
-              // value={filterPrice.minPrice}
-            />
-          </HStack>
-          <HStack>
-            <Text color="gray.400" fontSize=".8rem">
-              Min ($)
-            </Text>
-            <Input
-              type="number"
-              size={"sm"}
-              borderRadius="5px"
-              // value={filterPrice.maxPrice}
-            />
-          </HStack>
-        </Flex>
-
-        {/* main Slider */}
-        <RangeSlider
-          size={"lg"}
-          min={0}
-          max={3000}
-          defaultValue={[10, 500]}
-          colorScheme="green"
-          onChange={handleOnChange}
-          onMouseEnter={() => setShowTooltip(true)}
-          onMouseLeave={() => setShowTooltip(false)}
+      <Menu closeOnSelect={false}>
+        <MenuButton
+          as={Button}
+          rightIcon={<ChevronDownIcon />}
+          bg="none"
+          fontSize=".9rem"
+          fontWeight="normal"
+          border="1px solid"
+          borderColor="inherit"
+          _active={{ bg: "none" }}
+          _focus={{ boxShadow: "none" }}
+          _hover={{ bg: "none" }}
         >
-          {/* {[0, 500, 1000, 1500, 2000, 2500, 3000].map((item) => (
-            <RangeSliderMark
-              key={item}
-              value={item}
-              mt="3"
-              ml="-3"
-              fontSize=".8rem"
-            >
-              {item}
-            </RangeSliderMark>
-          ))} */}
-
-          <RangeSliderTrack>
-            <RangeSliderFilledTrack />
-          </RangeSliderTrack>
-
-          <Tooltip
-            hasArrow
-            bg="black"
-            color="white"
-            placement="top"
-            isOpen={showTooltip}
-            label={`$${filterPrice.minPrice}`}
+          Price
+        </MenuButton>
+        <MenuList>
+          <MenuItem
+            w="20rem"
+            _active={{ bg: "white" }}
+            _focus={{ bg: "white" }}
+            // p={5}
           >
-            <RangeSliderThumb index={0} />
-          </Tooltip>
-          <Tooltip
-            hasArrow
-            bg="black"
-            color="white"
-            placement="top"
-            isOpen={showTooltip}
-            label={`$${filterPrice.maxPrice}`}
-          >
-            <RangeSliderThumb index={1} />
-          </Tooltip>
-        </RangeSlider>
-      </VStack>
+            <VStack spacing={5} alignItems={"start"}>
+              <Heading size="sm">Price</Heading>
+              <Flex gap={5}>
+                <HStack>
+                  <Text color="gray.400" fontSize=".8rem">
+                    Min ($)
+                  </Text>
+                  <Input
+                    type="number"
+                    borderRadius="5px"
+                    size={"sm"}
+                    // value={filterPrice.minPrice}
+                  />
+                </HStack>
+                <HStack>
+                  <Text color="gray.400" fontSize=".8rem">
+                    Min ($)
+                  </Text>
+                  <Input
+                    type="number"
+                    size={"sm"}
+                    borderRadius="5px"
+                    // value={filterPrice.maxPrice}
+                  />
+                </HStack>
+              </Flex>
+
+              {/* main Slider */}
+              <RangeSlider
+                size={"lg"}
+                min={0}
+                max={4000}
+                defaultValue={[10, 2000]}
+                colorScheme="green"
+                onChange={handleOnChange}
+                onMouseEnter={() => setShowTooltip(true)}
+                onMouseLeave={() => setShowTooltip(false)}
+              >
+                <RangeSliderTrack>
+                  <RangeSliderFilledTrack />
+                </RangeSliderTrack>
+
+                <Tooltip
+                  hasArrow
+                  bg="black"
+                  color="white"
+                  placement="top"
+                  isOpen={showTooltip}
+                  label={
+                    priceFilter?.minPrice ? `$${priceFilter?.minPrice}` : "$10"
+                  }
+                >
+                  <RangeSliderThumb index={0} />
+                </Tooltip>
+                <Tooltip
+                  hasArrow
+                  bg="black"
+                  color="white"
+                  placement="top"
+                  isOpen={showTooltip}
+                  label={
+                    priceFilter.maxPrice ? `$${priceFilter?.maxPrice}` : "$2000"
+                  }
+                >
+                  <RangeSliderThumb index={1} />
+                </Tooltip>
+              </RangeSlider>
+            </VStack>
+          </MenuItem>
+        </MenuList>
+      </Menu>
     </>
   );
 };
