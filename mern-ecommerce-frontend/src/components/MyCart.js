@@ -28,7 +28,7 @@ const MyCart = () => {
           )}
         </Flex>
         {/* cart table */}
-        <Grid h="38rem" overflowY={"scroll"}>
+        <Grid maxH="38rem" overflowY={"scroll"}>
           {/* list of cart items */}
           {cartItems?.length > 0 && (
             <Box>
