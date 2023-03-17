@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { getAllBrands } from "../features/brand/brandSlice";
 import { getAllCategories } from "../features/category/categorySlice";
 import {
@@ -24,16 +25,6 @@ import SortFilter from "./SortFilter";
 
 const FilterPanel = () => {
   const dispatch = useDispatch();
-  const [isFilter, setIsFilter] = useState(false);
-  const { categories } = useSelector((state) => state.categories);
-  const { brands } = useSelector((state) => state.brand);
-  const { filterGroup } = useSelector((state) => state.products);
-  const { brandFilter } = filterGroup;
-
-  const [filterPrice, setFilterPrice] = useState({
-    minPrice: 500,
-    maxPrice: 2000,
-  });
 
   useEffect(() => {
     dispatch(getAllCategories());
@@ -41,17 +32,8 @@ const FilterPanel = () => {
     dispatch(resetFilter());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (filterGroup !== null) {
-  //     dispatch(getAllProducts(filterGroup));
-  //   }
-  //   // return () => setFilterGroup(null);
-  // }, [dispatch, filterGroup]);
   return (
     <>
-      {/* <Heading size="md" py={5} px={8} borderBottom="1px solid #ddd">
-        Filters
-      </Heading> */}
       <Box
         h="auto"
         py={6}
@@ -64,14 +46,7 @@ const FilterPanel = () => {
           <HStack alignItems="start" spacing="5">
             <BrandFilter />
             <Box>
-              <PriceSlider
-                isFilter={isFilter}
-                setIsFilter={setIsFilter}
-                filterPrice={filterPrice}
-                setFilterPrice={setFilterPrice}
-                setFilterGroup={setFilterGroup}
-                // filterGroup={filterGroup}
-              />
+              <PriceSlider />
             </Box>
           </HStack>
         </Box>

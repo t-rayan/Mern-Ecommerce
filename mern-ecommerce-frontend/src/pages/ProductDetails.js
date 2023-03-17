@@ -36,7 +36,7 @@ const ProductDetails = () => {
 
   return (
     <Box>
-      <BackBtn btnTitle="Product Details" />
+      {/* <BackBtn btnTitle="Product Details" /> */}
       <Box
         display="grid"
         gridTemplateColumns="repeat( auto-fit, minmax(350px, 1fr) );"
@@ -115,7 +115,7 @@ const ProductDetails = () => {
           </Box>
         </Box>
       </Box>
-      <Box maxW={"600px"} mt={"4rem"} minH="200px">
+      <Box maxW="100%" mt={"4rem"}>
         <Heading size="md">Product Specifications</Heading>
         {/* <Text  mt={1}>{product?.desc}</Text> */}
 

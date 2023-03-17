@@ -16,9 +16,7 @@ import { toggleSidebar } from "../features/ui/uiSlice";
 import UserSideMenu from "./UserSideMenu";
 
 const MenuDrawer = ({ onOpen }) => {
-  const { isOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
-  const btnRef = React.useRef();
 
   const { isSidebar } = useSelector((state) => state.ui);
 
@@ -28,7 +26,6 @@ const MenuDrawer = ({ onOpen }) => {
         isOpen={isSidebar}
         placement="left"
         onClose={() => dispatch(toggleSidebar())}
-        finalFocusRef={btnRef}
       >
         <DrawerOverlay />
         <DrawerContent maxW={"280px"} bg="orange.50">

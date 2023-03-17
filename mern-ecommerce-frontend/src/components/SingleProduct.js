@@ -1,12 +1,13 @@
 import { Box, Heading, Text, Image, Icon, IconButton } from "@chakra-ui/react";
-import { RiShoppingCart2Fill, RiShoppingCart2Line } from "react-icons/ri";
+import { RiShoppingCart2Line } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addToCart } from "../features/cart/cartSlice";
+import useMedia from "../hooks/useMedia";
 
 const SingleProduct = ({ product }) => {
   const dispatch = useDispatch();
-  const { itemQty } = useSelector((state) => state.cart);
+  const { sm } = useMedia();
   const { thumbnail, _id, name, price, size, color, category, qty, images } =
     product;
   const cartItem = {
@@ -29,8 +30,11 @@ const SingleProduct = ({ product }) => {
       padding="2rem 1.3rem"
       rounded="xl"
       cursor="pointer"
-      shadow="2xl"
+      shadow="md"
+      border="1px solid #eee"
       bg="white"
+      mx={sm && "2rem"}
+
       // border="1px solid #ddd"
     >
       {/* TODO: this is todo */}

@@ -4,6 +4,7 @@ import {
   Button,
   Flex,
   Grid,
+  Heading,
   Icon,
   Modal,
   ModalBody,
@@ -23,6 +24,7 @@ import { resetShippingAddress } from "../features/cart/cartSlice";
 import { showPaymentScreen } from "../features/ui/uiSlice";
 import AppInput from "./AppInput";
 import SingleAddress from "./SingleAddress";
+import { motion } from "framer-motion";
 
 const BillandAddForm = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -77,19 +79,12 @@ const BillandAddForm = () => {
 
   return (
     <>
-      <Box h="100%" display="grid" gap={"1.5rem"}>
+      <Box h="100%">
         {/* list of address */}
-
-        {currentUser?.addressDetails.length > 0 &&
-          currentUser?.addressDetails.map((address) => (
-            <SingleAddress
-              key={address._id}
-              address={address}
-              nextStep={() => dispatch(showPaymentScreen())}
-            />
-          ))}
-        {/* footer */}
-        <Flex justifyContent="end" alignItems="center">
+        <Flex justifyContent={"space-between"}>
+          <Heading fontSize={"1.1rem"} mb="1.5rem" fontWeight={"normal"}>
+            1. Billing Information
+          </Heading>
           <Button
             leftIcon={<AddIcon w="13px" h="13px" />}
             bg="green.200"
@@ -104,6 +99,27 @@ const BillandAddForm = () => {
             Add new address
           </Button>
         </Flex>
+
+        <Box
+          border={"1px solid #ddd"}
+          p={"2rem"}
+          rounded="xl"
+          display={"flex"}
+          gap={"2rem"}
+          py={10}
+          overflowX={"scroll"}
+        >
+          {currentUser?.addressDetails.length > 0 &&
+            currentUser?.addressDetails.map((address) => (
+              <SingleAddress
+                key={address._id}
+                address={address}
+                nextStep={() => dispatch(showPaymentScreen())}
+              />
+            ))}
+        </Box>
+
+        {/* footer */}
       </Box>
 
       {/* modal */}

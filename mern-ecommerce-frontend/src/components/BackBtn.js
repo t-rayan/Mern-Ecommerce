@@ -4,21 +4,26 @@ import React from "react";
 import { RiArrowLeftSLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 
-const BackBtn = ({ btnTitle }) => {
+const BackBtn = ({ btnTitle, iconSize, ...rest }) => {
   const navigate = useNavigate();
   return (
     <Flex>
       <Button
         p="0px"
-        leftIcon={<ArrowBackIcon w="17px" h="17px" />}
+        leftIcon={
+          <ArrowBackIcon
+            w={iconSize ? iconSize : "17px"}
+            h={iconSize ? iconSize : "17px"}
+          />
+        }
         variant="ghost"
         _hover={{ bg: "transparent", color: "gray.400" }}
         _active={{ bg: "transparent" }}
         _focus={{ border: "none" }}
-        fontSize=".9rem"
         onClick={() => {
           navigate(-1);
         }}
+        {...rest}
       >
         {btnTitle}
       </Button>

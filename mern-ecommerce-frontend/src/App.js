@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Routes, Route, Outlet } from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Admin/DashboardPage/Dashboard";
@@ -27,12 +27,14 @@ import CheckoutSuccess from "./pages/CheckoutSuccess";
 import User from "./pages/User";
 import Protected from "./utils/Protected";
 import OrderDetails from "./components/OrderDetails";
-import { useEffect } from "react";
 import EditProduct from "./pages/Admin/ProductPage/EditProduct";
+import Cartpage from "./pages/Cartpage";
+import MyCart from "./components/MyCart";
+import SingleOrder from "./pages/SingleOrder";
 
 function App() {
   return (
-    <Box minH="100vh">
+    <Box h="100vh">
       <ToastContainer />
       <Routes>
         {/* shop routes */}
@@ -42,6 +44,13 @@ function App() {
           <Route path="products/:productId" element={<ProductView />} />
 
           <Route path="products/search" element={<SearchResults />} />
+
+          {/* checkout process */}
+          <Route path="/mycart" element={<Cartpage />}>
+            <Route index element={<MyCart />} />
+            <Route path="checkout" element={<Checkout />} />
+          </Route>
+
           <Route path="checkout" element={<Checkout />} />
           <Route
             path=":orderId/checkout-success"
@@ -56,6 +65,14 @@ function App() {
             element={
               <Protected>
                 <User />
+              </Protected>
+            }
+          />
+          <Route
+            path="orders/:id"
+            element={
+              <Protected>
+                <SingleOrder />
               </Protected>
             }
           />

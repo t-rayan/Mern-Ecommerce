@@ -5,35 +5,20 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setTotal } from "../features/cart/cartSlice";
-import {
-  createNewOrderAction,
-  updateOrderWithPaymentDetailsAction,
-} from "../features/order/orderSlice";
-import {
-  getPaypalClientID,
-  getPaypalClientIDService,
-} from "../features/payment/paymentServices";
-import { createPayment } from "../features/payment/paymentSlice";
-import {
-  showAddandBillingScreen,
-  showPaymentScreen,
-} from "../features/ui/uiSlice";
+import { createNewOrderAction } from "../features/order/orderSlice";
+import { getPaypalClientIDService } from "../features/payment/paymentServices";
+import { showPaymentScreen } from "../features/ui/uiSlice";
 
-const OrderSummary = () => {
+const OrderSummary = ({ pageTitles }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [sdkReady, setSdkReday] = useState(false);
   const [paypalClientId, setPaypalClientId] = useState("");
 
   const { userInfo } = useSelector((state) => state.auth);
-  const { activeOrder } = useSelector((state) => state.order);
-  const { isCartScreen, isAddandBillingScreen, isPaymentScreen } = useSelector(
-    (state) => state.ui
-  );
-  const { cartItems, shippingAddress, shippingCharge, total } = useSelector(
-    (state) => state.cart
-  );
+  const { isPaymentScreen } = useSelector((state) => state.ui);
+  const { cartItems, shippingAddress, shippingCharge, total, paymentMode } =
+    useSelector((state) => state.cart);
   const orderData = useSelector((state) => state.cart);
 
   const { isLoading } = useSelector((state) => state.payment);
@@ -56,9 +41,11 @@ const OrderSummary = () => {
     // if not logged in redirect to login screen
     if (userInfo === null) {
       navigate("/login");
+    } else {
+      navigate("checkout");
     }
 
-    dispatch(showAddandBillingScreen());
+    // dispatch(showAddandBillingScreen());
   };
 
   const handleCreateOrder = () => {
@@ -120,7 +107,7 @@ const OrderSummary = () => {
   return (
     <Box display="grid" gap={"1.5rem"}>
       {shippingAddress && isPaymentScreen && (
-        <Box p={5} shadow="lg" borderRadius="10px">
+        <Box p={5}>
           <Flex alignItems="center" justifyContent="space-between">
             <Heading size="sm">Order Summary</Heading>
             <Button leftIcon={<EditIcon />} colorScheme="green" variant="ghost">
@@ -140,9 +127,10 @@ const OrderSummary = () => {
       )}
 
       <>
-        <Box p={5} shadow="lg" borderRadius="10px">
-          <Heading size="sm">Order Summary</Heading>
-          <Box mt={10} display="grid" gap={4}>
+        <Heading size="sm">Order Summary</Heading>
+
+        <Box px="5" py={"1.7rem"} bg="gray.100" borderRadius="5px">
+          <Box display="grid" gap={4}>
             <Flex
               color="gray.400"
               justifyContent="space-between"
@@ -189,22 +177,37 @@ const OrderSummary = () => {
           </Flex>
         </Box>
         <Box alignSelf="center" width="100%">
-          {isCartScreen && (
+          {pageTitles.length === 1 && (
             <Button
               disabled={isLoading}
-              colorScheme="green"
+              bg="black"
               size="lg"
+              h="3.5rem"
+              color={"white"}
               onClick={handleCheckout}
+              w="100%"
+              _hover={{ bg: "blackAlpha.900" }}
             >
               {isLoading ? "Please Wait..." : "Checkout"}
             </Button>
           )}
-          {shippingAddress && isAddandBillingScreen && (
-            <Button colorScheme="green" size="lg" onClick={handleCreateOrder}>
-              Payment
+
+          {paymentMode !== "PAYPAL" && pageTitles.length > 1 && (
+            <Button
+              disabled={isLoading}
+              bg="black"
+              size="lg"
+              h="3.5rem"
+              color={"white"}
+              onClick={handleCheckout}
+              w="100%"
+              _hover={{ bg: "blackAlpha.900" }}
+            >
+              {isLoading ? "Please Wait..." : "Payment"}
             </Button>
           )}
-          {isPaymentScreen && (
+
+          {paymentMode === "PAYPAL" && pageTitles.length > 1 && (
             <PayPalScriptProvider options={{ "client-id": paypalClientId }}>
               <PayPalButtons
                 createOrder={handlePaypalCreateOrder}

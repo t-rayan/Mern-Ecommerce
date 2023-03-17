@@ -9,104 +9,86 @@ import {
   updateProductValidation,
 } from "../utils/validation.util.js";
 
-export const getAllProducts = async (req, res) => {
+export const getAllProductsByCategory = async (req, res) => {
+  const reqCategory = req.params.category || null;
+  const reqBrand = req.query?.brand || null;
+  const reqSort = req.query.sort !== "null" ? req.query.sort : "asc";
+  const reqMinPrice = parseInt(req.query.minPrice) || 0;
+  const reqMaxPrice = parseInt(req.query.maxPrice) || 0;
+
+  let query = {};
+  let sort = {};
   try {
-    const category = req.query.category || "All";
-    const search = req.query.search || "";
-    const brand = req.query.brand || "All";
-    const minPrice = parseInt(req.query.minPrice) || null;
-    const maxPrice = parseInt(req.query.maxPrice) || null;
+    if (reqCategory !== null) {
+      const category = await Category.findOne({ name: reqCategory });
+      query.category = category?._id;
 
-    let query = {};
+      if (reqBrand !== null) {
+        const brand = await Brand.findOne({ name: reqBrand });
+        if (brand !== null) query.brand = brand?._id;
+      }
 
-    if (req.query.search) {
-      query.name = { $regex: search, $options: "i" };
-    }
+      if (reqMinPrice !== 0 && reqMaxPrice !== 0) {
+        query.price = {
+          $gte: parseInt(req.query?.minPrice),
+          $lte: parseInt(req.query?.maxPrice),
+        };
+      }
 
-    if (brand && brand !== "All") {
-      const b = await Brand.find({ name: req.query.brand });
-      query.brand = b[0]?._id;
-    }
+      if (reqSort === "asc") {
+        sort.name = 1;
+      } else if (reqSort === "dsc") {
+        sort.name = -1;
+      } else if (reqSort === "price_asc") {
+        sort.price = 1;
+      } else if (reqSort === "price_dsc") {
+        sort.price = -1;
+      }
 
-    if (req.query.category && req.query.category !== "All") {
-      const c = await Category.find({ name: req.query.category });
-      query.category = c[0]._id;
-    }
-    if (req.query.minPrice && req.query.maxPrice) {
-      query.price = { $gte: req.query.minPrice, $lte: req.query.maxPrice };
-    } else if (req.query.minPrice) {
-      query.price = { $gte: req.query.minPrice };
-    } else if (req.query.maxPrice) {
-      query.price = { $lte: req.query.maxPrice };
-    }
-
-    console.log(brand);
-
-    const products = await Product.find(query).populate({
-      path: "category",
-      select: "name -_id",
-    });
-    if (products) {
-      console.log(products.length);
-      return res.status(200).json({ products });
+      if (category !== null) {
+        const products = await Product.find(query).sort(sort);
+        const totalCount = products.length;
+        return res.status(200).json({
+          totalCount,
+          products,
+        });
+      }
+    } else {
+      res.status(400).json({ msg: "Nothing found." });
     }
   } catch (error) {
     return res.status(500).json({ msg: error.message });
   }
-
-  // with pagination
-  // try {
-  //   let query = Product.find();
-  //   const page = parseInt(req.query.page) || 1;
-  //   const pageSize = parseInt(req.query.limit) || 2;
-  //   const skip = (page - 1) * pageSize;
-  //   const total = await Product.countDocuments();
-
-  //   const pages = Math.ceil(total / pageSize);
-
-  //   query = query
-  //     .populate({
-  //       path: "category",
-  //       select: "name -_id",
-  //     })
-  //     .skip(skip)
-  //     .limit(pageSize);
-
-  //   if (page > pages) {
-  //     return res.status(404).json({
-  //       status: "fail",
-  //       message: "No page found",
-  //     });
-  //   }
-
-  //   const result = await query;
-
-  //   res.status(200).json({
-  //     status: "success",
-  //     count: result.length,
-  //     page,
-  //     pages,
-  //     data: result,
-  //   });
-  // } catch (error) {
-  //   console.log(error);
-  // }
 };
 
-export const searchProducts = async (req, res) => {
-  const { q } = req.query;
+export const getAllProducts = async (req, res) => {
+  const searchQuery = req.query.q || "";
+
+  const regex = new RegExp(searchQuery, "i");
 
   try {
-    const products =
-      q &&
-      (await Product.find({ name: { $regex: q, $options: "$i" } }).populate({
-        path: "category",
-        select: "name -_id",
-      }));
-    if (products) {
-      return res.status(200).json({ products });
-    }
-    return res.status(400).json({ msg: "No search results" });
+    const products = await Product.aggregate([
+      {
+        $lookup: {
+          from: "brands",
+          localField: "brand",
+          foreignField: "_id",
+          as: "result",
+        },
+      },
+      {
+        $match: {
+          $or: [
+            { name: { $regex: regex } },
+            { "result.name": { $regex: regex } },
+          ],
+        },
+      },
+    ]);
+
+    console.log(products);
+
+    return res.status(200).json({ products });
   } catch (error) {
     return res.status(500).json({ msg: error.message });
   }

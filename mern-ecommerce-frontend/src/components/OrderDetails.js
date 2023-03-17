@@ -2,13 +2,15 @@ import { Box, Flex, Grid, Heading, Icon, Image, Text } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { RiCloseCircleLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { resetSingleOrder } from "../features/order/orderSlice";
 import useMedia from "../hooks/useMedia";
 import UserOrder from "./UserOrder";
 
 const OrderDetails = ({ order }) => {
   const dispatch = useDispatch();
-  const { products, shipping } = order;
+  const navigate = useNavigate();
+  const { products } = order;
   const { isMobile } = useMedia();
 
   return (
@@ -28,11 +30,13 @@ const OrderDetails = ({ order }) => {
             as={RiCloseCircleLine}
             h={6}
             w={6}
-            onClick={() => dispatch(resetSingleOrder())}
+            onClick={() => {
+              dispatch(resetSingleOrder());
+              navigate(-1);
+            }}
           />
         </Flex>
-        <UserOrder isCustom={true} currentOrder={order} />
-
+        {order && <UserOrder isCustom={true} currentOrder={order} />}
         {/* items */}
         <Box display="grid" borderRadius="10px" gap={5} shadow="sm" p={"2rem"}>
           <Heading size>Items</Heading>
@@ -63,7 +67,7 @@ const OrderDetails = ({ order }) => {
         </Box>
 
         {/* shipping  */}
-        <Box display="grid" borderRadius="10px" gap={5} shadow="sm" p={"2rem"}>
+        {/* <Box display="grid" borderRadius="10px" gap={5} shadow="sm" p={"2rem"}>
           <Heading size>Shipping Details</Heading>
           <Box display="grid" gap={5}>
             <Grid>
@@ -89,7 +93,7 @@ const OrderDetails = ({ order }) => {
               <Text color="gray.500">Free</Text>
             </Grid>
           </Box>
-        </Box>
+        </Box> */}
 
         {/* total  */}
         <Box

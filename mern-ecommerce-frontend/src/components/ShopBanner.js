@@ -7,16 +7,14 @@ import {
   Image,
   Img,
 } from "@chakra-ui/react";
-import bannerImg from "../images/bannerImg.jpg";
 import iph14Img from "../images/iphone14pro.png";
 import watchUltraImg from "../images/applewatchultra.png";
-import earpodImg from "../images/earpods.png";
 import galaxyFoldImg from "../images/galaxyfold.png";
 import airPodImg from "../images/airpod.png";
 import useMedia from "../hooks/useMedia";
 
 const ShopBanner = () => {
-  const { sm, md, lg, xl, xxl } = useMedia();
+  const { sm, md, lg } = useMedia();
 
   const getResponsiveBannerLayout = () => {
     if (sm) {

@@ -1,20 +1,22 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import { Box, Heading } from "@chakra-ui/react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useSearchParams } from "react-router-dom";
-import BackBtn from "../components/BackBtn";
 import SingleProduct from "../components/SingleProduct";
 import {
   getAllProducts,
   resetFilter,
-  searchProducts,
   setSearchFilters,
 } from "../features/product/productSlice";
 import queryString from "query-string";
 import LoadingState from "../components/LoadingState";
+import { useSearchParams } from "react-router-dom";
 
 const SearchResults = () => {
   const dispatch = useDispatch();
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  console.log(searchParams.has("q"));
+
   const { products, filterGroup, isLoading } = useSelector(
     (state) => state.products
   );
@@ -47,7 +49,7 @@ const SearchResults = () => {
 
   return (
     <>
-      <Heading my={"3rem"} size="md" fontWeight="medium">
+      <Heading mb={"3rem"} size="md" fontWeight="medium">
         {" "}
         {products?.length} {products?.length === 1 ? "result" : "results "}
         found for "{searchQuery}"

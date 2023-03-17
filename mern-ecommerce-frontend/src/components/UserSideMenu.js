@@ -1,33 +1,18 @@
-import { Box, Heading, Icon, Skeleton, Stack, Text } from "@chakra-ui/react";
+import { Box, Heading, Skeleton, Stack } from "@chakra-ui/react";
 import { useEffect } from "react";
-import { RiCloseLine, RiMenu2Line } from "react-icons/ri";
 import { useSelector, useDispatch } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
 import { getAllCategories } from "../features/category/categorySlice";
-import { hideSidebar, toggleSidebar } from "../features/ui/uiSlice";
-import useMedia from "../hooks/useMedia";
-import AppSkeleton from "./AppSkeleton";
-import SideMenu from "./SideMenu";
-import { motion } from "framer-motion";
-import {
-  resetFilter,
-  setCategoryFilters,
-} from "../features/product/productSlice";
+
+import qs from "query-string";
+
 import SidemenuItem from "./SidemenuItem";
-import { FaMobile } from "react-icons/fa";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 const UserSideMenu = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  const { isSidebar, currentDevice } = useSelector((state) => state.ui);
-  const { categories, isLoading } = useSelector((state) => state.categories);
-
-  let results;
-
-  if (categories.length > 0) {
-    results = categories.map((cat) => cat.name);
-  }
+  const { currentDevice } = useSelector((state) => state.ui);
+  const { categories } = useSelector((state) => state.categories);
 
   useEffect(() => {
     dispatch(getAllCategories());
@@ -35,29 +20,6 @@ const UserSideMenu = () => {
     //   dispatch(hideSidebar());
     // }
   }, [dispatch, currentDevice]);
-
-  const itemVariants = {
-    closed: {
-      opacity: 0,
-    },
-    open: { opacity: 1 },
-  };
-
-  const sideVariants = {
-    closed: {
-      transition: {
-        staggerChildren: 0.2,
-        staggerDirection: -1,
-      },
-    },
-    open: {
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
-        staggerDirection: 1,
-      },
-    },
-  };
 
   return (
     <>
@@ -72,6 +34,19 @@ const UserSideMenu = () => {
           // linkIcon={FaMobile}
           place={`/`}
         />
+        {categories.length < 1 && (
+          <Stack px={10} spacing={5}>
+            <Skeleton bg="gray.200" width="70%" height="25px" />
+            <Skeleton height="25px" />
+            <Skeleton width="70%" height="25px" />
+            <Skeleton height="25px" />
+            <Skeleton width="70%" height="25px" />
+
+            <Skeleton width="70%" height="25px" />
+
+            <Skeleton height="25px" />
+          </Stack>
+        )}
         {categories?.map((cat) => (
           <SidemenuItem
             menuTitle={cat.name}

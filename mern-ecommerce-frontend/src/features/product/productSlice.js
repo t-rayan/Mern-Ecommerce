@@ -3,23 +3,35 @@ import productServices from "./productServices";
 import { toast } from "react-toastify";
 
 // get all categories
+
+// get all categories
+export const getAllProductsByCategoryAction = createAsyncThunk(
+  "product/getAllByCategory",
+  async (payload, thunkAPI) => {
+    try {
+      const { data, status } =
+        await productServices.getProductByCategoryService(payload);
+
+      if (status === 200) {
+        return data;
+      }
+
+      // return await productServices.getProductsService();
+    } catch (error) {
+      const message =
+        (error.response && error.response.data && error.response.data.msg) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const getAllProducts = createAsyncThunk(
   "product/getAll",
   async (payload, thunkAPI) => {
-    let allFilters = {
-      category: payload?.categoryFilter || "",
-      brand: payload?.brandFilter || "All",
-      search: payload?.searchFilter || "",
-      price: {
-        minPrice: payload?.priceFilter?.minPrice || "",
-        maxPrice: payload?.priceFilter?.maxPrice || "",
-      },
-    };
-
     try {
-      const { data, status } = await productServices.getProductsService(
-        allFilters
-      );
+      const { data, status } = await productServices.getProductsService();
 
       if (status === 200) {
         return data;
@@ -199,12 +211,7 @@ export const productSlice = createSlice({
     isLoading: false,
     message: "",
     product: null,
-    filterGroup: {
-      categoryFilter: "",
-      brandFilter: "",
-      priceFilter: "",
-      searchFilter: "",
-    },
+    filterGroup: {},
   },
   reducers: {
     reset: (state) => {
@@ -224,10 +231,10 @@ export const productSlice = createSlice({
     },
     resetFilter: (state) => {
       state.filterGroup = {
-        categoryFilter: "",
-        brandFilter: "",
-        priceFilter: "",
-        searchFilter: "",
+        // categoryFilter: "",
+        // brandFilter: "",
+        // priceFilter: "",
+        // searchFilter: "",
       };
     },
 
@@ -239,9 +246,11 @@ export const productSlice = createSlice({
       };
     },
     setPriceFilters: (state, action) => {
+      const { minPrice, maxPrice } = action.payload?.priceFilter;
       state.filterGroup = {
         ...state.filterGroup,
-        priceFilter: action.payload.priceFilter,
+        minPrice: minPrice,
+        maxPrice: maxPrice,
       };
     },
     setCategoryFilters: (state, action) => {
@@ -255,7 +264,13 @@ export const productSlice = createSlice({
     setBrandFilters: (state, action) => {
       state.filterGroup = {
         ...state.filterGroup,
-        brandFilter: action.payload,
+        brand: action.payload,
+      };
+    },
+    setSortFilters: (state, action) => {
+      state.filterGroup = {
+        ...state.filterGroup,
+        sort: action.payload,
       };
     },
 
@@ -283,6 +298,22 @@ export const productSlice = createSlice({
       state.products = action.payload?.products;
     },
     [getAllProducts.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = false;
+      state.isError = true;
+      state.message = action.payload;
+    },
+
+    // get products reducers
+    [getAllProductsByCategoryAction.pending]: (state, action) => {
+      state.isLoading = true;
+    },
+    [getAllProductsByCategoryAction.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.products = action.payload?.products;
+    },
+    [getAllProductsByCategoryAction.rejected]: (state, action) => {
       state.isLoading = false;
       state.isSuccess = false;
       state.isError = true;
@@ -422,5 +453,6 @@ export const {
   resetFilter,
   setFilterGroup,
   setSearchFilters,
+  setSortFilters,
 } = productSlice.actions;
 export default productSlice.reducer;

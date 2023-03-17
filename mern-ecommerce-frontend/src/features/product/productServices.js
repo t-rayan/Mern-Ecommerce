@@ -1,24 +1,37 @@
 import { instance } from "../../utils/Axios";
 
 // service to get all products
-const getProductsService = async (filters) => {
-  // const { brandFilter, categoryFilter, filterPrice } = filters;
-  // let brand = brandFilter;
-  // let category = categoryFilter;
-  // let price = filterPrice;
-  // const res = await instance.get(
-  //   `/product?category=${category}&brand=${brand}&price=${price}`
-  // );
+const getProductsService = async () => {
+  const myUrl = new URL(window.location.href);
 
-  const { brand, category, price, search } = filters;
+  const params = new URLSearchParams(myUrl.search);
+
+  const searchQuery = params.get("q") || "";
+
+  const res = await instance.get(`/product?q=${searchQuery}`);
+  return res;
+};
+
+// service to get all product by category provided
+const getProductByCategoryService = async (payload) => {
+  const myUrl = new URL(window.location.href);
+
+  const params = new URLSearchParams(myUrl.search);
+
+  const brand = params?.get("brand") || "all";
+  const sort = params?.get("sort");
+  const minPrice = params?.get("minPrice") || null;
+  const maxPrice = params?.get("maxPrice") || null;
 
   const res = await instance.get(
-    `/product?search=${search}&category=${category}&brand=${brand}&minPrice=${price.minPrice}&maxPrice=${price.maxPrice}`
+    `/product/${payload}?brand=${brand}&minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${sort}`
   );
   return res;
 };
+
 const searchProductsService = async (query) => {
   const res = await instance.get(`/product/search/?q=${query}`);
+
   return res;
 };
 
@@ -60,6 +73,7 @@ const productServices = {
   getProductService,
   searchProductsService,
   deleteProductImageService,
+  getProductByCategoryService,
 };
 
 export default productServices;

@@ -1,32 +1,30 @@
 import { Box, Flex, Grid, Icon, Text } from "@chakra-ui/react";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink, useSearchParams } from "react-router-dom";
 import { hideSidebar } from "../features/ui/uiSlice";
-import useMedia from "../hooks/useMedia";
 
-const SidemenuItem = ({ menuTitle, linkIcon, place }) => {
-  const { isMobile, isTablet, isLargeDevice } = useMedia();
+const SidemenuItem = ({ menuTitle, linkIcon, place, queryParamHandler }) => {
   const dispatch = useDispatch();
   const { isSidebar } = useSelector((state) => state.ui);
 
+  const handleMenuItemClick = (event) => {
+    isSidebar && dispatch(hideSidebar());
+  };
+
   return (
-    <NavLink
-      to={`${place}`}
-      end
-      onClick={() => isSidebar && dispatch(hideSidebar())}
-    >
+    <NavLink to={`${place}`} onClick={handleMenuItemClick} end>
       {({ isActive }) => (
         <Flex
           alignItems="center"
           justifyContent="start"
-          color={isActive ? "gray.700" : "gray.500"}
+          color={isActive ? "orange.500" : "gray.500"}
           borderRight={isActive && "3px solid"}
-          borderRightColor={isActive && "orange"}
+          borderRightColor={isActive && "orange.400"}
           py={2}
           px={"2rem"}
           _hover={{ color: "gray.700" }}
-          fontSize={[".8rem", ".9rem", ".9rem"]}
+          fontSize={["1rem", ".9rem", "1rem", ".9rem"]}
           gap={3}
           mb={5}
         >
@@ -37,7 +35,7 @@ const SidemenuItem = ({ menuTitle, linkIcon, place }) => {
               color={isActive && "orange.400"}
             /> */}
           <Box>
-            <Text fontWeight="bold" ml={2}>
+            <Text fontWeight="semibold" ml={2}>
               {menuTitle}
             </Text>
           </Box>

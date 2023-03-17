@@ -1,21 +1,30 @@
 import React from "react";
-import { Badge, Box, Button, Grid, GridItem, Text } from "@chakra-ui/react";
+import {
+  Badge,
+  Box,
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  Text,
+} from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { displayModal } from "../features/ui/uiSlice";
 import { fetchSingleOrder } from "../features/order/orderSlice";
 import { convertDate } from "../utils/DateModifiers";
+import { useNavigate } from "react-router-dom";
 
 const UserOrder = ({ currentOrder, isCustom }) => {
   const dispatch = useDispatch();
   const { order } = useSelector((state) => state.order);
-
+  const navigate = useNavigate();
   return (
     <Box
       display="grid"
       gridTemplateColumns={"1fr"}
       shadow={currentOrder?._id === order?._id && !isCustom && "lg"}
       fontSize={[".8rem", ".9rem"]}
-      p={["2rem"]}
+      p={["1rem"]}
       border="1px solid"
       // bg={currentOrder?._id === order?._id && !isCustom && "gray.100"}
       borderColor="gray.300"
@@ -25,17 +34,16 @@ const UserOrder = ({ currentOrder, isCustom }) => {
       justifyContent="space-between"
       alignItems="center"
     >
-      <Grid
+      <Box
         borderRadius="10px"
         gap={5}
         justifyContent="space-between"
         alignItems="center"
         alignContent="center"
       >
-        <Box display="flex" gap={2} flexDir="column">
+        {/* <Box display="flex" gap={2} flexDir="column">
           <Text fontWeight="medium">#ID: </Text>
           <Text color="gray.500">{currentOrder._id}</Text>
-          {/* <Text color="gray.500">{currentOrder.userId}</Text> */}
         </Box>
         <Box display="flex" gap={2} flexDir="column">
           <Text fontWeight="medium">Total Items: </Text>
@@ -44,16 +52,28 @@ const UserOrder = ({ currentOrder, isCustom }) => {
         <Box display="flex" gap={2} alignItems="start" flexDir="column">
           <Text fontWeight="medium">Payment Status: </Text>
           <Badge colorScheme="green">{currentOrder?.paymentStatus} </Badge>
-        </Box>
-        <Box display="flex" gap={2} flexDir="column">
-          <Text fontWeight="medium">Order Date: </Text>
-          <Text color="gray.500">{convertDate(currentOrder?.createdAt)}</Text>
-        </Box>
-        <Box display="flex" gap={2} alignItems="start" flexDir="column">
+        </Box> */}
+
+        <Flex justifyContent={"space-between"}>
+          <Box display="flex" gap={2} flexDir="column">
+            <Text fontWeight="medium">Order Date: </Text>
+            <Text color="gray.500">{convertDate(currentOrder?.createdAt)}</Text>
+          </Box>
+          <Box>
+            {/* <Text fontWeight="medium">Payment Status: </Text> */}
+            <Badge colorScheme="green">
+              {currentOrder?.isPaid ? "Paid" : "Unpaid"}{" "}
+            </Badge>
+          </Box>
+        </Flex>
+
+        <Box mt={2} display="flex" gap={2} alignItems="start" flexDir="column">
           <Text fontWeight="medium">Delivery Status: </Text>
-          <Badge colorScheme="orange">Pending</Badge>
+          <Badge colorScheme={currentOrder?.isDelivered ? "purple" : "orange"}>
+            {currentOrder?.isDelivered ? "Delivered" : "Pending"}
+          </Badge>
         </Box>
-      </Grid>
+      </Box>
       <Grid h="100%">
         <GridItem alignSelf="end">
           {" "}
@@ -63,8 +83,7 @@ const UserOrder = ({ currentOrder, isCustom }) => {
               size="xs"
               colorScheme="blue"
               onClick={() => {
-                dispatch(fetchSingleOrder(currentOrder._id));
-                dispatch(displayModal());
+                navigate(`orders/${currentOrder._id}`);
               }}
             >
               View

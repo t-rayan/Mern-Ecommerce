@@ -1,43 +1,44 @@
 import {
+  Avatar,
   Box,
   Button,
   Flex,
   Grid,
+  HStack,
   Icon,
+  IconButton,
   Menu,
   MenuButton,
-  MenuDivider,
   MenuItem,
   MenuList,
   Portal,
-  Select,
   Text,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
 import {
-  RiAccountBoxFill,
-  RiAccountBoxLine,
-  RiFilter3Fill,
   RiMenu2Line,
   RiShoppingBag2Line,
-  RiShoppingCart2Fill,
+  RiShoppingBagFill,
+  RiUser2Line,
 } from "react-icons/ri";
 import { MdArrowDropDown } from "react-icons/md";
 import Searchbar from "./Searchbar";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSidebar } from "../features/ui/uiSlice";
-import {
-  Link,
-  Navigate,
-  useLocation,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
-import FiltersDrawer from "./FiltersDrawer";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import GetInitials from "../utils/GetInitials";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import {
+  AddIcon,
+  ChevronDownIcon,
+  EditIcon,
+  ExternalLinkIcon,
+  HamburgerIcon,
+  RepeatIcon,
+} from "@chakra-ui/icons";
 import { logoutUser } from "../features/auth/authSlice";
 import { setCategoryFilters } from "../features/product/productSlice";
+import useMedia from "../hooks/useMedia";
+import MenuToggler from "./MenuToggler";
+import { FaCog, FaInfo, FaSignOutAlt, FaUserCircle } from "react-icons/fa";
 
 const ShopNavbar = () => {
   const { currentDevice } = useSelector((state) => state.ui);
@@ -48,226 +49,119 @@ const ShopNavbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleMenuItemClick = (val) => {
-    navigate(`category/${val}`);
-    dispatch(setCategoryFilters(val));
-  };
-
   const handleLogout = () => {
     dispatch(logoutUser());
     return <Navigate to="/login" />;
   };
 
+  const { sm, md, lg } = useMedia();
+  const getNavbarWidth = () => {
+    if (sm || md) {
+      return "100%";
+    } else if (lg) {
+      return "calc(100% - 240px)";
+    } else {
+      return "calc(100% - 280px)";
+    }
+  };
+
   return (
     <>
-      {/* main content goes here */}
       <Box
+        px={sm ? 5 : 10}
+        py={5}
+        area={"header"}
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        gap={sm ? 3 : 10}
+        maxH="6rem"
         pos="fixed"
         top="0"
-        left={0}
-        px={5}
-        zIndex="1"
-        w="100%"
-        bg="#fff"
-        py={3}
-        gap={3}
-        borderBottom="1px solid"
-        borderColor="inherit"
+        right="0"
+        bg="white"
+        w={getNavbarWidth()}
+        zIndex="111"
+        shadow={"sm"}
       >
-        <Grid
-          width="inherit"
-          dispaly="grid"
-          gridTemplateColumns={
-            currentDevice !== "mobile" ? ".3fr 1fr .3fr" : "1fr 1fr"
-          }
-          justifyContent="space-between"
-          alignItems="center"
-          gap="2.5rem"
-        >
-          {/* logo */}
-          <Flex alignItems="center" gap={2}>
-            {currentDevice !== "large" && (
-              <Icon
-                h={5}
-                w={5}
-                as={RiMenu2Line}
-                color="green.800"
-                cursor="pointer"
-                onClick={() => dispatch(toggleSidebar())}
-              />
-            )}
-
-            <Box bg="orange">
-              <Text
-                fontWeight="bold"
-                color="gray.800"
-                p={1}
-                fontSize={currentDevice === "mobile" ? "1.3rem" : "1.1rem"}
-                letterSpacing={1.7}
-                cursor="pointer"
-                onClick={() => navigate("/")}
-              >
-                smart hive
-              </Text>
+        <Box flexBasis="35rem" display={"flex"} gap={1} alignItems="center">
+          {(sm || md) && (
+            <Box flex="none">
+              <MenuToggler />
             </Box>
-          </Flex>
-
-          {/* main nav bar */}
-
-          {currentDevice !== "mobile" && (
-            <Grid
-              templateColumns={currentDevice === "large" ? ".3fr 1fr " : "1fr"}
-              justifyContent="space-between"
-              alignItems="center"
-              gap="5"
-            >
-              {currentDevice === "large" && (
-                <Box zIndex="1111">
-                  <Menu>
-                    <MenuButton
-                      size="md"
-                      as={Button}
-                      // py="1.5rem"
-                      w="full"
-                      fontWeight="normal"
-                      fontSize=".9rem"
-                      // textAlign="left"
-                      color={"gray.700"}
-                      bg="none"
-                      borderColor="inherit"
-                      _hover={{ bg: "none" }}
-                      _active={{ bg: "none" }}
-                      _focus={{ boxShadow: "none" }}
-                      rightIcon={<MdArrowDropDown />}
-                    >
-                      All Categories
-                    </MenuButton>
-                    <Portal>
-                      <MenuList>
-                        {categories?.map((cat) => (
-                          <Box key={cat._id}>
-                            <MenuItem
-                              _hover={{ bg: "orange.300" }}
-                              fontSize=".9rem"
-                              fontweight="light"
-                              key={cat._id}
-                              onClick={() => handleMenuItemClick(cat.name)}
-                            >
-                              {" "}
-                              {cat.name}{" "}
-                            </MenuItem>
-                            {/* <MenuDivider /> */}
-                          </Box>
-                        ))}
-                      </MenuList>
-                    </Portal>
-                  </Menu>
-                </Box>
-              )}
-              <Grid
-                templateColumns="1fr"
-                justifyContent="space-between"
-                alignItems="center"
-                gap={3}
-              >
-                <Searchbar />
-              </Grid>
-            </Grid>
           )}
-
-          {/* cart link and login register button */}
-          <Flex gap="4" justifySelf="end">
-            {/* cart link */}
-            <Flex
-              gap={1}
-              alignItems="center"
-              cursor="pointer"
-              onClick={() => navigate("/checkout")}
-            >
-              <Box display={"flex"} flexDir="row" pos="relative">
-                <Icon as={RiShoppingBag2Line} w={5} h={5} color="gray.700" />
-                {/* if cart items length is greater than 0 */}
-                {cartItems.length > 0 && (
-                  <Box
-                    w={3}
-                    h={3}
-                    pos="absolute"
-                    top="-1"
-                    right="-1"
-                    bg="red.500"
-                    borderRadius="full"
-                  ></Box>
-                )}
-              </Box>
-              <Text fontWeight="normal" color="gray.700">
-                Cart
-              </Text>
-            </Flex>
-
-            {/* if user is not logged in then display login button */}
-            {!userInfo && (
-              <Button
-                bg="none"
-                fontWeight={"normal"}
-                // leftIcon={<Icon as={RiAccountBoxLine} w={6} h={6} />}
-                onClick={() => navigate("/login")}
-              >
-                Account
-              </Button>
-            )}
-
-            {/* else if user is logged in and user is not an admin then display user links */}
-            {/* Menu button icon */}
-            {userInfo && !userInfo.isAdmin && (
-              <Menu>
-                <MenuButton
-                  bg="transparent"
-                  // p="1.5rem"
-                  p="0"
-                  _hover={{ bg: "transparent" }}
-                  _focus={{ outline: "none", bg: "transparent" }}
-                  _active={{ outline: "none", bg: "transparent" }}
-                  as={Button}
-                  rightIcon={<ChevronDownIcon />}
-                >
-                  <Box
-                    w={10}
-                    h={10}
-                    bg="green.300"
-                    borderRadius="100%"
-                    display="grid"
-                    placeItems="center"
-                  >
-                    <Text>{GetInitials(userInfo?.fullname)}</Text>
-                  </Box>
-                </MenuButton>
-                <MenuList>
-                  <MenuItem>
-                    <Link to={`/user/${userInfo.id}`}>Profile</Link>
-                  </MenuItem>
-                  <MenuItem>Settings</MenuItem>
-
-                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                </MenuList>
-              </Menu>
-            )}
-          </Flex>
-        </Grid>
-
-        <Box>
-          {currentDevice === "mobile" && (
-            <Grid
-              templateColumns="1fr"
-              justifyContent="space-between"
-              alignItems="center"
-              gap={3}
-            >
-              <Searchbar />
-            </Grid>
-          )}
+          <Box flex="1">
+            {" "}
+            <Searchbar />
+          </Box>
         </Box>
+        <HStack spacing={10}>
+          <IconButton
+            rounded={"lg"}
+            shadow="md"
+            colorScheme="purple"
+            aria-label="Cart"
+            size={sm ? "md" : "md"}
+            icon={<RiShoppingBagFill />}
+            onClick={() => navigate("/mycart")}
+          />{" "}
+          {/* check if user is logged in */}
+          {userInfo && <UserAvatar handleLogout={handleLogout} />}
+          {!userInfo && (
+            <IconButton
+              rounded={"lg"}
+              shadow="md"
+              colorScheme="gray"
+              aria-label="Account"
+              size={sm ? "md" : "md"}
+              icon={<RiUser2Line />}
+              onClick={() => navigate("/login")}
+            />
+          )}
+        </HStack>
       </Box>
     </>
+  );
+};
+
+// user avatar if user is logged in
+const UserAvatar = ({ handleLogout }) => {
+  const navigate = useNavigate();
+  const { userInfo } = useSelector((state) => state.auth);
+
+  const handleUserProfilePage = (e) => {
+    e.preventDefault();
+    navigate(`user/${userInfo?.id}`);
+  };
+
+  return (
+    <Menu>
+      <MenuButton
+        as={IconButton}
+        shadow="md"
+        aria-label="Options"
+        // w="2.9rem"
+        // h="2.9rem"
+        // icon={<HamburgerIcon />}
+        variant="outline"
+        bg="orange.400"
+        children="NT"
+        border="2px solid"
+        borderColor={"orange.400"}
+        rounded={"lg"}
+        color="white"
+      />
+      <MenuList fontSize={"1rem"} color="gray.600" fontWeight="900">
+        <MenuItem icon={<FaUserCircle />} onClick={handleUserProfilePage}>
+          My Profile
+        </MenuItem>
+        <MenuItem icon={<FaCog />}>Settings</MenuItem>
+        <MenuItem icon={<FaInfo />}>Help</MenuItem>
+        <MenuItem icon={<FaSignOutAlt />} onClick={handleLogout}>
+          Logout
+        </MenuItem>
+      </MenuList>
+    </Menu>
   );
 };
 

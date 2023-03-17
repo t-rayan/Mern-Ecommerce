@@ -19,7 +19,7 @@ const CartItem = ({ product }) => {
   return (
     <Grid
       p=".8rem"
-      borderRadius="5px"
+      borderRadius="10px"
       templateColumns={
         currentDevice === "mobile"
           ? ".8fr .5fr .5fr  .1fr "
@@ -27,10 +27,10 @@ const CartItem = ({ product }) => {
       }
       alignItems="center"
       justifyContent="space-between"
-      my={3}
       // shadow="2xl"
-      border="1px solid #eee"
+      border="1px solid #ddd"
       width="100%"
+      my="2rem"
     >
       <GridItem>
         <Flex

@@ -2,27 +2,25 @@ import { Box, Icon, Image } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { RiArrowDropLeftFill, RiArrowDropRightFill } from "react-icons/ri";
 
+import useMedia from "../hooks/useMedia";
+
 const ImageSlider = ({ imgArray, thumbnail }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  console.log(imgArray);
 
-  const arrayJoiner = (arr, item) => {
-    let newImgArray;
-    if (arr !== undefined && item !== undefined) {
-      newImgArray = [...arr];
+  const { sm } = useMedia();
 
-      newImgArray.unshift(item);
-    }
-    return newImgArray;
-  };
-
-  const images = arrayJoiner(imgArray, thumbnail);
   const lastIndex = imgArray?.length - 1;
 
   return (
     <Box>
-      <Box display="flex" alignItems="center">
+      <Box
+        display="grid"
+        gridTemplateColumns={".2fr 1fr .2fr"}
+        alignItems="center"
+        justifyContent="space-between"
+      >
         <Icon
+          flex="1"
           as={RiArrowDropLeftFill}
           w={10}
           h={10}
@@ -33,11 +31,13 @@ const ImageSlider = ({ imgArray, thumbnail }) => {
           }
         />
         <Image
-          w="85%"
-          h="auto"
+          flex="2"
+          w={"100%"}
+          h="100%"
           src={imgArray && imgArray[currentIndex].img_url}
         />
         <Icon
+          flex="1"
           as={RiArrowDropRightFill}
           w={10}
           h={10}

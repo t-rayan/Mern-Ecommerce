@@ -1,16 +1,18 @@
 import { ArrowBackIcon } from "@chakra-ui/icons";
-import { Box, Button, Flex, Grid, Heading } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import BackBtn from "../components/BackBtn";
+import BillandAddForm from "../components/BillandAddForm";
+import DeliveryAddressForm from "../components/DeliveryAddressForm";
 import MultiStepForm from "../components/MultiStepForm";
 import MyCart from "../components/MyCart";
 import OrderSummary from "../components/OrderSummary";
+import PaymentForm from "../components/PaymentForm";
 import {
   showAddandBillingScreen,
   showCartScreen,
 } from "../features/ui/uiSlice";
-import useMedia from "../hooks/useMedia";
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -29,49 +31,23 @@ const Checkout = () => {
   };
 
   return (
-    <Box h="100%">
-      <Grid gap={10}>
-        <Heading>Checkout</Heading>
-        <Grid
-          templateColumns={
-            currentDevice === "large" && cartItems.length > 0
-              ? "1fr .5fr"
-              : "1fr"
-          }
-          gap={10}
-          h="100%"
-          justifyContent="space-between"
-        >
-          <Box>
-            {/* <MyCart /> */}
-
-            {/* multistep form */}
-            {<MultiStepForm />}
-          </Box>
-          <Box>{cartItems?.length > 0 && <OrderSummary />}</Box>
-        </Grid>
-        {isCartScreen ? (
-          <BackBtn btnTitle={"Continue shopping"} />
-        ) : (
-          <Flex>
-            <Button
-              p="0px"
-              leftIcon={<ArrowBackIcon w="17px" h="17px" />}
-              variant="ghost"
-              _hover={{ bg: "transparent", color: "gray.400" }}
-              _active={{ bg: "transparent" }}
-              _focus={{ border: "none" }}
-              fontSize=".9rem"
-              onClick={() => {
-                isAddandBillingScreen
-                  ? dispatch(showCartScreen())
-                  : dispatch(showAddandBillingScreen());
-              }}
-            >
-              Back
-            </Button>
-          </Flex>
-        )}
+    <Box
+      h="100%"
+      // bg="blue.400"
+      placeItems={cartItems?.length === 0 && "center"}
+    >
+      <Grid
+        pos="relative"
+        // zIndex={"999999"}
+        // mt={"2rem"}
+        templateColumns={"1fr"}
+        gridTemplateRows="1fr"
+        h="100%"
+        gap="4rem"
+      >
+        <BillandAddForm />
+        <DeliveryAddressForm />
+        <PaymentForm />
       </Grid>
     </Box>
   );

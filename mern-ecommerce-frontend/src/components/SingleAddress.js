@@ -12,20 +12,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUserAddress } from "../features/auth/authSlice";
 import { setShippingAddress } from "../features/cart/cartSlice";
 import { showPaymentScreen } from "../features/ui/uiSlice";
+import useMedia from "../hooks/useMedia";
 
 const SingleAddress = ({ nextStep, address }) => {
+  const { sm } = useMedia();
   const dispatch = useDispatch();
   const { shippingAddress } = useSelector((state) => state.cart);
 
   return (
     <>
-      <Flex
-        shadow="lg"
+      <Box
         borderRadius="10px"
-        p={"1.8rem"}
-        justifyContent="space-between"
-        wrap={"wrap"}
-        gap={5}
+        bg="gray.100"
+        borderColor={"#eee"}
+        px={"1.5rem"}
+        py="1.5rem"
+        // gap={5}
+        h="fit-content"
+        minW={sm ? "100%" : "16rem"}
       >
         <Grid fontSize=".85rem" gap={"10px"}>
           <GridItem display="flex" gap={2} alignItems="center">
@@ -39,11 +43,11 @@ const SingleAddress = ({ nextStep, address }) => {
             {address?.city}, {address?.state},{address.country},
             {address.zipCode}
           </GridItem>
-          <GridItem>
+          {/* <GridItem>
             <Text color="gray.400">{address?.phone}</Text>
-          </GridItem>
+          </GridItem> */}
         </Grid>
-        <Flex gap={3}>
+        <Flex mt="3" gap={3}>
           {shippingAddress?._id !== address?._id && (
             <Button
               _focus={{ outline: "none" }}
@@ -79,13 +83,13 @@ const SingleAddress = ({ nextStep, address }) => {
                   size="xs"
                   onClick={() => dispatch(setShippingAddress(address))}
                 >
-                  Deliver To This Address
+                  Select
                 </Button>
               )}
             </>
           }
         </Flex>
-      </Flex>
+      </Box>
     </>
   );
 };

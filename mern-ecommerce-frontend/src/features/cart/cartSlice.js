@@ -7,8 +7,8 @@ const initialState = {
     : [],
   shippingAddress: null,
   shippingCharge: 0,
-  shippingType: "Standard",
-  paymentMode: "Paypal",
+  shippingType: null,
+  paymentMode: null,
   total: 0,
 };
 
@@ -20,8 +20,8 @@ export const categorySlice = createSlice({
       state.cartItems = [];
       state.shippingAddress = null;
       state.shippingCharge = 0;
-      state.shippingType = "Standard";
-      state.paymentMode = "Paypal";
+      state.shippingType = null;
+      state.paymentMode = null;
       state.total = 0;
     },
     resetShippingAddress: (state) => {
@@ -100,6 +100,11 @@ export const categorySlice = createSlice({
     setShippingAddress: (state, action) => {
       state.shippingAddress = action.payload;
     },
+
+    setShippingType: (state, action) => {
+      state.shippingType = action.payload.name;
+      state.shippingCharge = action.payload.value;
+    },
     setShippingCharge: (state, action) => {
       state.shippingCharge = action.payload.shippingFee;
       state.shippingType = action.payload.deliveryType;
@@ -125,5 +130,6 @@ export const {
   setPaymentMode,
   setTotal,
   setShippingCharge,
+  setShippingType,
 } = categorySlice.actions;
 export default categorySlice.reducer;
