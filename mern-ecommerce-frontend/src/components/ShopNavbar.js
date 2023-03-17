@@ -70,7 +70,7 @@ const ShopNavbar = () => {
             <Searchbar />
           </Box>
         </Box>
-        <HStack spacing={5}>
+        <HStack>
           <IconButton
             rounded={"lg"}
             shadow="md"
