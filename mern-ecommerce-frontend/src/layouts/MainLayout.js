@@ -62,7 +62,6 @@ const MainLayout = ({ children }) => {
       )}
       <Box
         px={sm ? 5 : 10}
-        h="100%"
         width={getNavbarWidth()}
         ml="auto"
         pos={"relative"}
