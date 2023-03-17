@@ -1,21 +1,20 @@
-import { Box, Flex, Grid, GridItem, Icon, Image, Text } from "@chakra-ui/react";
+import { Box, Flex, Icon, Image, Text } from "@chakra-ui/react";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import QtyController from "../components/QtyController";
 import { removeFromCart } from "../features/cart/cartSlice";
+import useMedia from "../hooks/useMedia";
 
 const CartItem = ({ product }) => {
   const dispatch = useDispatch();
   const { currentDevice } = useSelector((state) => state.ui);
+
+  const { sm } = useMedia();
+
   return (
     <Flex
       p=".8rem"
       borderRadius="10px"
-      templateColumns={
-        currentDevice === "mobile"
-          ? ".8fr .5fr .5fr  .1fr "
-          : "1fr 8rem 5.5rem .1fr"
-      }
       alignItems="center"
       justifyContent="space-between"
       // shadow="2xl"
@@ -23,7 +22,7 @@ const CartItem = ({ product }) => {
       width="100%"
       my="2rem"
     >
-      <GridItem>
+      <Box>
         <Flex
           alignItems={currentDevice === "mobile" ? "start" : "center"}
           flexDir={currentDevice === "mobile" && "column"}
@@ -54,17 +53,15 @@ const CartItem = ({ product }) => {
             </Flex>
           </Box>
         </Flex>
-      </GridItem>
-      {/* <GridItem>
-        <Text fontSize={[".8rem", ".9rem"]}>${product.price}</Text>
-      </GridItem> */}
-      <GridItem>
+      </Box>
+
+      <Box>
         <QtyController qty={product.qty} id={product.id} />
-      </GridItem>
-      <GridItem textAlign="center">
-        <Text fontSize=".9rem">{product.total}</Text>
-      </GridItem>
-      <GridItem>
+      </Box>
+      <Box textAlign="center">
+        <Text fontSize={sm ? ".8rem" : ".9rem"}>{product.total}</Text>
+      </Box>
+      <Box>
         <Icon
           cursor="pointer"
           color="gray.500"
@@ -76,7 +73,7 @@ const CartItem = ({ product }) => {
           p="10px"
           onClick={() => dispatch(removeFromCart({ id: product.id }))}
         />
-      </GridItem>
+      </Box>
     </Flex>
   );
 };
