@@ -1,13 +1,4 @@
-import {
-  Box,
-  Flex,
-  Grid,
-  GridItem,
-  Heading,
-  Icon,
-  Image,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Icon, Image, Text } from "@chakra-ui/react";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import QtyController from "../components/QtyController";

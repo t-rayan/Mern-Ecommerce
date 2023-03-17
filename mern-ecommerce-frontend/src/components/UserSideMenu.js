@@ -3,10 +3,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllCategories } from "../features/category/categorySlice";
 
-import qs from "query-string";
-
 import SidemenuItem from "./SidemenuItem";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 const UserSideMenu = () => {
   const dispatch = useDispatch();

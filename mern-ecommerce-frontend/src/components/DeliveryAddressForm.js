@@ -1,26 +1,11 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Grid,
-  Heading,
-  HStack,
-  Icon,
-  Text,
-} from "@chakra-ui/react";
-import React, { useState } from "react";
-import {
-  RiCheckboxBlankCircleLine,
-  RiCheckboxCircleFill,
-} from "react-icons/ri";
+import { Box, Button, Heading, HStack } from "@chakra-ui/react";
+
 import { useDispatch, useSelector } from "react-redux";
-import { setShippingCharge, setShippingType } from "../features/cart/cartSlice";
+import { setShippingType } from "../features/cart/cartSlice";
 
 const DeliveryAddressForm = () => {
   const dispatch = useDispatch();
-  const { shippingCharge, shippingType, shippingAddress } = useSelector(
-    (state) => state.cart
-  );
+  const { shippingType, shippingAddress } = useSelector((state) => state.cart);
 
   const deliveryOptions = [
     {
@@ -38,7 +23,6 @@ const DeliveryAddressForm = () => {
       deliveredOn: "Delivered on Monday, August 1",
     },
   ];
-  const [deliveryType, setDeliveryType] = useState(deliveryOptions[0].type);
 
   const handleDeliveryType = (e) => {
     const { name, value } = e.target;

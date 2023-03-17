@@ -1,4 +1,4 @@
-import { Box, Heading, Icon, Text } from "@chakra-ui/react";
+import { Box, Heading, Icon } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 
 import { RiMenu2Line } from "react-icons/ri";
@@ -6,7 +6,6 @@ import useMedia from "../hooks/useMedia";
 import { useSelector, useDispatch } from "react-redux";
 import { hideSidebar, toggleSidebar } from "../features/ui/uiSlice";
 import { widthAdjuster } from "../utils/Responsive";
-import { motion } from "framer-motion";
 
 const SideMenu = ({ children }) => {
   const dispatch = useDispatch();

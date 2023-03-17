@@ -1,51 +1,26 @@
 import {
-  Avatar,
   Box,
-  Button,
-  Flex,
-  Grid,
   HStack,
-  Icon,
   IconButton,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
-  Portal,
-  Text,
 } from "@chakra-ui/react";
-import {
-  RiMenu2Line,
-  RiShoppingBag2Line,
-  RiShoppingBagFill,
-  RiUser2Line,
-} from "react-icons/ri";
-import { MdArrowDropDown } from "react-icons/md";
+import { RiShoppingBagFill, RiUser2Line } from "react-icons/ri";
 import Searchbar from "./Searchbar";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleSidebar } from "../features/ui/uiSlice";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import GetInitials from "../utils/GetInitials";
-import {
-  AddIcon,
-  ChevronDownIcon,
-  EditIcon,
-  ExternalLinkIcon,
-  HamburgerIcon,
-  RepeatIcon,
-} from "@chakra-ui/icons";
+
 import { logoutUser } from "../features/auth/authSlice";
-import { setCategoryFilters } from "../features/product/productSlice";
 import useMedia from "../hooks/useMedia";
 import MenuToggler from "./MenuToggler";
 import { FaCog, FaInfo, FaSignOutAlt, FaUserCircle } from "react-icons/fa";
 
 const ShopNavbar = () => {
-  const { currentDevice } = useSelector((state) => state.ui);
-  const { cartItems } = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.auth);
 
-  const { categories } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -145,7 +120,7 @@ const UserAvatar = ({ handleLogout }) => {
         // icon={<HamburgerIcon />}
         variant="outline"
         bg="orange.400"
-        children="NT"
+        children={GetInitials(userInfo?.fullname)}
         border="2px solid"
         borderColor={"orange.400"}
         rounded={"lg"}

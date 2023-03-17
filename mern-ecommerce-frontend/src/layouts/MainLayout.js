@@ -1,32 +1,14 @@
-import {
-  Box,
-  calc,
-  Grid,
-  GridItem,
-  Heading,
-  HStack,
-  Icon,
-  IconButton,
-  Spacer,
-  useDisclosure,
-  useMediaQuery,
-} from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import React from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import useMedia from "../hooks/useMedia";
 import UserSideMenu from "../components/UserSideMenu";
-import Searchbar from "../components/Searchbar";
-import { RiShoppingBagFill, RiUser2Line } from "react-icons/ri";
 
-import MenuToggler from "../components/MenuToggler";
 import MenuDrawer from "../components/MenuDrawer";
 import ShopNavbar from "../components/ShopNavbar";
 
 const MainLayout = ({ children }) => {
-  // const { isMobile, isTablet, isMedium, isLargeDevice } = useMedia();
-
-  const { sm, md, lg, xl, xxl } = useMedia();
-  const navigate = useNavigate();
+  const { sm, md, lg } = useMedia();
 
   const getResponsiveSidebar = () => {
     if (sm || md) {
@@ -57,7 +39,7 @@ const MainLayout = ({ children }) => {
     }
   };
 
-  const { tempAreas, showSidbar } = getResponsiveSidebar();
+  const { showSidbar } = getResponsiveSidebar();
 
   return (
     <>

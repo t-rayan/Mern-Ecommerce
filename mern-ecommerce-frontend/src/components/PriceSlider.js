@@ -6,7 +6,6 @@ import {
   Input,
   RangeSlider,
   RangeSliderFilledTrack,
-  RangeSliderMark,
   RangeSliderThumb,
   RangeSliderTrack,
   Text,
@@ -16,20 +15,12 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuDivider,
   Button,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import {
-  getAllProducts,
-  getAllProductsByCategoryAction,
-  setPriceFilters,
-} from "../features/product/productSlice";
+import { getAllProductsByCategoryAction } from "../features/product/productSlice";
 import UrlModifier from "../utils/_url_modifier";
 
 const PriceSlider = ({
@@ -44,8 +35,6 @@ const PriceSlider = ({
     minPrice: 100,
     maxPrice: 2000,
   });
-
-  const [minPrice, setMinPrice] = useState(100);
 
   const { name } = useParams();
   const catNameFromUrl = name;
@@ -62,12 +51,6 @@ const PriceSlider = ({
       maxPrice: val[1],
     });
     dispatch(getAllProductsByCategoryAction(catNameFromUrl));
-  };
-
-  const handlePriceChange = (e) => {
-    // e.preventDefault();
-    console.log(e.target);
-    // setMinPrice(300);
   };
 
   return (

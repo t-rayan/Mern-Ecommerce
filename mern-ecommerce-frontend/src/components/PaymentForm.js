@@ -1,78 +1,14 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Grid,
-  Heading,
-  Icon,
-  Text,
-  Radio,
-  RadioGroup,
-  Stack,
-  HStack,
-} from "@chakra-ui/react";
-import Axios from "axios";
-import React, { useEffect, useState } from "react";
-import {
-  RiArrowLeftSLine,
-  RiCheckboxBlankCircleLine,
-  RiCheckboxCircleFill,
-} from "react-icons/ri";
+import { Box, Button, Heading, HStack } from "@chakra-ui/react";
+
 import { useDispatch, useSelector } from "react-redux";
-import { setPaymentMode, setShippingCharge } from "../features/cart/cartSlice";
-import DeliveryAddressForm from "./DeliveryAddressForm";
+import { setPaymentMode } from "../features/cart/cartSlice";
 
 // loading stripe outside of component function
 
 const PaymentForm = () => {
   const dispatch = useDispatch();
 
-  const { shippingAddress, shippingType, paymentMode } = useSelector(
-    (state) => state.cart
-  );
-
-  const deliveryOptions = [
-    {
-      id: "1",
-      value: 0,
-      option: "Standard (Free)",
-      type: "Standard",
-      deliveredOn: "Delivered on Monday, August 12",
-    },
-    {
-      id: "2",
-      value: 5,
-      option: "Fast ($2)",
-      type: "Fast",
-      deliveredOn: "Delivered on Monday, August 1",
-    },
-  ];
-
-  const paymentOptions = [
-    {
-      id: "1",
-      value: "Paypal",
-      option: "Paypal",
-      text: "Delivered on Monday, August 12",
-    },
-    {
-      id: "2",
-      value: "Cash",
-      option: "Cash on Delivery",
-      text: "Delivered on Monday, August 12",
-    },
-  ];
-  const [deliveryType, setDeliveryType] = useState(deliveryOptions[0].type);
-
-  const [paymentType, setPaymentType] = useState(paymentOptions[0].value);
-
-  const handleDeliveryType = (value) => {
-    if (deliveryType === value) {
-      return;
-    } else {
-      dispatch(setShippingCharge(value));
-    }
-  };
+  const { shippingType, paymentMode } = useSelector((state) => state.cart);
 
   const handlePaymentType = (e) => {
     dispatch(setPaymentMode(e.target.value));

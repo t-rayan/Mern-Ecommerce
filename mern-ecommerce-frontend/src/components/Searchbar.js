@@ -1,6 +1,5 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
-  Button,
   Icon,
   Input,
   InputGroup,
@@ -8,15 +7,11 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { MdClose } from "react-icons/md";
 import { RiCloseCircleLine } from "react-icons/ri";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setSearchFilters } from "../features/product/productSlice";
 import useMedia from "../hooks/useMedia";
 
 const Searchbar = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [searchQuery, setSearchQuery] = useState("");

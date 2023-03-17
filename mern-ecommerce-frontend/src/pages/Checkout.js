@@ -1,34 +1,18 @@
-import { ArrowBackIcon } from "@chakra-ui/icons";
-import { Box, Button, Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
+import { Box, Grid } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import BackBtn from "../components/BackBtn";
 import BillandAddForm from "../components/BillandAddForm";
 import DeliveryAddressForm from "../components/DeliveryAddressForm";
-import MultiStepForm from "../components/MultiStepForm";
-import MyCart from "../components/MyCart";
-import OrderSummary from "../components/OrderSummary";
 import PaymentForm from "../components/PaymentForm";
-import {
-  showAddandBillingScreen,
-  showCartScreen,
-} from "../features/ui/uiSlice";
+import { showCartScreen } from "../features/ui/uiSlice";
 
 const Checkout = () => {
   const dispatch = useDispatch();
-  const { currentDevice, isCartScreen, isAddandBillingScreen } = useSelector(
-    (state) => state.ui
-  );
 
   const { cartItems } = useSelector((state) => state.cart);
   useEffect(() => {
     dispatch(showCartScreen("apple"));
   }, [dispatch]);
-
-  const onClickHandler = () => {
-    if (isAddandBillingScreen) {
-    }
-  };
 
   return (
     <Box

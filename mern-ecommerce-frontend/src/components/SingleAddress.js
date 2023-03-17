@@ -11,7 +11,6 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserAddress } from "../features/auth/authSlice";
 import { setShippingAddress } from "../features/cart/cartSlice";
-import { showPaymentScreen } from "../features/ui/uiSlice";
 import useMedia from "../hooks/useMedia";
 
 const SingleAddress = ({ nextStep, address }) => {

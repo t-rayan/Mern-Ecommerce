@@ -1,11 +1,10 @@
-import { AddIcon, ArrowBackIcon } from "@chakra-ui/icons";
+import { AddIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Flex,
   Grid,
   Heading,
-  Icon,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -13,18 +12,14 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { RiAddFill, RiArrowLeftSLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser, reset, updateUserAddress } from "../features/auth/authSlice";
-import { resetShippingAddress } from "../features/cart/cartSlice";
+import { getUser, updateUserAddress } from "../features/auth/authSlice";
 import { showPaymentScreen } from "../features/ui/uiSlice";
 import AppInput from "./AppInput";
 import SingleAddress from "./SingleAddress";
-import { motion } from "framer-motion";
 
 const BillandAddForm = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -72,9 +67,6 @@ const BillandAddForm = () => {
     if (userInfo) {
       dispatch(getUser());
     }
-    // return () => {
-    //   dispatch(resetShippingAddress());
-    // };
   }, [dispatch, userInfo]);
 
   return (

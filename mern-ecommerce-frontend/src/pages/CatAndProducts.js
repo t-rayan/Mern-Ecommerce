@@ -1,15 +1,10 @@
-import { Box, Button, Heading, Spinner } from "@chakra-ui/react";
+import { Box, Button, Heading } from "@chakra-ui/react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
-  getAllProducts,
   getAllProductsByCategoryAction,
-  reset,
   resetFilter,
-  setBrandFilters,
-  setCategoryFilters,
-  setFilterGroup,
 } from "../features/product/productSlice";
 import SingleProduct from "../components/SingleProduct";
 import FilterPanel from "../components/FilterPanel";
@@ -18,11 +13,9 @@ import LoadingState from "../components/LoadingState";
 const CatAndProducts = () => {
   const dispatch = useDispatch();
 
-  const [searchParams, setsearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
-  const { filterGroup, products, isLoading } = useSelector(
-    (state) => state.products
-  );
+  const { products, isLoading } = useSelector((state) => state.products);
 
   const { name } = useParams();
 
@@ -32,16 +25,6 @@ const CatAndProducts = () => {
       dispatch(resetFilter());
     };
   }, [name, dispatch, searchParams]);
-
-  // useEffect(() => {
-  //   if (
-  //     Object.keys(filterGroup).length === 0 &&
-  //     filterGroup.constructor === Object
-  //   ) {
-  //   } else {
-  //     setsearchParams(filterGroup);
-  //   }
-  // }, [filterGroup, setsearchParams]);
 
   return (
     <Box>

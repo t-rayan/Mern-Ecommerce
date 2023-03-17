@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Box, Button, Grid, Heading } from "@chakra-ui/react";
+import { Box, Grid, Heading } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 

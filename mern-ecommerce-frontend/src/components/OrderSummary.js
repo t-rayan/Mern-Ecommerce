@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { setTotal } from "../features/cart/cartSlice";
 import { createNewOrderAction } from "../features/order/orderSlice";
 import { getPaypalClientIDService } from "../features/payment/paymentServices";
-import { showPaymentScreen } from "../features/ui/uiSlice";
 
 const OrderSummary = ({ pageTitles }) => {
   const dispatch = useDispatch();
@@ -46,10 +45,6 @@ const OrderSummary = ({ pageTitles }) => {
     }
 
     // dispatch(showAddandBillingScreen());
-  };
-
-  const handleCreateOrder = () => {
-    dispatch(showPaymentScreen());
   };
 
   // useEffect

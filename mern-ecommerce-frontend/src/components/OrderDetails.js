@@ -1,5 +1,4 @@
-import { Box, Flex, Grid, Heading, Icon, Image, Text } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import { Box, Flex, Heading, Icon, Image, Text } from "@chakra-ui/react";
 import { RiCloseCircleLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";

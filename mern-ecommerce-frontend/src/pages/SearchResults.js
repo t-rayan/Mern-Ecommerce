@@ -2,20 +2,12 @@ import { Box, Heading } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SingleProduct from "../components/SingleProduct";
-import {
-  getAllProducts,
-  resetFilter,
-  setSearchFilters,
-} from "../features/product/productSlice";
+import { getAllProducts, resetFilter } from "../features/product/productSlice";
 import queryString from "query-string";
 import LoadingState from "../components/LoadingState";
-import { useSearchParams } from "react-router-dom";
 
 const SearchResults = () => {
   const dispatch = useDispatch();
-
-  const [searchParams, setSearchParams] = useSearchParams();
-  console.log(searchParams.has("q"));
 
   const { products, filterGroup, isLoading } = useSelector(
     (state) => state.products
@@ -26,22 +18,11 @@ const SearchResults = () => {
   const searchQuery = queryParams.q;
 
   useEffect(() => {
-    searchQuery && dispatch(setSearchFilters(searchQuery));
-    searchFilter && dispatch(getAllProducts(filterGroup));
-
+    dispatch(getAllProducts());
     return () => {
       dispatch(resetFilter());
     };
   }, [dispatch, searchQuery, searchFilter]);
-
-  // useEffect(() => {
-  //   searchQuery && dispatch(getAllProducts(filterGroup));
-  //   console.log("second");
-
-  //   // return () => {
-  //   //   dispatch(resetFilter());
-  //   // };
-  // }, [dispatch, searchFilter, searchQuery, filterGroup]);
 
   if (isLoading) {
     return <LoadingState />;

@@ -1,7 +1,7 @@
-import { Box, Flex, Grid, Icon, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useSearchParams } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { hideSidebar } from "../features/ui/uiSlice";
 
 const SidemenuItem = ({ menuTitle, linkIcon, place, queryParamHandler }) => {

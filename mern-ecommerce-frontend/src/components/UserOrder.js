@@ -8,14 +8,11 @@ import {
   GridItem,
   Text,
 } from "@chakra-ui/react";
-import { useDispatch, useSelector } from "react-redux";
-import { displayModal } from "../features/ui/uiSlice";
-import { fetchSingleOrder } from "../features/order/orderSlice";
+import { useSelector } from "react-redux";
 import { convertDate } from "../utils/DateModifiers";
 import { useNavigate } from "react-router-dom";
 
 const UserOrder = ({ currentOrder, isCustom }) => {
-  const dispatch = useDispatch();
   const { order } = useSelector((state) => state.order);
   const navigate = useNavigate();
   return (
