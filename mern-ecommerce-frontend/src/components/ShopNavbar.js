@@ -70,7 +70,7 @@ const ShopNavbar = () => {
             <Searchbar />
           </Box>
         </Box>
-        <HStack spacing={10}>
+        <HStack spacing={5}>
           <IconButton
             rounded={"lg"}
             shadow="md"
@@ -115,9 +115,6 @@ const UserAvatar = ({ handleLogout }) => {
         as={IconButton}
         shadow="md"
         aria-label="Options"
-        // w="2.9rem"
-        // h="2.9rem"
-        // icon={<HamburgerIcon />}
         variant="outline"
         bg="orange.400"
         children={GetInitials(userInfo?.fullname)}
