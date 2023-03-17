@@ -27,7 +27,7 @@ const Cartpage = () => {
     if (sm || md) {
       return "1fr";
     } else {
-      return "1fr 30rem";
+      return "1fr 35%";
     }
   };
 

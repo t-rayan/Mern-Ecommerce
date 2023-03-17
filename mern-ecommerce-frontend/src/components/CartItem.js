@@ -8,7 +8,7 @@ const CartItem = ({ product }) => {
   const dispatch = useDispatch();
   const { currentDevice } = useSelector((state) => state.ui);
   return (
-    <Grid
+    <Flex
       p=".8rem"
       borderRadius="10px"
       templateColumns={
@@ -77,7 +77,7 @@ const CartItem = ({ product }) => {
           onClick={() => dispatch(removeFromCart({ id: product.id }))}
         />
       </GridItem>
-    </Grid>
+    </Flex>
   );
 };
 

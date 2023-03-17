@@ -86,8 +86,6 @@ export const getAllProducts = async (req, res) => {
       },
     ]);
 
-    console.log(products);
-
     return res.status(200).json({ products });
   } catch (error) {
     return res.status(500).json({ msg: error.message });
@@ -134,7 +132,6 @@ export const addProduct = async (req, res) => {
       return res.status(400).json({ msg: "Invalid product data" });
     }
   } catch (error) {
-    console.log(error.message);
     return res.status(500).json({ msg: error.message });
   }
 };
