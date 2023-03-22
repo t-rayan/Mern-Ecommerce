@@ -11,8 +11,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { Link, Navigate } from "react-router-dom";
-import MainLayout from "../layouts/MainLayout";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../features/auth/authSlice";

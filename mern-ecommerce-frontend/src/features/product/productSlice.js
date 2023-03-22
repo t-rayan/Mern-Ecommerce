@@ -145,10 +145,13 @@ export const updateProduct = createAsyncThunk(
 
 // get category
 export const getProduct = createAsyncThunk(
-  "category/get",
+  "product/get",
   async (id, thunkAPI) => {
     try {
-      return await productServices.getProductService(id);
+      const { data, status } = await productServices.getProductService(id);
+      if (status === 200) {
+        return data;
+      }
     } catch (error) {
       const message =
         (error.response && error.response.data && error.response.data.msg) ||
@@ -230,12 +233,7 @@ export const productSlice = createSlice({
       state.filterGroup = { ...data, ...state.filterGroup };
     },
     resetFilter: (state) => {
-      state.filterGroup = {
-        // categoryFilter: "",
-        // brandFilter: "",
-        // priceFilter: "",
-        // searchFilter: "",
-      };
+      state.filterGroup = {};
     },
 
     setSearchFilters: (state, action) => {
@@ -296,6 +294,7 @@ export const productSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = true;
       state.products = action.payload?.products;
+      state.pagination = action.payload?.pagination;
     },
     [getAllProducts.rejected]: (state, action) => {
       state.isLoading = false;

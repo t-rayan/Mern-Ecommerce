@@ -1,12 +1,18 @@
 import { authInstance, instance } from "../../utils/Axios";
 import { setToken } from "../../utils/SetToken";
 import axios from "axios";
+import { GetQueryParams } from "../../utils/GetQueryParams";
 
 // const token = setToken();
 
 // service to get all Orders
 export const getAllOrders = async (token) => {
-  const res = await instance.get("/order", {
+  const params = GetQueryParams();
+  const page = params.get("page");
+
+  const searchQuery = params.get("q") || "";
+
+  const res = await instance.get(`/order?q=${searchQuery}&page=${page}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -30,6 +36,7 @@ export const updateOrderDeliveryStatusService = async (
   orderId,
   isDelivered
 ) => {
+  console.log(orderId);
   const res = await instance.put(
     `/order/${orderId}/deliverystatus`,
     { isDelivered },
@@ -59,7 +66,7 @@ export const getOrderDetail = async ({ orderId, token }) => {
       Authorization: `Bearer ${token}`,
     },
   });
-  return res.data;
+  return res;
 };
 
 export const deleteOrderService = async ({ orderId, token }) => {

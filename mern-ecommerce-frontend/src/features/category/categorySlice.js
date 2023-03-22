@@ -154,6 +154,7 @@ export const categorySlice = createSlice({
       state.isLoading = false;
       state.isSuccess = true;
       state.categories = action.payload?.categories;
+      state.pagination = action.payload?.pagination;
     },
     [getAllCategories.rejected]: (state, action) => {
       state.isLoading = false;

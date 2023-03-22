@@ -1,9 +1,9 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 
 const Dashboard = () => {
   return (
     <Box w="100%">
-      <p>Hello world</p>
+      <Heading fontSize="1.7rem">Dashboard</Heading>
     </Box>
   );
 };

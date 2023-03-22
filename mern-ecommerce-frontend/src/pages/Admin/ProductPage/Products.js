@@ -23,57 +23,35 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllProducts,
-  productSearch,
   removeProduct,
-  reset,
-  resetFilter,
 } from "../../../features/product/productSlice";
-import LoadingState from "../../../components/LoadingState";
 import { RiAddFill } from "react-icons/ri";
 import { SearchIcon } from "@chakra-ui/icons";
 import PopMenu from "../../../components/PopMenu";
 import useMedia from "../../../hooks/useMedia";
-import useDataSort from "../../../hooks/useDataSort";
+import UrlModifier from "../../../utils/_url_modifier";
+import Pagination from "../../../components/Pagination";
 
 const Products = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
-  const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
 
-  const { isLoading, products, isDel, filteredProducts } = useSelector(
-    (state) => state.products
-  );
+  const { products, pagination } = useSelector((state) => state.products);
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    setSearchQuery(e.target.value);
+    UrlModifier({ name: "q", value: e.target.value });
+  };
+
   const { isMobile } = useMedia();
 
-  const [processedData] = useDataSort(products, searchQuery);
-
   useEffect(() => {
-    if (filteredProducts?.length > 0) {
-      setData(filteredProducts);
-    } else {
-      setData(products);
-    }
-  }, [filteredProducts, products]);
+    dispatch(getAllProducts());
+  }, [dispatch, searchQuery, page]);
 
-  useEffect(() => {
-    if (searchQuery.length === 0) {
-      dispatch(resetFilter());
-      dispatch(getAllProducts());
-    } else {
-      dispatch(productSearch(searchQuery));
-    }
-  }, [dispatch, searchQuery]);
-
-  if (isDel) {
-    return <LoadingState title="Deleting product" />;
-  }
-  if (isLoading) {
-    return <LoadingState />;
-  }
-  if (products.length === 0) {
-    return <EmptyState title="Products" goto={() => navigate("add")} />;
-  }
   return (
     <>
       <Stack spacing="10">
@@ -114,94 +92,88 @@ const Products = () => {
               />
               <Input
                 type="text"
+                name="q"
                 placeholder="Search"
                 borderColor="gray.300"
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                }}
+                onChange={handleChange}
               />
             </InputGroup>
           </Box>
           {/* content table */}
           <>
-            {processedData?.length === 0 ? (
-              <Box display="grid">
-                <Heading size="md" color="gray.500">
-                  No match found
-                </Heading>
-              </Box>
-            ) : (
-              <Table
-                variant="simple"
-                size="md"
-                color="gray.400"
-                fontWeight="medium"
-              >
-                <Thead>
-                  <Tr>
-                    <Th>
-                      <Text>NAME</Text>
-                    </Th>
-                    <Th>REMAINING</Th>
-                    <Th>PRICE</Th>
-                    <Th>OPTIONS</Th>
-                  </Tr>
-                </Thead>
+            <Table
+              variant="simple"
+              size="md"
+              color="gray.400"
+              fontWeight="medium"
+            >
+              <Thead>
+                <Tr>
+                  <Th>
+                    <Text>NAME</Text>
+                  </Th>
+                  <Th>REMAINING</Th>
+                  <Th>PRICE</Th>
+                  <Th>OPTIONS</Th>
+                </Tr>
+              </Thead>
 
-                <Tbody>
-                  {processedData?.map((product) => (
-                    <Tr key={product._id}>
-                      <Td
-                        display="flex"
-                        flexDir={isMobile ? "column" : "row"}
-                        alignItems="start"
-                        gap="3"
-                      >
-                        <Box>
-                          <Image
-                            src={
-                              product?.images !== null &&
-                              product?.images[0]?.img_url
-                            }
-                            alt="pimg"
-                            borderRadius="md"
-                            w="100%"
-                            boxSize="40px"
-                          />
-                        </Box>
-                        <Text
-                          textAlign="center"
-                          fontSize={isMobile ? ".7rem" : "1rem"}
-                        >
-                          {product.name}
-                        </Text>
-                      </Td>
-                      <Td>
-                        <Text fontSize={isMobile ? ".7rem" : "1rem"}>
-                          {product.inventory}
-                        </Text>
-                      </Td>
-                      <Td textAlign={"left"}>
-                        <Text fontSize={isMobile ? ".7rem" : "1rem"}>
-                          {product.price}
-                        </Text>
-                      </Td>
-                      <Td textAlign={"left"}>
-                        <PopMenu
-                          deleteFunc={() =>
-                            dispatch(removeProduct(product._id))
+              <Tbody>
+                {products?.map((product) => (
+                  <Tr key={product._id}>
+                    <Td
+                      display="flex"
+                      flexDir={isMobile ? "column" : "row"}
+                      alignItems="start"
+                      gap="3"
+                    >
+                      <Box>
+                        <Image
+                          src={
+                            product?.images !== null &&
+                            product?.images[0]?.img_url
                           }
-                          editFunc={() => {
-                            navigate(product._id);
-                            dispatch(reset());
-                          }}
+                          alt="pimg"
+                          borderRadius="md"
+                          w="100%"
+                          boxSize="40px"
                         />
-                      </Td>
-                    </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            )}
+                      </Box>
+                      <Text
+                        textAlign="center"
+                        fontSize={isMobile ? ".7rem" : "1rem"}
+                      >
+                        {product.name}
+                      </Text>
+                    </Td>
+                    <Td>
+                      <Text fontSize={isMobile ? ".7rem" : "1rem"}>
+                        {product.inventory}
+                      </Text>
+                    </Td>
+                    <Td textAlign={"left"}>
+                      <Text fontSize={isMobile ? ".7rem" : "1rem"}>
+                        {product.price}
+                      </Text>
+                    </Td>
+                    <Td textAlign={"left"}>
+                      <PopMenu
+                        deleteFunc={() => dispatch(removeProduct(product._id))}
+                        editFunc={() => {
+                          navigate(product._id);
+                          // dispatch(reset());
+                        }}
+                      />
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+            <Pagination
+              page={page}
+              setPage={setPage}
+              tPages={pagination?.totalPages}
+            />
           </>
         </Box>
       </Stack>

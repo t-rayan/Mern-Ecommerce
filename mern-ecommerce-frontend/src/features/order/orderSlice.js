@@ -50,6 +50,7 @@ export const updateOrderDeliveryStatusAction = createAsyncThunk(
   async (payload, thunkAPI) => {
     const { token } = thunkAPI.getState().auth.userInfo;
     const { orderId, isDelivered, modelCloseHandler } = payload;
+
     try {
       const { status, data } =
         await order_services.updateOrderDeliveryStatusService(
@@ -65,7 +66,6 @@ export const updateOrderDeliveryStatusAction = createAsyncThunk(
         return data;
       }
     } catch (error) {
-      const { status } = error.response;
       const message =
         (error.response && error.response.data && error.response.data.msg) ||
         error.message ||
@@ -79,17 +79,15 @@ export const updateOrderDeliveryStatusAction = createAsyncThunk(
 // fetch all orders
 export const fetchAllOrders = createAsyncThunk(
   "order/all",
-  async (navigate, thunkAPI) => {
+  async (_, thunkAPI) => {
     const { token } = thunkAPI.getState().auth.userInfo;
 
     try {
       const { status, data } = await order_services.getAllOrders(token);
-
       if (status === 200) {
-        return data.orders;
+        return data;
       }
     } catch (error) {
-      const { status } = error.response;
       const message =
         (error.response && error.response.data && error.response.data.msg) ||
         error.message ||
@@ -134,12 +132,17 @@ export const fetchSingleOrder = createAsyncThunk(
     const { token } = thunkAPI.getState().auth.userInfo;
 
     try {
-      const res = await order_services.getOrderDetail({ orderId, token });
+      const { data, status } = await order_services.getOrderDetail({
+        orderId,
+        token,
+      });
       // if (res) {
       //   return res.url;
       // }
 
-      return res.details;
+      if (status === 200) {
+        return data;
+      }
     } catch (error) {
       const message =
         (error.response && error.response.data && error.response.data.msg) ||
@@ -209,14 +212,18 @@ export const orderSlice = createSlice({
       state.isLoading = true;
     },
     [updateOrderDeliveryStatusAction.fulfilled]: (state, action) => {
-      const { _id } = action.payload.updated;
-      const orders = current(state.orders);
-      const order = state.orders.findIndex((order) => order._id === _id);
+      const { _id, isDelivered } = action.payload.updated;
+      const order = state?.orders.findIndex((order) => order._id === _id);
 
       state.isLoading = false;
       state.isSuccess = true;
       state.message = action.payload.msg;
-      state.orders[order].isDelivered = true;
+      if (state.orders) {
+        state.orders[order].isDelivered = isDelivered;
+      }
+      if (state.order) {
+        state.order.isDelivered = isDelivered;
+      }
     },
     [updateOrderDeliveryStatusAction.rejected]: (state, action) => {
       state.isLoading = false;
@@ -231,7 +238,8 @@ export const orderSlice = createSlice({
     [fetchAllOrders.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.isSuccess = true;
-      state.orders = action.payload;
+      state.orders = action.payload?.orders;
+      state.pagination = action.payload?.pagination;
     },
     [fetchAllOrders.rejected]: (state, action) => {
       state.isLoading = false;
@@ -263,7 +271,7 @@ export const orderSlice = createSlice({
     [fetchSingleOrder.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.isSuccess = true;
-      state.order = action.payload;
+      state.order = action.payload.details;
     },
     [fetchSingleOrder.rejected]: (state, action) => {
       state.isLoading = false;

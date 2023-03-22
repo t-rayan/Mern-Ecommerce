@@ -6,7 +6,6 @@ import {
   HStack,
   Input,
   Stack,
-  Textarea,
   Select,
   Text,
   Icon,
@@ -14,7 +13,6 @@ import {
   Flex,
   Image,
 } from "@chakra-ui/react";
-import ReactQuill from "react-quill";
 import JoditEditor from "jodit-react";
 
 import "react-quill/dist/quill.snow.css";
@@ -42,7 +40,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import LoadingState from "../../../components/LoadingState";
 import { getAllBrands } from "../../../features/brand/brandSlice";
 import BrandSelector from "../../../components/BrandSelector";
-import RichTextEditor from "../../../components/RichTextEditor";
 
 const AddProduct = () => {
   // custom hooks
@@ -166,16 +163,7 @@ const AddProduct = () => {
 
               <FormControl>
                 <FormLabel htmlFor="cat-name"> Desc</FormLabel>
-                {/* <Textarea
-                  size="lg"
-                  name="desc"
-                  type="text"
-                  borderColor="gray.300"
-                  rows="8"
-                  placeholder="Product Description.."
-                  onChange={handleChange}
-                  value={values?.desc}
-                /> */}
+
                 <JoditEditor
                   ref={joEditor}
                   value={productDesc}

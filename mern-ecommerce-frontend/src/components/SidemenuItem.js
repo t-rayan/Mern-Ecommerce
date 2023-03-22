@@ -18,9 +18,9 @@ const SidemenuItem = ({ menuTitle, linkIcon, place, queryParamHandler }) => {
         <Flex
           alignItems="center"
           justifyContent="start"
-          color={isActive ? "orange.500" : "gray.500"}
+          color={isActive ? "purple.500" : "gray.500"}
           borderRight={isActive && "3px solid"}
-          borderRightColor={isActive && "orange.400"}
+          borderRightColor={isActive && "purple.500"}
           py={2}
           px={"2rem"}
           _hover={{ color: "gray.700" }}

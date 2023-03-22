@@ -6,7 +6,6 @@ import {
   HStack,
   Input,
   Stack,
-  Textarea,
   Select,
   Text,
   Icon,
@@ -14,7 +13,6 @@ import {
   Flex,
   Image,
 } from "@chakra-ui/react";
-import ReactQuill from "react-quill";
 import JoditEditor from "jodit-react";
 
 import "react-quill/dist/quill.snow.css";
@@ -29,7 +27,6 @@ import {
   reset,
   updateProduct,
 } from "../../../features/product/productSlice";
-import { addProduct } from "../../../features/product/productSlice";
 import { getAllCategories } from "../../../features/category/categorySlice";
 import {
   RiCheckboxCircleLine,
@@ -97,7 +94,7 @@ const EditProduct = () => {
   useEffect(() => {
     dispatch(getAllCategories());
     dispatch(getAllBrands());
-    id && dispatch(getProduct(id));
+    dispatch(getProduct(id));
   }, [dispatch, id]);
 
   // getting default values for inputs
@@ -112,9 +109,9 @@ const EditProduct = () => {
     }
   }, [id, product]);
 
-  if (isLoading) {
-    return <LoadingState title="Please Wait...." />;
-  }
+  // if (isLoading) {
+  //   return <LoadingState title="Please Wait...." />;
+  // }
 
   return (
     <FormLayout title="Edit Product">

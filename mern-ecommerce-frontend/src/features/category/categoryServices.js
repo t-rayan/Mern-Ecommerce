@@ -1,8 +1,13 @@
 import { instance } from "../../utils/Axios";
-
+import { GetQueryParams } from "../../utils/GetQueryParams";
 // service to get all categories
 const getCategoriesService = async () => {
-  const res = await instance.get("/category");
+  const params = GetQueryParams();
+  const searchQuery = params.get("q");
+  const page = params.get("page");
+
+  const res = await instance.get(`/category?q=${searchQuery}&page=${page}`);
+
   return res.data;
 };
 

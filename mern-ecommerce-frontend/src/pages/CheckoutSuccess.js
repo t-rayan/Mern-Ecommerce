@@ -1,15 +1,10 @@
-import { ArrowLeftIcon } from "@chakra-ui/icons";
 import {
   Button,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
-  ModalHeader,
   ModalOverlay,
   useDisclosure,
-  ModalFooter,
-  Grid,
   Heading,
   Image,
   Text,
@@ -23,7 +18,7 @@ import orderSuccessImg from "../images/order_success.svg";
 const CheckoutSuccess = () => {
   const { orderId } = useParams();
   const navigate = useNavigate();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { onClose } = useDisclosure();
 
   return (
     <>

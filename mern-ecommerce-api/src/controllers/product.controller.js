@@ -63,6 +63,10 @@ export const getAllProductsByCategory = async (req, res) => {
 
 export const getAllProducts = async (req, res) => {
   const searchQuery = req.query.q || "";
+  const page = parseInt(req.query.page) || 1;
+  const size = parseInt(req.query.size) || 4;
+
+  const skip = (page - 1) * size; //skip = (3 -1)* 2 =4
 
   const regex = new RegExp(searchQuery, "i");
 
@@ -84,9 +88,24 @@ export const getAllProducts = async (req, res) => {
           ],
         },
       },
-    ]);
+    ])
+      .skip(skip)
+      .limit(size);
 
-    return res.status(200).json({ products });
+    const count = await Product.countDocuments({});
+    const totalPages = Math.ceil(count / size);
+
+    res.status(200).json({
+      products: products,
+      pagination: {
+        page,
+        size,
+        totalPages,
+        totalElements: count,
+      },
+    });
+
+    // return res.status(200).json({ products });
   } catch (error) {
     return res.status(500).json({ msg: error.message });
   }

@@ -2,10 +2,41 @@ import { createCategoryValidation } from "../utils/validation.util.js";
 import Category from "../models/category.model.js";
 
 export const getAllCategories = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const size = parseInt(req.query.size) || 4;
+
+  const skip = (page - 1) * size; //skip = (3 -1)* 2 =4
+
+  const searchQuery = req.query.q || "";
+  const regex = new RegExp(searchQuery, "i");
+
+  let query = {};
+
+  if (searchQuery !== "null") {
+    query.name = { $regex: regex };
+  }
+
   try {
-    const categories = await Category.find();
+    const categories = await Category.find(query).skip(skip).limit(size);
+    const count = await Category.countDocuments({});
+
+    const totalPages = Math.ceil(count / size); // totalPages = Math.ceil(10/2)=
+
     if (categories) {
-      return res.status(200).json({ categories });
+      // return res.status(200).json({
+      //   categories: categories,
+      //   totalPages: totalPages,
+      // });
+
+      res.status(200).json({
+        categories: categories,
+        pagination: {
+          page,
+          size,
+          totalPages,
+          totalElements: count,
+        },
+      });
     }
   } catch (error) {
     return res.status(500).json({ msg: error.message });

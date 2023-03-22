@@ -7,7 +7,7 @@ import UserSideMenu from "../components/UserSideMenu";
 import MenuDrawer from "../components/MenuDrawer";
 import ShopNavbar from "../components/ShopNavbar";
 
-const MainLayout = ({ children }) => {
+const MainLayout = () => {
   const { sm, md, lg } = useMedia();
 
   const getResponsiveSidebar = () => {
@@ -64,8 +64,6 @@ const MainLayout = ({ children }) => {
         px={sm ? 5 : 10}
         width={getNavbarWidth()}
         ml="auto"
-        pos={"relative"}
-        overflowY="scroll"
         display="grid"
         pt="7.5rem"
         pb="1rem"

@@ -1,11 +1,9 @@
-import { Box, Button, Heading, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Heading, Text } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import BackBtn from "../components/BackBtn";
 import ImageSlider from "../components/ImageSlider";
 import LoadingState from "../components/LoadingState";
-import QtyController from "../components/QtyController";
 import { addToCart } from "../features/cart/cartSlice";
 import { getProduct, reset } from "../features/product/productSlice";
 const ProductDetails = () => {
@@ -86,12 +84,7 @@ const ProductDetails = () => {
               {product?.size}GB
             </Box>
           </Box>
-          {/* <Box mt="2rem" display="flex" flexDir="column" gap={4}>
-            <Heading size="sm">Quantity:</Heading>
-            <QtyController id={product?._id} qty={product?.qty} />
 
-            <Text color="gray.500"> Available: {product?.inventory}</Text>
-          </Box> */}
           <Box
             mt="2rem"
             display="flex"

@@ -1,18 +1,45 @@
+import mongoose from "mongoose";
 import stripe from "stripe";
 import Order from "../models/order.model.js";
 
-const stripePaymnt = new stripe("sk_test_OIe8mv72lxUoLroP1KD1h80u");
-
-const YOUR_DOMAIN = "http://localhost:3000";
-
-let items = [];
-
 export const getEveryOrders = async (req, res) => {
-  try {
-    const orders = await Order.find({}).populate("userId", "firstname");
+  const orderIdToBeSearched = req.query.q || "";
 
-    res.status(200).json({ orders });
+  const page = parseInt(req.query.page) || 1;
+  const size = parseInt(req.query.size) || 4;
+
+  const skip = (page - 1) * size; //skip = (3 -1)* 2 =4
+
+  let query = {};
+
+  if (orderIdToBeSearched) {
+    const isValideObjectId = mongoose.isValidObjectId(orderIdToBeSearched);
+    if (isValideObjectId) {
+      let id = mongoose.Types.ObjectId(orderIdToBeSearched);
+      query._id = id;
+    }
+
+    // query._id = id;
+  }
+  try {
+    const orders = await Order.find(query)
+      .populate("userId", "firstname")
+      .skip(skip)
+      .limit(size);
+    const count = await Order.countDocuments({});
+    const totalPages = Math.ceil(count / size);
+
+    res.status(200).json({
+      orders: orders,
+      pagination: {
+        page,
+        size,
+        totalPages,
+        totalElements: count,
+      },
+    });
   } catch (error) {
+    console.log(error.response);
     res.status(500).json({ msg: error.message });
   }
 };
@@ -38,7 +65,7 @@ export const getOrderDetail = async (req, res) => {
   const currentUser = _id.toString();
 
   try {
-    const details = await Order.findById({ _id: orderId });
+    const details = await Order.findById({ _id: orderId }).populate("userId");
 
     res.status(200).json({ details });
   } catch (error) {
@@ -80,13 +107,11 @@ export const updateOrderDeliveryStatus = async (req, res) => {
   if (id) {
     try {
       const order = await Order.findById({ _id: id });
-      if (order && !order.isDelivered) {
-        if (isDelivered) {
-          order.isDelivered = true;
+      if (order) {
+        order.isDelivered = isDelivered;
 
-          const updated = await order.save();
-          res.status(201).json({ updated, msg: "Updated Successfully" });
-        }
+        const updated = await order.save();
+        res.status(201).json({ updated, msg: "Updated Successfully" });
       }
     } catch (error) {
       res.status(500).json({ msg: error.message });

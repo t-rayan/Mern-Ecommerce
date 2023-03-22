@@ -1,117 +1,250 @@
-import { Box, Flex, Heading, Icon, Image, Text } from "@chakra-ui/react";
-import { RiCloseCircleLine } from "react-icons/ri";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { resetSingleOrder } from "../features/order/orderSlice";
+import {
+  Badge,
+  Box,
+  Card,
+  CardBody,
+  CardHeader,
+  Divider,
+  Flex,
+  Heading,
+  HStack,
+  Icon,
+  Stack,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import { useEffect } from "react";
+import { HiOutlineCalendar } from "react-icons/hi";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { fetchSingleOrder } from "../features/order/orderSlice";
 import useMedia from "../hooks/useMedia";
-import UserOrder from "./UserOrder";
+import { getFullDate, getTime } from "../utils/DateModifiers";
+import BackBtn from "./BackBtn";
+import DeliveryStatusChanger from "./DeliveryStatusChanger";
 
-const OrderDetails = ({ order }) => {
+const OrderDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { products } = order;
+  // const { products } = order;
   const { isMobile } = useMedia();
 
-  return (
-    <Box
-      borderRadius="10px"
-      p={isMobile ? "1rem" : "2rem"}
-      fontSize=".8rem"
-      shadow="lg"
-    >
-      <Box>
-        <Flex justifyContent="space-between" alignItems="center">
-          <Heading size="md">Order Details</Heading>
-          <Icon
-            color="gray.500"
-            cursor="pointer"
-            _hover={{ color: "red.400" }}
-            as={RiCloseCircleLine}
-            h={6}
-            w={6}
-            onClick={() => {
-              dispatch(resetSingleOrder());
-              navigate(-1);
-            }}
-          />
+  const { order } = useSelector((state) => state.order);
+
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchSingleOrder(id));
+    }
+  }, [dispatch, id]);
+
+  if (order)
+    return (
+      <Box px={10} py="5">
+        <BackBtn btnTitle={"Order Details"} />
+
+        {/* toolbar */}
+        <Flex flexDirection="column">
+          <Heading mt={"2rem"} textTransform="capitalize">
+            {order?.userId?.firstname}
+          </Heading>
+          <HStack mt="3" color="gray.500">
+            <Text fontSize={"1rem"}>Placed on</Text>
+            <Icon as={HiOutlineCalendar} fontSize="1.5rem" />
+            <Text fontSize={"1rem"}> {getFullDate(order.createdAt)}</Text>
+            <Text fontSize={"1rem"}> {getTime(order.createdAt)}</Text>
+          </HStack>
         </Flex>
-        {order && <UserOrder isCustom={true} currentOrder={order} />}
-        {/* items */}
-        <Box display="grid" borderRadius="10px" gap={5} shadow="sm" p={"2rem"}>
-          <Heading size>Items</Heading>
-          <Box display="grid" gap={5}>
-            {products?.map((product) => (
-              <Box
-                display="flex"
-                gap={2}
-                key={product.id}
-                justifyContent="space-between"
-                alignItems="center"
+
+        {/* basic info */}
+        <Card mt={"2.8rem"}>
+          <CardHeader>
+            <Heading size="md">Basic Info</Heading>
+          </CardHeader>
+          <Divider borderColor={"gray.300"} />
+
+          <CardBody px="0">
+            <Stack divider={<Divider />} spacing="4">
+              {/* customer name and address */}
+              <Flex wrap={"wrap"} px="5" w="100%" alignItems="start">
+                <Heading flex={"1 1 20%"} size="xs" textTransform="uppercase">
+                  Customer
+                </Heading>
+                <VStack flex={"1 1 80%"} alignItems="start">
+                  <Text
+                    fontWeight={"bold"}
+                    fontSize="md"
+                    textTransform="capitalize"
+                  >
+                    {order?.shippingDetails?.name}
+                  </Text>
+                  <Text
+                    color="gray.500"
+                    textTransform="capitalize"
+                    fontSize=".9rem"
+                  >
+                    {order?.shippingDetails?.address}
+                  </Text>
+                  <Text
+                    color="gray.500"
+                    textTransform="capitalize"
+                    fontSize=".9rem"
+                  >
+                    {order?.shippingDetails?.city}
+                  </Text>
+                  <Text
+                    color="gray.500"
+                    textTransform="capitalize"
+                    fontSize=".9rem"
+                  >
+                    {order?.shippingDetails?.phone}
+                  </Text>
+                </VStack>
+              </Flex>
+
+              {/* order ID */}
+              <Flex wrap={"wrap"} px="5">
+                <Heading flex={"1 1 20%"} size="xs" textTransform="uppercase">
+                  ID
+                </Heading>
+                <Text flex={"1 1 80%"} fontSize="sm">
+                  {order?._id}
+                </Text>
+              </Flex>
+
+              {/* date */}
+              <Flex wrap={"wrap"} px="5" alignItems={"start"}>
+                <Heading flex={"1 1 20%"} size="xs" textTransform="uppercase">
+                  Date
+                </Heading>
+                <Text color="gray.500" flex={"1 1 80%"} fontSize="sm">
+                  {getFullDate(order.createdAt)}
+                </Text>
+              </Flex>
+
+              {/* total */}
+              <Flex wrap={"wrap"} px="5" alignItems={"start"}>
+                <Heading flex={"1 1 20%"} size="xs" textTransform="uppercase">
+                  Total
+                </Heading>
+                <Text color="gray.500" flex={"1 1 80%"} fontSize="sm">
+                  ${order.total}
+                </Text>
+              </Flex>
+
+              {/* Payment Status */}
+              <Flex rowGap={".7rem"} wrap={"wrap"} px="5" alignItems={"start"}>
+                <Heading flex={"1 1 20%"} size="xs" textTransform="uppercase">
+                  Payment
+                </Heading>
+                <Box color="gray.500" flex={"1 1 80%"} fontSize="sm">
+                  <Badge colorScheme={order.isPaid ? "purple" : "orange"}>
+                    {order.isPaid ? "Success" : "Pending"}
+                  </Badge>
+                </Box>
+              </Flex>
+
+              {/* Delivery Status */}
+              <Flex rowGap={".7rem"} wrap={"wrap"} px="5" alignItems={"start"}>
+                <Heading flex={"1 1 20%"} size="xs" textTransform="uppercase">
+                  Delivery
+                </Heading>
+                <Box color="gray.500" flex={"1 1 80%"} fontSize="sm">
+                  <DeliveryStatusChanger />
+                </Box>
+              </Flex>
+            </Stack>
+          </CardBody>
+        </Card>
+
+        {/* items info */}
+        <Card mt={"2.8rem"}>
+          <CardHeader>
+            <Heading size="md">Order Items</Heading>
+          </CardHeader>
+          <Divider borderColor={"gray.300"} />
+
+          <CardBody px="0">
+            {/* product details */}
+            <Flex
+              bg="gray.100"
+              wrap={"wrap"}
+              px="5"
+              w="100%"
+              py="5"
+              alignItems="center"
+            >
+              <Heading flex={"1 1 55%"} size="xs">
+                Product
+              </Heading>
+              <Text
+                flex={"1 1 15%"}
+                fontWeight={"bold"}
+                fontSize="sm"
+                textTransform="capitalize"
               >
-                <Flex gap={3} flexDir={["column", "row"]}>
-                  <Image src={product.thumbnail} h="40px" w="40px" />
-                  <Box>
-                    <Text fontSize=".9rem">{product.name}</Text>
-                    <Text fontSize=".9rem" color="gray.400">
-                      {product.size}, {product.color}
-                    </Text>
-                  </Box>
+                Price
+              </Text>
+              <Text
+                flex={"1 1 15%"}
+                color="gray.500"
+                textTransform="capitalize"
+                fontSize=".9rem"
+              >
+                Qty
+              </Text>
+              <Text
+                flex={"1 1 15%"}
+                color="gray.500"
+                textTransform="capitalize"
+                fontSize=".9rem"
+              >
+                Total
+              </Text>
+            </Flex>
+
+            {/* single product details */}
+
+            {order.products?.map((product) => (
+              <Flex wrap={"wrap"} px="5" w="100%" py="5" alignItems="center">
+                <Flex
+                  gap={3}
+                  alignItems={"center"}
+                  wrap="wrap"
+                  flex={"1 1 55%"}
+                >
+                  {/* <Box bg="gray.200" p={2} rounded="md">
+                    <Image src={product.thumbnail} h="30px" w="30px" />
+                  </Box> */}
+                  <Text fontSize=".8rem">{product.name}</Text>
                 </Flex>
 
-                <Text fontSize=".9rem">{product.qty}</Text>
-                <Text fontSize=".9rem">{product.price}</Text>
-              </Box>
+                <Text color={"gray.500"} fontSize=".8rem" flex={"1 1 15%"}>
+                  ${product.price}
+                </Text>
+                <Text fontSize=".8rem" flex={"1 1 15%"} color="gray.500">
+                  {product.qty}
+                </Text>
+                <Text flex={"1 1 15%"} color="gray.500" fontSize=".8rem">
+                  ${product.price * product.qty}
+                </Text>
+              </Flex>
             ))}
-          </Box>
-        </Box>
+          </CardBody>
+        </Card>
 
-        {/* shipping  */}
-        {/* <Box display="grid" borderRadius="10px" gap={5} shadow="sm" p={"2rem"}>
-          <Heading size>Shipping Details</Heading>
-          <Box display="grid" gap={5}>
-            <Grid>
-              <Text fontSize=".9rem" fontWeight="semibold">
-                Name
-              </Text>
-              <Text color="gray.500">{shipping.name}</Text>
-            </Grid>
-            <Grid>
-              <Text fontSize=".9rem" fontWeight="semibold">
-                Address
-              </Text>
-              <Text color="gray.500">
-                {shipping.address.line1},{shipping.address.city},{" "}
-                {shipping.address.state},{""}
-                {shipping.address.country}
-              </Text>
-            </Grid>
-            <Grid>
-              <Text fontSize=".9rem" fontWeight="semibold">
-                Shipping Fee
-              </Text>
-              <Text color="gray.500">Free</Text>
-            </Grid>
-          </Box>
-        </Box> */}
-
-        {/* total  */}
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          borderRadius="10px"
-          gap={5}
-          shadow="sm"
-          p={"2rem"}
-        >
-          <Heading size={["sm", "md"]}>Total</Heading>
-          <Heading color="gray.500" size={["sm", "md"]}>
-            {order.total}
-          </Heading>
-        </Box>
+        {/* total */}
+        <Card mt="5">
+          <CardHeader>
+            <Flex justifyContent={"space-between"}>
+              <Heading size="md">Total</Heading>
+              <Heading size="md">${order.total}</Heading>
+            </Flex>
+          </CardHeader>
+        </Card>
       </Box>
-    </Box>
-  );
+    );
 };
 
 export default OrderDetails;

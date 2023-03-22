@@ -1,33 +1,79 @@
 import { Box } from "@chakra-ui/react";
-import Navbar from "../components/Navbar";
-import { Outlet, useNavigate } from "react-router-dom";
+import React from "react";
+import { Outlet } from "react-router-dom";
+import useMedia from "../hooks/useMedia";
 import AdminSideMenu from "../components/AdminSideMenu";
-import { useDispatch, useSelector } from "react-redux";
-import { widthAdjuster } from "../utils/Responsive";
-import { useEffect } from "react";
-import { getUser, reset } from "../features/auth/authSlice";
+
+import MenuDrawer from "../components/MenuDrawer";
+import ShopNavbar from "../components/ShopNavbar";
+import AdminNav from "../components/AdminNav";
 
 const AdminLayout = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { sm, md, lg } = useMedia();
 
-  const { isSidebar, currentDevice } = useSelector((state) => state.ui);
-  const { userInfo, status } = useSelector((state) => state.auth);
-  const { products } = useSelector((state) => state.products);
-  const { categories } = useSelector((state) => state.categories);
+  const getResponsiveSidebar = () => {
+    if (sm || md) {
+      return {
+        tempAreas: `"header"
+      "main"
+      "main"`,
+        showSidbar: false,
+      };
+    } else {
+      return {
+        tempAreas: `"nav header"
+      "nav main"
+      "nav main"`,
+        showSidbar: true,
+        sm: sm,
+      };
+    }
+  };
 
-  const dynamicWidth = widthAdjuster(currentDevice, isSidebar);
+  const getNavbarWidth = () => {
+    if (sm || md) {
+      return "100%";
+    } else if (lg) {
+      return "calc(100% - 240px)";
+    } else {
+      return "calc(100% - 280px)";
+    }
+  };
+
+  const { showSidbar } = getResponsiveSidebar();
 
   return (
-    <Box>
-      <Box>
-        <AdminSideMenu />
+    <>
+      {(sm || md) && <MenuDrawer />}
+
+      <AdminNav />
+
+      {showSidbar && (
+        <Box
+          position="fixed"
+          top={0}
+          left={0}
+          width={lg ? "240px" : "280px"}
+          borderRight="1px solid #eee"
+          h="100%"
+          zIndex={"222"}
+        >
+          <AdminSideMenu />
+        </Box>
+      )}
+      <Box
+        px={sm ? 5 : 10}
+        width={getNavbarWidth()}
+        ml="auto"
+        display="grid"
+        pt="7.5rem"
+        pb="1rem"
+      >
+        <Box>
+          <Outlet />
+        </Box>
       </Box>
-      <Navbar />
-      <Box minH="100vh" w={dynamicWidth?.navbar} ml={"auto"} mt="5rem" p={5}>
-        <Outlet />
-      </Box>
-    </Box>
+    </>
   );
 };
 

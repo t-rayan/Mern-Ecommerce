@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 import React from "react";
 import {
   RiDashboardLine,
@@ -16,14 +16,20 @@ const AdminSideMenu = () => {
   const { isTablet } = useMedia();
 
   return (
-    <SideMenu>
+    <>
+      <Box textAlign="left" px={"2rem"} py={5}>
+        <Heading fontWeight="bold" fontSize="1.7rem">
+          TECH-HIVE
+        </Heading>
+      </Box>
       <Box
-        display="flex"
-        flexDir="column"
-        alignItems="start"
-        gap={4}
-        px={5}
-        py={10}
+        // display="flex"
+        // flexDir="column"
+        // alignItems="start"
+        // gap={4}
+        // px={5}
+        // py={10}
+        my={5}
       >
         <SidemenuItem
           menuTitle="Dashboard"
@@ -57,7 +63,7 @@ const AdminSideMenu = () => {
           place="settings"
         />
       </Box>
-    </SideMenu>
+    </>
   );
 };
 

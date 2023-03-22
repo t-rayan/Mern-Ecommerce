@@ -1,14 +1,14 @@
 import { instance } from "../../utils/Axios";
+import { GetQueryParams } from "../../utils/GetQueryParams";
 
 // service to get all products
 const getProductsService = async () => {
-  const myUrl = new URL(window.location.href);
-
-  const params = new URLSearchParams(myUrl.search);
+  const params = GetQueryParams();
 
   const searchQuery = params.get("q") || "";
+  const page = params.get("page");
 
-  const res = await instance.get(`/product?q=${searchQuery}`);
+  const res = await instance.get(`/product?q=${searchQuery}&page=${page}`);
   return res;
 };
 
@@ -55,8 +55,8 @@ const updateProductService = async (id, update) => {
 
 // service to update  product
 const getProductService = async (id) => {
-  const res = await instance.get("/product/" + id);
-  return res.data;
+  const res = await instance.get(`/product/${id}`);
+  return res;
 };
 
 // service to delete single image of product
