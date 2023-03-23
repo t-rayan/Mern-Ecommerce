@@ -5,7 +5,6 @@ import useMedia from "../hooks/useMedia";
 import AdminSideMenu from "../components/AdminSideMenu";
 
 import MenuDrawer from "../components/MenuDrawer";
-import ShopNavbar from "../components/ShopNavbar";
 import AdminNav from "../components/AdminNav";
 
 const AdminLayout = () => {

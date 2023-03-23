@@ -9,12 +9,9 @@ import {
   RiStore3Line,
 } from "react-icons/ri";
 import useMedia from "../hooks/useMedia";
-import SideMenu from "./SideMenu";
 import SidemenuItem from "./SidemenuItem";
 
 const AdminSideMenu = () => {
-  const { isTablet } = useMedia();
-
   return (
     <>
       <Box textAlign="left" px={"2rem"} py={5}>
@@ -22,15 +19,7 @@ const AdminSideMenu = () => {
           TECH-HIVE
         </Heading>
       </Box>
-      <Box
-        // display="flex"
-        // flexDir="column"
-        // alignItems="start"
-        // gap={4}
-        // px={5}
-        // py={10}
-        my={5}
-      >
+      <Box my={5}>
         <SidemenuItem
           menuTitle="Dashboard"
           linkIcon={RiDashboardLine}

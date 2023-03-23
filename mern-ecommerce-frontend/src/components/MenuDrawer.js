@@ -13,10 +13,12 @@ import {
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSidebar } from "../features/ui/uiSlice";
+import AdminSideMenu from "./AdminSideMenu";
 import UserSideMenu from "./UserSideMenu";
 
 const MenuDrawer = ({ onOpen }) => {
   const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.auth);
 
   const { isSidebar } = useSelector((state) => state.ui);
 
@@ -32,7 +34,7 @@ const MenuDrawer = ({ onOpen }) => {
           {/* <DrawerCloseButton /> */}
 
           <DrawerBody width={"100%"} p={0}>
-            <UserSideMenu />
+            {userInfo?.isAdmin ? <AdminSideMenu /> : <UserSideMenu />}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
