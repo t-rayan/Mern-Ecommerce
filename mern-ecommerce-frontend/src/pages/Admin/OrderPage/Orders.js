@@ -218,7 +218,6 @@ const UpdateConfirmModal = ({
   isOpen,
   onClose,
 }) => {
-  console.log(orderId, deliveryStatus);
   const dispatch = useDispatch();
   return (
     <Modal isCentered="true" isOpen={isOpen} closeOnOverlayClick={false}>
@@ -310,11 +309,12 @@ const OrderContainer = ({ orders }) => {
             gap={2}
             alignItems="center"
             justifyContent={"space-between"}
+            flexWrap="wrap"
           >
             <Grid
               rounded="md"
               placeItems={"center"}
-              w="5rem"
+              w="3rem"
               bg="gray.200"
               py="2"
             >
@@ -336,7 +336,7 @@ const OrderContainer = ({ orders }) => {
                 Total of ${order.total}
               </Text>
             </VStack>
-            <VStack flex="0.2" alignItems={"start"}>
+            {/* <VStack flex="0.2" alignItems={"start"}>
               <Select
                 size={"sm"}
                 // disabled={order?.isDelivered ? true : false}
@@ -352,14 +352,18 @@ const OrderContainer = ({ orders }) => {
                   </option>
                 ))}
               </Select>
-            </VStack>
+            </VStack> */}
             <VStack flex="0.2" alignItems={"start"}>
               <Text fontSize={".9rem"} fontWeight={"semibold"}>
                 Payment
               </Text>
-              <Badge colorScheme={order.isPaid ? "purple" : "orange"}>
+              <Badge
+                rounded="full"
+                fontSize={".7rem"}
+                colorScheme={order.isPaid ? "purple" : "orange"}
+              >
                 {" "}
-                {order.isPaid ? "Success" : "PENDING"}{" "}
+                {order.isPaid ? "Success" : "Pending"}{" "}
               </Badge>
             </VStack>
             <Icon

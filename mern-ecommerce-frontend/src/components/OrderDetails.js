@@ -41,7 +41,7 @@ const OrderDetails = () => {
 
   if (order)
     return (
-      <Box px={10} py="5">
+      <Box px={{ xl: 10, sm: "5" }} py="5">
         <BackBtn btnTitle={"Order Details"} />
 
         {/* toolbar */}
