@@ -74,13 +74,12 @@ const AdminNav = () => {
               <MenuToggler />
             </Box>
           )}
-          <Box flex="1">
+          {/* <Box flex="1">
             <Heading
               fontSize={sm ? "1rem" : "1.2rem"}
               textTransform={"capitalize"}
             >{`Good morning, ${userInfo?.fullname}`}</Heading>
-            {/* <Searchbar /> */}
-          </Box>
+          </Box> */}
         </Box>
         <HStack>
           {/* check if user is logged in */}

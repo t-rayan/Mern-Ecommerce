@@ -16,7 +16,7 @@ import AppInput from "../../../components/AppInput";
 const AddCategory = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isMobile } = useMedia();
+  const { sm } = useMedia();
 
   let { id } = useParams();
 
@@ -59,7 +59,7 @@ const AddCategory = () => {
 
   return (
     <FormLayout title={id ? "Edit Category" : "Add Category"}>
-      <Box w={isMobile ? "100%" : "30rem"} borderRadius="md">
+      <Box w={sm ? "100%" : "30rem"} borderRadius="md">
         <form onSubmit={handleSubmit}>
           <Stack spacing={4}>
             {/* <FormControl>

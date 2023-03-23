@@ -12,6 +12,7 @@ export const AppInput = ({
     <FormControl>
       <FormLabel htmlFor={label}>{label}</FormLabel>
       <Input
+        my="3"
         name={name}
         onChange={onChange}
         _focus={{ border: "2px", borderColor: "gray.400" }}
