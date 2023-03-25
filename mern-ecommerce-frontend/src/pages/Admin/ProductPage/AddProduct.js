@@ -43,7 +43,7 @@ import BrandSelector from "../../../components/BrandSelector";
 
 const AddProduct = () => {
   // custom hooks
-  const { isMobile } = useMedia();
+  const { sm, md } = useMedia();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const multiFileRef = useRef();
@@ -148,7 +148,7 @@ const AddProduct = () => {
           <Box
             display="grid"
             gap="3rem"
-            gridTemplateColumns={!isMobile ? "1fr .5fr" : "1fr"}
+            gridTemplateColumns={sm || md ? "1fr" : "1fr .5fr"}
           >
             {/* left form controls */}
             <Stack spacing={8} shadow="lg" p={"1.5rem"} borderRadius="10px">

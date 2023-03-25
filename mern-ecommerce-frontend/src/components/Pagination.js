@@ -28,21 +28,30 @@ const Pagination = ({ tPages, page, setPage }) => {
   }, [dispatch, page, tPages]);
 
   return (
-    <Flex justifyContent={"end"} alignItems="center" w="100%" p="2" gap={4}>
+    <Flex
+      mt="5"
+      justifyContent={"start"}
+      alignItems="center"
+      w="100%"
+      p="2"
+      gap={4}
+    >
       <IconButton
         icon={<ChevronLeftIcon />}
         onClick={() => handlePageChange(page - 1)}
         isDisabled={page === 1}
         bg="gray.200"
+        size={{ base: "xs" }}
       />
-      <span>
+      <Text size={"xs"}>
         Page {page} of {totalPages}
-      </span>
+      </Text>
       <IconButton
         icon={<ChevronRightIcon />}
         onClick={() => handlePageChange(page + 1)}
         isDisabled={page === totalPages}
         bg="gray.200"
+        size={{ base: "xs" }}
       />
     </Flex>
   );

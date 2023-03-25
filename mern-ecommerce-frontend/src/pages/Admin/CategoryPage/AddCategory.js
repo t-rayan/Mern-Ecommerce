@@ -12,6 +12,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Box, Button, Stack } from "@chakra-ui/react";
 import useMedia from "../../../hooks/useMedia";
 import AppInput from "../../../components/AppInput";
+import LoadingState from "../../../components/LoadingState";
 
 const AddCategory = () => {
   const dispatch = useDispatch();
@@ -57,45 +58,15 @@ const AddCategory = () => {
       });
   }, [id, category?.name]);
 
+  if (isLoading) {
+    return <LoadingState />;
+  }
+
   return (
     <FormLayout title={id ? "Edit Category" : "Add Category"}>
       <Box w={sm ? "100%" : "30rem"} borderRadius="md">
         <form onSubmit={handleSubmit}>
           <Stack spacing={4}>
-            {/* <FormControl>
-              <FormLabel
-                htmlFor="cat-name"
-                color="gray.700 "
-                fontWeight="bold"
-                mb={4}
-              >
-                {" "}
-                Category Name
-              </FormLabel>
-              <Input
-                defaultValue={id ? category?.name : ""}
-                {...register("name", { required: true })}
-                type="text"
-                placeholder="Enter Category Name"
-              />
-
-              {errors?.name ? (
-                <Box mt={4}>
-                  <Alertbox
-                    msg={
-                      errors.name?.type === "required" &&
-                      "Category name is required"
-                    }
-                    closeFunc={() =>
-                      reset({
-                        errors: "",
-                      })
-                    }
-                  />
-                </Box>
-              ) : null}
-            </FormControl> */}
-
             <AppInput
               name="name"
               label="Category Name"
@@ -116,7 +87,7 @@ const AddCategory = () => {
               _hover={{ bg: "gray.700", color: "white" }}
               fontSize=".9rem"
               type="submit"
-              isLoading={isLoading ? true : false}
+              // isLoading={isLoading ? true : false}
               loadingText="Saving"
             >
               Save Changes
