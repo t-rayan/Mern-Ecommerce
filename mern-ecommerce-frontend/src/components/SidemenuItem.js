@@ -18,15 +18,18 @@ const SidemenuItem = ({ menuTitle, linkIcon, place, queryParamHandler }) => {
         <Flex
           alignItems="center"
           justifyContent="start"
-          color={isActive ? "purple.500" : "gray.500"}
-          borderRight={isActive && "3px solid"}
-          borderRightColor={isActive && "purple.500"}
-          py={2}
-          px={"2rem"}
+          color={isActive ? "blue.400" : "gray.500"}
+          // borderRight={isActive && "3px solid"}
+          // borderRightColor={isActive && "purple.500"}
+          rounded="md"
+          bg={isActive ? "blue.50" : "none"}
+          py={4}
+          mx={"2rem"}
+          px={4}
           _hover={{ color: "gray.700" }}
-          fontSize={["1rem", ".9rem", "1rem", ".9rem"]}
-          gap={3}
-          mb={5}
+          fontSize={[".8rem", ".9rem", "1rem", ".9rem"]}
+          gap={2}
+          mb={3}
         >
           {/* <Icon
               as={linkIcon}

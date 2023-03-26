@@ -17,6 +17,7 @@ import {
   fetchSingleOrder,
   updateOrderDeliveryStatusAction,
 } from "../features/order/orderSlice";
+import UpdateConfirmModal from "../pages/Admin/OrderPage/UpdateConfirmModal";
 
 function DeliveryStatusChanger() {
   const [orderId, setOrderId] = useState("");
@@ -71,52 +72,52 @@ function DeliveryStatusChanger() {
   );
 }
 
-const UpdateConfirmModal = ({
-  deliveryStatus,
-  orderId,
-  setDeliveryStatus,
-  isOpen,
-  onClose,
-}) => {
-  const dispatch = useDispatch();
-  return (
-    <Modal isCentered="true" isOpen={isOpen} closeOnOverlayClick={false}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>
-          <Heading size="md">Update Delivery Status</Heading>
-        </ModalHeader>
-        {/* <ModalCloseButton /> */}
-        <ModalBody>
-          <Text color="gray.500">
-            Are you sure want to update delivery status ?
-          </Text>
-        </ModalBody>
+// const UpdateConfirmModal = ({
+//   deliveryStatus,
+//   orderId,
+//   setDeliveryStatus,
+//   isOpen,
+//   onClose,
+// }) => {
+//   const dispatch = useDispatch();
+//   return (
+//     <Modal isCentered="true" isOpen={isOpen} closeOnOverlayClick={false}>
+//       <ModalOverlay />
+//       <ModalContent>
+//         <ModalHeader>
+//           <Heading size="md">Update Delivery Status</Heading>
+//         </ModalHeader>
+//         {/* <ModalCloseButton /> */}
+//         <ModalBody>
+//           <Text color="gray.500">
+//             Are you sure want to update delivery status ?
+//           </Text>
+//         </ModalBody>
 
-        <ModalFooter>
-          <Button
-            size="md"
-            colorScheme="green"
-            mr={3}
-            onClick={() =>
-              dispatch(
-                updateOrderDeliveryStatusAction({
-                  orderId: orderId,
-                  isDelivered: deliveryStatus,
-                  modelCloseHandler: onClose,
-                })
-              )
-            }
-          >
-            Update
-          </Button>
-          <Button size="md" variant="outline" onClick={onClose}>
-            Cancel
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
-  );
-};
+//         <ModalFooter>
+//           <Button
+//             size="md"
+//             colorScheme="green"
+//             mr={3}
+//             onClick={() =>
+//               dispatch(
+//                 updateOrderDeliveryStatusAction({
+//                   orderId: orderId,
+//                   isDelivered: deliveryStatus,
+//                   modelCloseHandler: onClose,
+//                 })
+//               )
+//             }
+//           >
+//             Update
+//           </Button>
+//           <Button size="md" variant="outline" onClick={onClose}>
+//             Cancel
+//           </Button>
+//         </ModalFooter>
+//       </ModalContent>
+//     </Modal>
+//   );
+// };
 
 export default DeliveryStatusChanger;

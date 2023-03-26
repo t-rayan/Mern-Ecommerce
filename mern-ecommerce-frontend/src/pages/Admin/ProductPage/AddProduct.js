@@ -118,23 +118,23 @@ const AddProduct = () => {
   }, [dispatch, id]);
 
   // getting default values for inputs
-  useEffect(() => {
-    if (id && product) {
-      setValues({
-        name: product?.name || "",
-        brand: product?.brand || "",
-        price: product?.price || "",
-        inventory: product?.inventory || "",
-        size: product?.size || "",
-        category: product?.category?._id || "",
-        color: product?.color || "",
-        imgs: product?.images || [],
-      });
-    }
-    if (id && product) {
-      setProductDesc(product?.desc || "");
-    }
-  }, [id, product, productDesc]);
+  // useEffect(() => {
+  //   if (id && product) {
+  //     setValues({
+  //       name: product?.name || "",
+  //       brand: product?.brand || "",
+  //       price: product?.price || "",
+  //       inventory: product?.inventory || "",
+  //       size: product?.size || "",
+  //       category: product?.category?._id || "",
+  //       color: product?.color || "",
+  //       imgs: product?.images || [],
+  //     });
+  //   }
+  //   if (id && product) {
+  //     setProductDesc(product?.desc || "");
+  //   }
+  // }, [id, product, productDesc]);
 
   if (isLoading) {
     return <LoadingState title="Please Wait...." />;
@@ -161,9 +161,9 @@ const AddProduct = () => {
                 value={values?.name}
               />
 
+              {/* rich text editor */}
               <FormControl>
                 <FormLabel htmlFor="cat-name"> Desc</FormLabel>
-
                 <JoditEditor
                   ref={joEditor}
                   value={productDesc}
@@ -175,7 +175,6 @@ const AddProduct = () => {
                   }}
                 />
               </FormControl>
-
               {/* multiple image upload */}
               <FormControl>
                 <FormLabel htmlFor="product-images"> Images</FormLabel>
@@ -291,7 +290,6 @@ const AddProduct = () => {
             </Stack>
 
             {/* right form controls */}
-
             <Stack spacing={8}>
               <VStack shadow="lg" p="1.5rem" borderRadius="10px" spacing={10}>
                 <AppInput

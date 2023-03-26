@@ -18,6 +18,7 @@ import {
   Tr,
   Image,
   Text,
+  Spinner,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -38,7 +39,9 @@ const Products = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
 
-  const { products, pagination } = useSelector((state) => state.products);
+  const { products, pagination, isLoading } = useSelector(
+    (state) => state.products
+  );
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -60,17 +63,18 @@ const Products = () => {
           Products
         </Heading>
         <Button
-          bg="gray.800"
-          color="gray.200"
+          // bg="gray.800"
+          // color="gray.200"
+          colorScheme={"blue"}
           fontSize=".8rem"
           fontWeight="bold"
           leftIcon={<RiAddFill size="1.1rem" />}
-          _hover={{ bg: "gray.700" }}
-          _active={{ bg: "gray.700" }}
+          // _hover={{ bg: "gray.700" }}
+          // _active={{ bg: "gray.700" }}
           borderRadius="md"
           onClick={() => navigate("add")}
         >
-          Add
+          Add Product
         </Button>
       </Flex>
       {/* search input */}
@@ -90,82 +94,97 @@ const Products = () => {
         </InputGroup>
       </Box>
 
-      <Box p={"3rem 2rem"} borderRadius="10px" w={"100%"} overflowX={"auto"}>
+      <Box
+        textAlign={"center"}
+        // p={"3rem 2rem"}
+        borderRadius="10px"
+        w={"100%"}
+        overflowX={"auto"}
+      >
         {/* content table */}
-
-        <Table
-          variant="simple"
-          size="sm"
-          w="100%"
-          // w="min-width"
-          minWidth="700px"
-          color="gray.400"
-        >
-          <Thead>
-            <Tr>
-              <Th>
-                <Text>NAME</Text>
-              </Th>
-              <Th>REMAINING</Th>
-              <Th>PRICE</Th>
-              <Th>OPTIONS</Th>
-            </Tr>
-          </Thead>
-
-          <Tbody>
-            {products?.map((product) => (
-              <Tr key={product._id}>
-                <Td
-                  display="flex"
-                  flexDir={sm ? "column" : "row"}
-                  alignItems="start"
-                  gap="3"
-                >
-                  <Box>
-                    <Image
-                      src={
-                        product?.images !== null && product?.images[0]?.img_url
-                      }
-                      alt="pimg"
-                      borderRadius="md"
-                      w="100%"
-                      boxSize="40px"
-                    />
-                  </Box>
-                  <Text textAlign="center" fontSize={sm ? ".7rem" : "1rem"}>
-                    {product.name}
-                  </Text>
-                </Td>
-                <Td>
-                  <Text fontSize={sm ? ".7rem" : "1rem"}>
-                    {product.inventory}
-                  </Text>
-                </Td>
-                <Td textAlign={"left"}>
-                  <Text fontSize={sm ? ".7rem" : "1rem"}>{product.price}</Text>
-                </Td>
-                <Td textAlign={"left"}>
-                  <PopMenu
-                    deleteFunc={() => dispatch(removeProduct(product._id))}
-                    editFunc={() => {
-                      navigate(product._id);
-                      // dispatch(reset());
-                    }}
-                  />
-                </Td>
+        {isLoading ? (
+          <Spinner textAlign={"center"} />
+        ) : (
+          <Table
+            variant="simple"
+            size="md"
+            w="100%"
+            // w="min-width"
+            minWidth="700px"
+            color="gray.400"
+          >
+            <Thead>
+              <Tr>
+                <Th>
+                  <Text>NAME</Text>
+                </Th>
+                <Th>REMAINING</Th>
+                <Th>PRICE</Th>
+                <Th>OPTIONS</Th>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
+            </Thead>
+
+            <Tbody>
+              {products?.map((product) => (
+                <Tr key={product._id}>
+                  <Td
+                    display="flex"
+                    flexDir={sm ? "column" : "row"}
+                    alignItems="start"
+                    gap="3"
+                  >
+                    <Box>
+                      <Image
+                        src={
+                          product?.images !== null &&
+                          product?.images[0]?.img_url
+                        }
+                        alt="pimg"
+                        borderRadius="md"
+                        w="100%"
+                        boxSize="40px"
+                      />
+                    </Box>
+                    <Text textAlign="center" fontSize={sm ? ".7rem" : "1rem"}>
+                      {product.name}
+                    </Text>
+                  </Td>
+                  <Td>
+                    <Text fontSize={sm ? ".7rem" : "1rem"}>
+                      {product.inventory}
+                    </Text>
+                  </Td>
+                  <Td textAlign={"left"}>
+                    <Text fontSize={sm ? ".7rem" : "1rem"}>
+                      {product.price}
+                    </Text>
+                  </Td>
+                  <Td textAlign={"left"}>
+                    <PopMenu
+                      deleteFunc={() => dispatch(removeProduct(product._id))}
+                      editFunc={() => {
+                        navigate(product._id);
+                        // dispatch(reset());
+                      }}
+                    />
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        )}
+
         {/* {products?.map((product) => (
               <ProductCardUI product={product} />
             ))} */}
       </Box>
-      <Pagination
-        page={page}
-        setPage={setPage}
-        tPages={pagination?.totalPages}
-      />
+      {!isLoading && (
+        <Pagination
+          page={page}
+          setPage={setPage}
+          tPages={pagination?.totalPages}
+        />
+      )}
     </Stack>
   );
 };

@@ -19,7 +19,6 @@ import {
   Th,
   Td,
 } from "@chakra-ui/react";
-import { FaPlus } from "react-icons/fa";
 import { SearchIcon } from "@chakra-ui/icons";
 
 import PopMenu from "../../../components/PopMenu";
@@ -27,15 +26,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getAllCategories,
   removeCategory,
-  reset,
-  filterCategory,
-  resetCategory,
-  getCategory,
 } from "../../../features/category/categorySlice";
-import LoadingState from "../../../components/LoadingState";
 import { RiAddFill } from "react-icons/ri";
 import UrlModifier from "../../../utils/_url_modifier";
-import { GetQueryParams } from "../../../utils/GetQueryParams";
 import Pagination from "../../../components/Pagination";
 
 const Categories = () => {
@@ -82,17 +75,17 @@ const Categories = () => {
             </Button> */}
 
           <Button
-            bg="gray.800"
-            color="gray.200"
+            bg={"blue.500"}
+            color="white"
             fontSize=".8rem"
             fontWeight="bold"
-            leftIcon={<RiAddFill size="1.1rem" />}
-            _hover={{ bg: "gray.700" }}
-            _active={{ bg: "gray.700" }}
-            borderRadius="md"
+            leftIcon={<RiAddFill size="1rem" />}
+            _hover={{ bg: "blue.600" }}
+            _active={{ bg: "blue.700" }}
+            rounded="md"
             onClick={() => navigate("add")}
           >
-            Add
+            Add Category
           </Button>
         </Flex>
         {/* search input */}

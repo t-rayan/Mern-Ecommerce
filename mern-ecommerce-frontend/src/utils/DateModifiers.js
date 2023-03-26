@@ -16,6 +16,19 @@ const getAllMonths = () => {
   return months;
 };
 
+const getAllDays = () => {
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  return days;
+};
+
 export const convertDate = (date) => {
   const months = getAllMonths();
   let fullDate = "";
@@ -77,4 +90,16 @@ export const getFullDate = (date) => {
 export const getTime = (date) => {
   let myDate = new Date(date);
   return myDate.toLocaleTimeString();
+};
+
+export const getCurrentDateWithDayName = () => {
+  let currentDate = new Date();
+  const days = getAllDays();
+  const months = getAllMonths();
+  const today = days[currentDate.getDay()];
+  const day = currentDate.getDate();
+  const month = months[currentDate.getMonth()];
+  const year = currentDate.getFullYear();
+
+  return `${today} ${day} ${month} ${year}`;
 };

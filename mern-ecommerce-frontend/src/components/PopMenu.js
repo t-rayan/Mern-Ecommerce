@@ -23,16 +23,23 @@ const PopMenu = ({ deleteFunc, editFunc }) => {
             fontWeight="normal"
             fontSize=".8rem"
             variant="ghost"
+            colorScheme={"blue"}
+            w="100%"
             _focus={{ outline: "none" }}
             onClick={() => editFunc()}
+            display="flex"
+            justifyContent={"start"}
           >
             Edit
           </Button>
           <Button
+            w="100%"
             fontWeight="normal"
             colorScheme="red"
             fontSize=".8rem"
             variant="ghost"
+            display="flex"
+            justifyContent={"start"}
             _focus={{ outline: "none" }}
             onClick={() => deleteFunc()}
           >

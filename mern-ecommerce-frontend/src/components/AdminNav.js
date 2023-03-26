@@ -19,14 +19,13 @@ import {
   FaUserAlt,
   FaUserCircle,
 } from "react-icons/fa";
-import { MdAccountCircle } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { logoutUser } from "../features/auth/authSlice";
 import useMedia from "../hooks/useMedia";
+import { getCurrentDateWithDayName, getFullDate } from "../utils/DateModifiers";
 import GetInitials from "../utils/GetInitials";
 import MenuToggler from "./MenuToggler";
-import Searchbar from "./Searchbar";
 
 // custom component for usernav
 const AdminNav = () => {
@@ -35,6 +34,8 @@ const AdminNav = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const d = new Date();
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -74,12 +75,7 @@ const AdminNav = () => {
               <MenuToggler />
             </Box>
           )}
-          {/* <Box flex="1">
-            <Heading
-              fontSize={sm ? "1rem" : "1.2rem"}
-              textTransform={"capitalize"}
-            >{`Good morning, ${userInfo?.fullname}`}</Heading>
-          </Box> */}
+          <Text color="gray.500"> {getCurrentDateWithDayName()} </Text>
         </Box>
         <HStack>
           {/* check if user is logged in */}
@@ -93,6 +89,8 @@ const AdminNav = () => {
 // user avatar if user is logged in
 const UserAvatar = ({ handleLogout }) => {
   const navigate = useNavigate();
+  const { sm } = useMedia();
+
   const { userInfo } = useSelector((state) => state.auth);
 
   const handleUserProfilePage = (e) => {
@@ -112,7 +110,7 @@ const UserAvatar = ({ handleLogout }) => {
     <Menu>
       <MenuButton
         as={Box}
-        bg="gray.100"
+        bg="blue.50"
         borderRadius="30px"
         px="3"
         py="2"
@@ -120,9 +118,9 @@ const UserAvatar = ({ handleLogout }) => {
       >
         <Box display={"flex"} alignItems="center" gap={2}>
           <Avatar
-            size={"sm"}
-            bg="purple.400"
-            icon={<FaUserAlt fontSize={"1rem"} />}
+            size={sm ? "xs" : "sm"}
+            bg="blue.400"
+            icon={<FaUserAlt fontSize={sm ? ".8rem" : ".9rem"} />}
           />
           <Flex direction={"column"} mr="1">
             <Text
@@ -134,7 +132,7 @@ const UserAvatar = ({ handleLogout }) => {
             </Text>
             <Text fontSize={".7rem"}>{userInfo?.isAdmin && "Admin"}</Text>
           </Flex>
-          <Icon w="1.3rem" h="1.3rem" as={ChevronDownIcon} color="purple.400" />
+          <Icon w="1.3rem" h="1.3rem" as={ChevronDownIcon} color="blue.400" />
         </Box>
       </MenuButton>
       <MenuList fontSize={"1rem"} color="gray.600" fontWeight="900">

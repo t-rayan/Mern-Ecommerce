@@ -3,10 +3,12 @@ import { Box, Flex, IconButton, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getAllCategories } from "../features/category/categorySlice";
+import useMedia from "../hooks/useMedia";
 import UrlModifier from "../utils/_url_modifier";
 
 const Pagination = ({ tPages, page, setPage }) => {
   const dispatch = useDispatch();
+  const { sm } = useMedia();
   // const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(tPages || 5);
@@ -40,18 +42,18 @@ const Pagination = ({ tPages, page, setPage }) => {
         icon={<ChevronLeftIcon />}
         onClick={() => handlePageChange(page - 1)}
         isDisabled={page === 1}
-        bg="gray.200"
-        size={{ base: "xs" }}
+        colorScheme="blue"
+        size={sm ? "xs" : "sm"}
       />
-      <Text size={"xs"}>
+      <Text fontSize={sm ? ".8rem" : "1rem"}>
         Page {page} of {totalPages}
       </Text>
       <IconButton
         icon={<ChevronRightIcon />}
         onClick={() => handlePageChange(page + 1)}
         isDisabled={page === totalPages}
-        bg="gray.200"
-        size={{ base: "xs" }}
+        colorScheme="blue"
+        size={sm ? "xs" : "sm"}
       />
     </Flex>
   );
