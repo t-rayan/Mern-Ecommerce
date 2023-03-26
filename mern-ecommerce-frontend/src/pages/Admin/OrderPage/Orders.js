@@ -5,10 +5,12 @@ import {
   Box,
   Button,
   Flex,
+  Grid,
   Heading,
   Input,
   InputGroup,
   InputLeftElement,
+  Spinner,
   Stack,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,17 +71,25 @@ const Orders = () => {
           </InputGroup>
         </Box>
 
-        <OrderContainer
-          orders={orders}
-          setCurrentOrder={setCurrentOrder}
-          setDeliveryStatus={setDeliveryStatus}
-        />
+        {isLoading ? (
+          <Grid placeItems="center" minH="400px">
+            <Spinner />
+          </Grid>
+        ) : (
+          <>
+            <OrderContainer
+              orders={orders}
+              setCurrentOrder={setCurrentOrder}
+              setDeliveryStatus={setDeliveryStatus}
+            />
 
-        <Pagination
-          page={page}
-          setPage={setPage}
-          tPages={pagination?.totalPages}
-        />
+            <Pagination
+              page={page}
+              setPage={setPage}
+              tPages={pagination?.totalPages}
+            />
+          </>
+        )}
       </Stack>
     </>
   );

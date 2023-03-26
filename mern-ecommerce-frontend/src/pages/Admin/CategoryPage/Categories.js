@@ -76,6 +76,7 @@ const Categories = () => {
 
           <Button
             bg={"blue.500"}
+            size="md"
             color="white"
             fontSize=".8rem"
             fontWeight="bold"
@@ -85,7 +86,7 @@ const Categories = () => {
             rounded="md"
             onClick={() => navigate("add")}
           >
-            Add Category
+            Add
           </Button>
         </Flex>
         {/* search input */}

@@ -72,9 +72,10 @@ const Products = () => {
           // _hover={{ bg: "gray.700" }}
           // _active={{ bg: "gray.700" }}
           borderRadius="md"
+          size={sm ? "sm" : "md"}
           onClick={() => navigate("add")}
         >
-          Add Product
+          Add
         </Button>
       </Flex>
       {/* search input */}

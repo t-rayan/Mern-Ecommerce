@@ -53,9 +53,9 @@ const MainLayout = () => {
           top={0}
           left={0}
           width={lg ? "240px" : "280px"}
-          bg="#eee"
           h="100%"
           zIndex={"222"}
+          borderRight="1px solid #eee"
         >
           <UserSideMenu />
         </Box>

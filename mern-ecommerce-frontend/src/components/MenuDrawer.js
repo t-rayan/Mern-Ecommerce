@@ -24,11 +24,11 @@ const MenuDrawer = ({ onOpen }) => {
         onClose={() => dispatch(toggleSidebar())}
       >
         <DrawerOverlay />
-        <DrawerContent maxW={"280px"} bg="orange.50">
+        <DrawerContent maxW={"280px"}>
           {/* <DrawerCloseButton /> */}
 
           <DrawerBody width={"100%"} p={0}>
-            {userInfo?.isAdmin ? <AdminSideMenu /> : <UserSideMenu />}
+            {userInfo?.isAdmin ? <AdminSideMenu /> : " <UserSideMenu />"}
           </DrawerBody>
         </DrawerContent>
       </Drawer>

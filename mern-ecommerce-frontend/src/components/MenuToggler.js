@@ -13,7 +13,12 @@ const MenuToggler = () => {
       alignItems="center"
       onClick={() => dispatch(toggleSidebar())}
     >
-      <Icon cursor={"pointer"} color="black" as={RiMenu3Line} w={6} h={6} />
+      <Icon
+        cursor={"pointer"}
+        color="gray.500"
+        as={RiMenu3Line}
+        fontSize="1.2rem"
+      />
     </Box>
   );
 };

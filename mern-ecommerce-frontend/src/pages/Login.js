@@ -43,9 +43,20 @@ const Login = () => {
 
   return (
     <AuthLayout>
-      <Button variant={"link"} mb={5} onClick={() => navigate("/")}>
+      {/* <Button variant={"link"} mb={5} onClick={() => navigate("/")}>
         Back to shop
-      </Button>
+      </Button> */}
+      <Box textAlign={"center"}>
+        <Button
+          size={"lg"}
+          colorScheme="blue"
+          variant={"link"}
+          mb={5}
+          onClick={() => navigate("/")}
+        >
+          Tech-Hive
+        </Button>
+      </Box>
 
       <Box
         w="25rem"
@@ -60,7 +71,7 @@ const Login = () => {
           <Flex gap={2}>
             <Text fontSize=".9rem">Don`t have an account ? </Text>
             <Link to="/register">
-              <Text _hover={{ textDecoration: "underline" }} color="orange">
+              <Text _hover={{ textDecoration: "underline" }} color="blue.600">
                 Signup
               </Text>
             </Link>{" "}
@@ -74,7 +85,8 @@ const Login = () => {
                 Email address
               </FormLabel>
               <Input
-                _focus={{ border: "2px solid", borderColor: "orange.400" }}
+                _focusVisible={{ outlineOffset: "none" }}
+                _focus={{ border: "2px", borderColor: "blue.400" }}
                 borderColor="gray.300"
                 type="email"
                 {...register("email")}
@@ -87,7 +99,8 @@ const Login = () => {
                 Password
               </FormLabel>
               <Input
-                _focus={{ border: "2px solid", borderColor: "orange.400" }}
+                _focusVisible={{ outlineOffset: "none" }}
+                _focus={{ border: "2px", borderColor: "blue.400" }}
                 size="lg"
                 borderColor="gray.300"
                 type="password"
@@ -97,7 +110,7 @@ const Login = () => {
             </FormControl>
             {isError && <Alertbox msg={message} closeFunc={reset} />}
             <Button
-              colorScheme="orange"
+              colorScheme="blue"
               size="lg"
               w="100%"
               type="submit"

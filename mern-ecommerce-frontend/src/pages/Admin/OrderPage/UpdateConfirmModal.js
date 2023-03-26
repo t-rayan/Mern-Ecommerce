@@ -18,6 +18,7 @@ const UpdateConfirmModal = ({
   setDeliveryStatus,
   isOpen,
   onClose,
+  isLoading,
 }) => {
   const dispatch = useDispatch();
   return (
@@ -44,6 +45,7 @@ const UpdateConfirmModal = ({
             size="md"
             colorScheme="green"
             mr={3}
+            disabled={isLoading}
             onClick={() =>
               dispatch(
                 updateOrderDeliveryStatusAction({

@@ -42,7 +42,6 @@ const Pagination = ({ tPages, page, setPage }) => {
         icon={<ChevronLeftIcon />}
         onClick={() => handlePageChange(page - 1)}
         isDisabled={page === 1}
-        colorScheme="blue"
         size={sm ? "xs" : "sm"}
       />
       <Text fontSize={sm ? ".8rem" : "1rem"}>
@@ -52,7 +51,6 @@ const Pagination = ({ tPages, page, setPage }) => {
         icon={<ChevronRightIcon />}
         onClick={() => handlePageChange(page + 1)}
         isDisabled={page === totalPages}
-        colorScheme="blue"
         size={sm ? "xs" : "sm"}
       />
     </Flex>

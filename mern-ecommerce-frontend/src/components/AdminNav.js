@@ -19,6 +19,7 @@ import {
   FaUserAlt,
   FaUserCircle,
 } from "react-icons/fa";
+import { MdCalendarToday } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { logoutUser } from "../features/auth/authSlice";
@@ -33,9 +34,6 @@ const AdminNav = () => {
   const { userInfo } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const d = new Date();
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -69,13 +67,19 @@ const AdminNav = () => {
         zIndex="111"
         shadow={"sm"}
       >
-        <Box flexBasis="35rem" display={"flex"} gap={1} alignItems="center">
+        <Box flexBasis="35rem" display={"flex"} gap={2} alignItems="center">
           {(sm || md) && (
             <Box flex="none">
               <MenuToggler />
             </Box>
           )}
-          <Text color="gray.500"> {getCurrentDateWithDayName()} </Text>
+          <Flex alignItems={"center"} gap={2}>
+            <Icon color="blue.500" as={MdCalendarToday} />
+            <Text color="gray.500" fontSize={sm ? ".8rem" : "1rem"}>
+              {" "}
+              {getCurrentDateWithDayName()}{" "}
+            </Text>
+          </Flex>
         </Box>
         <HStack>
           {/* check if user is logged in */}
@@ -108,21 +112,14 @@ const UserAvatar = ({ handleLogout }) => {
 
   return (
     <Menu>
-      <MenuButton
-        as={Box}
-        bg="blue.50"
-        borderRadius="30px"
-        px="3"
-        py="2"
-        cursor={"pointer"}
-      >
+      <MenuButton as={Box} borderRadius="30px" px="3" py="2" cursor={"pointer"}>
         <Box display={"flex"} alignItems="center" gap={2}>
           <Avatar
             size={sm ? "xs" : "sm"}
-            bg="blue.400"
+            bg="blue.300"
             icon={<FaUserAlt fontSize={sm ? ".8rem" : ".9rem"} />}
           />
-          <Flex direction={"column"} mr="1">
+          {/* <Flex direction={"column"} mr="1">
             <Text
               fontWeight={"bold"}
               fontSize={".7rem"}
@@ -131,8 +128,8 @@ const UserAvatar = ({ handleLogout }) => {
               {firstName}
             </Text>
             <Text fontSize={".7rem"}>{userInfo?.isAdmin && "Admin"}</Text>
-          </Flex>
-          <Icon w="1.3rem" h="1.3rem" as={ChevronDownIcon} color="blue.400" />
+          </Flex> */}
+          <Icon w="1.3rem" h="1.3rem" as={ChevronDownIcon} color="gray.400" />
         </Box>
       </MenuButton>
       <MenuList fontSize={"1rem"} color="gray.600" fontWeight="900">
