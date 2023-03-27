@@ -67,8 +67,10 @@ const AdminLayout = () => {
         display="grid"
         pt="7.5rem"
         pb="1rem"
+        bg="gray.100"
+        minH={"100vh"}
       >
-        <Box w={"100%"} overflowX="auto">
+        <Box width={"100%"} overflowX="auto">
           <Outlet />
         </Box>
       </Box>

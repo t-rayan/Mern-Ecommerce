@@ -32,6 +32,7 @@ import useMedia from "../../../hooks/useMedia";
 import UrlModifier from "../../../utils/_url_modifier";
 import Pagination from "../../../components/Pagination";
 import { ProductCardUI } from "../../../components/cardui/ProductCardUI";
+import CardLayout from "../../../layouts/CardLayout";
 
 const Products = () => {
   const navigate = useNavigate();
@@ -56,31 +57,9 @@ const Products = () => {
   }, [dispatch, searchQuery, page]);
 
   return (
-    <Stack spacing="10">
-      {/* header */}
-      <Flex justifyContent="space-between" alignItems="flex-end">
-        <Heading size="md" color="gray.800">
-          Products
-        </Heading>
-        <Button
-          // bg="gray.800"
-          // color="gray.200"
-          colorScheme={"blue"}
-          fontSize=".8rem"
-          fontWeight="bold"
-          leftIcon={<RiAddFill size="1.1rem" />}
-          // _hover={{ bg: "gray.700" }}
-          // _active={{ bg: "gray.700" }}
-          borderRadius="md"
-          size={sm ? "sm" : "md"}
-          onClick={() => navigate("add")}
-        >
-          Add
-        </Button>
-      </Flex>
-      {/* search input */}
-      <Box mb="2rem">
-        <InputGroup>
+    <CardLayout title="Product List">
+      <Flex justifyContent={"space-between"} alignItems="center" gap={5}>
+        <InputGroup flexBasis={"20rem"}>
           <InputLeftElement
             pointerEvents="none"
             children={<SearchIcon color="gray.300" />}
@@ -93,7 +72,21 @@ const Products = () => {
             onChange={handleChange}
           />
         </InputGroup>
-      </Box>
+        <Button
+          bg={"blue.500"}
+          size="md"
+          color="white"
+          fontSize=".8rem"
+          fontWeight="bold"
+          leftIcon={<RiAddFill size="1rem" />}
+          _hover={{ bg: "blue.600" }}
+          _active={{ bg: "blue.700" }}
+          rounded="md"
+          onClick={() => navigate("add")}
+        >
+          Add
+        </Button>
+      </Flex>
 
       <Box
         textAlign={"center"}
@@ -186,7 +179,7 @@ const Products = () => {
           tPages={pagination?.totalPages}
         />
       )}
-    </Stack>
+    </CardLayout>
   );
 };
 

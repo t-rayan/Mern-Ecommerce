@@ -46,19 +46,19 @@ const OrderDetails = () => {
 
         {/* toolbar */}
         <Flex flexDirection="column">
-          <Heading mt={"2rem"} textTransform="capitalize">
+          <Heading mt={"1.5rem"} textTransform="capitalize">
             {order?.userId?.firstname}
           </Heading>
-          <HStack mt="3" color="gray.500">
-            <Text fontSize={"1rem"}>Placed on</Text>
-            <Icon as={HiOutlineCalendar} fontSize="1.5rem" />
-            <Text fontSize={"1rem"}> {getFullDate(order.createdAt)}</Text>
-            <Text fontSize={"1rem"}> {getTime(order.createdAt)}</Text>
+          <HStack fontSize={".9rem"} mt="3" color="gray.500">
+            <Text>Placed on</Text>
+            <Icon as={HiOutlineCalendar} fontSize="1.3rem" />
+            <Text> {getFullDate(order.createdAt)}</Text>
+            <Text> {getTime(order.createdAt)}</Text>
           </HStack>
         </Flex>
 
         {/* basic info */}
-        <Card mt={"2.8rem"}>
+        <Card mt={"1.5rem"}>
           <CardHeader>
             <Heading size="md">Basic Info</Heading>
           </CardHeader>

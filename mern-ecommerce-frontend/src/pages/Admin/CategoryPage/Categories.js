@@ -18,6 +18,10 @@ import {
   Tr,
   Th,
   Td,
+  Card,
+  CardHeader,
+  CardBody,
+  Divider,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 
@@ -30,6 +34,7 @@ import {
 import { RiAddFill } from "react-icons/ri";
 import UrlModifier from "../../../utils/_url_modifier";
 import Pagination from "../../../components/Pagination";
+import CardLayout from "../../../layouts/CardLayout";
 
 const Categories = () => {
   const navigate = useNavigate();
@@ -54,93 +59,68 @@ const Categories = () => {
   }, [dispatch, searchQuery, page]);
 
   return (
-    <>
-      {/* {isLoading ? (
-        <LoadingState />
-      ) : categories.length === 0 ? (
-        <EmptyState title="Categories" goto={() => navigate("add")} />
-      ) : ( */}
-      <Stack spacing="10">
-        {/* header */}
-        <Flex justifyContent="space-between" alignItems="flex-end">
-          <Heading size="md">Categories</Heading>
-          {/* <Button
-              size="sm"
-              colorScheme="teal"
-              leftIcon={<FaPlus />}
-              borderRadius="full"
-              onClick={() => navigate("add")}
-            >
-              Add
-            </Button> */}
+    <CardLayout title="Category List">
+      <Flex justifyContent={"space-between"} alignItems="center" gap={5}>
+        <InputGroup flexBasis={"20rem"}>
+          <InputLeftElement
+            pointerEvents="none"
+            children={<SearchIcon color="gray.300" />}
+          />
+          <Input
+            type="text"
+            name="q"
+            value={searchQuery}
+            placeholder="Search"
+            borderColor="gray.300"
+            onChange={handleChange}
+            ref={inputRef}
+          />
+        </InputGroup>
+        <Button
+          bg={"blue.500"}
+          size="md"
+          color="white"
+          fontSize=".8rem"
+          fontWeight="bold"
+          leftIcon={<RiAddFill size="1rem" />}
+          _hover={{ bg: "blue.600" }}
+          _active={{ bg: "blue.700" }}
+          rounded="md"
+          onClick={() => navigate("add")}
+        >
+          Add
+        </Button>
+      </Flex>
 
-          <Button
-            bg={"blue.500"}
-            size="md"
-            color="white"
-            fontSize=".8rem"
-            fontWeight="bold"
-            leftIcon={<RiAddFill size="1rem" />}
-            _hover={{ bg: "blue.600" }}
-            _active={{ bg: "blue.700" }}
-            rounded="md"
-            onClick={() => navigate("add")}
-          >
-            Add
-          </Button>
-        </Flex>
-        {/* search input */}
-        <Box>
-          <form>
-            <InputGroup>
-              <InputLeftElement
-                pointerEvents="none"
-                children={<SearchIcon color="gray.300" />}
-              />
-              <Input
-                type="text"
-                name="q"
-                value={searchQuery}
-                placeholder="Search"
-                borderColor="gray.300"
-                onChange={handleChange}
-                ref={inputRef}
-              />
-            </InputGroup>
-          </form>
-        </Box>
-        {/* content table */}
-        <Table variant="simple" size="md" colorScheme="gray">
-          <Thead>
-            <Tr>
-              <Th>NAME</Th>
-              <Th>OPTIONS</Th>
+      <Table variant="simple" size="md" colorScheme="gray">
+        <Thead>
+          <Tr>
+            <Th>NAME</Th>
+            <Th>OPTIONS</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {categories?.map((cat) => (
+            <Tr key={cat?._id}>
+              <Td>{cat?.name}</Td>
+              <Td>
+                <PopMenu
+                  deleteFunc={() => dispatch(removeCategory(cat?._id))}
+                  editFunc={() => {
+                    navigate(cat?._id);
+                  }}
+                />
+              </Td>
             </Tr>
-          </Thead>
-          <Tbody>
-            {categories?.map((cat) => (
-              <Tr key={cat?._id}>
-                <Td>{cat?.name}</Td>
-                <Td>
-                  <PopMenu
-                    deleteFunc={() => dispatch(removeCategory(cat?._id))}
-                    editFunc={() => {
-                      navigate(cat?._id);
-                    }}
-                  />
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-        <Pagination
-          page={page}
-          setPage={setPage}
-          tPages={pagination?.totalPages}
-        />
-      </Stack>
-      {/* )} */}
-    </>
+          ))}
+        </Tbody>
+      </Table>
+      <Pagination
+        page={page}
+        setPage={setPage}
+        tPages={pagination?.totalPages}
+      />
+    </CardLayout>
   );
 };
 

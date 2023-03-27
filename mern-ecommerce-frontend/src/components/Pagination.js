@@ -42,16 +42,18 @@ const Pagination = ({ tPages, page, setPage }) => {
         icon={<ChevronLeftIcon />}
         onClick={() => handlePageChange(page - 1)}
         isDisabled={page === 1}
-        size={sm ? "xs" : "sm"}
+        variant={"ghost"}
+        size={sm ? "xs" : "md"}
       />
-      <Text fontSize={sm ? ".8rem" : "1rem"}>
+      <Text fontSize={sm ? ".8rem" : ".9rem"}>
         Page {page} of {totalPages}
       </Text>
       <IconButton
+        variant={"ghost"}
         icon={<ChevronRightIcon />}
         onClick={() => handlePageChange(page + 1)}
         isDisabled={page === totalPages}
-        size={sm ? "xs" : "sm"}
+        size={sm ? "xs" : "md"}
       />
     </Flex>
   );

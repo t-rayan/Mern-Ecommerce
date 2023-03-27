@@ -42,12 +42,12 @@ const OrderContainer = ({ orders }) => {
         return (
           <Flex
             key={order._id}
-            mt="1.3rem"
             borderRadius={"5px"}
             bg="gray.50"
+            mb="1.2rem"
             // h="5rem"
+            py="3"
             w={"100%"}
-            py={3}
             px={4}
             gap={2}
             alignItems="center"

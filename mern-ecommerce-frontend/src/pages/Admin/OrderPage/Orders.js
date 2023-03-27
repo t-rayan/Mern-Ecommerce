@@ -22,6 +22,7 @@ import { fetchAllOrders } from "../../../features/order/orderSlice";
 import Pagination from "../../../components/Pagination";
 import UrlModifier from "../../../utils/_url_modifier";
 import OrderContainer from "./OrderContainer";
+import CardLayout from "../../../layouts/CardLayout";
 
 const Orders = () => {
   const dispatch = useDispatch();
@@ -46,52 +47,44 @@ const Orders = () => {
   }, [dispatch, page, searchQuery]);
 
   return (
-    <>
-      <Stack spacing="5">
-        {/* header */}
-        <Flex justifyContent="space-between" alignItems="flex-end">
-          <Heading size="lg" color="gray.800">
-            Orders
-          </Heading>
-        </Flex>
-        {/* search input */}
-        <Box mb={"3rem"}>
-          <InputGroup>
-            <InputLeftElement
-              pointerEvents="none"
-              children={<SearchIcon color="gray.300" />}
-            />
-            <Input
-              type="text"
-              name="q"
-              placeholder="Search"
-              borderColor="gray.300"
-              onChange={handleChange}
-            />
-          </InputGroup>
-        </Box>
+    <CardLayout title={"Order List"}>
+      {/* search input */}
+      <Box>
+        <InputGroup maxW="20rem">
+          <InputLeftElement
+            pointerEvents="none"
+            children={<SearchIcon color="gray.300" />}
+          />
+          <Input
+            type="text"
+            name="q"
+            placeholder="Search"
+            borderColor="gray.300"
+            onChange={handleChange}
+          />
+        </InputGroup>
+      </Box>
 
-        {isLoading ? (
-          <Grid placeItems="center" minH="400px">
-            <Spinner />
-          </Grid>
-        ) : (
-          <>
-            <OrderContainer
-              orders={orders}
-              setCurrentOrder={setCurrentOrder}
-              setDeliveryStatus={setDeliveryStatus}
-            />
+      {isLoading ? (
+        <Grid placeItems="center" minH="400px">
+          <Spinner />
+        </Grid>
+      ) : (
+        <>
+          <OrderContainer
+            orders={orders}
+            setCurrentOrder={setCurrentOrder}
+            setDeliveryStatus={setDeliveryStatus}
+          />
 
-            <Pagination
-              page={page}
-              setPage={setPage}
-              tPages={pagination?.totalPages}
-            />
-          </>
-        )}
-      </Stack>
-    </>
+          <Pagination
+            page={page}
+            setPage={setPage}
+            tPages={pagination?.totalPages}
+          />
+        </>
+      )}
+    </CardLayout>
   );
 };
 
