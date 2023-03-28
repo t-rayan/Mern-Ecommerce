@@ -17,6 +17,7 @@ import { logoutUser } from "../features/auth/authSlice";
 import useMedia from "../hooks/useMedia";
 import MenuToggler from "./MenuToggler";
 import { FaCog, FaInfo, FaSignOutAlt, FaUserCircle } from "react-icons/fa";
+import UserAvatar from "./UserAvatar";
 
 const ShopNavbar = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -72,11 +73,10 @@ const ShopNavbar = () => {
         </Box>
         <HStack>
           <IconButton
-            rounded={"lg"}
-            shadow="md"
-            colorScheme="purple"
+            variant={"ghost"}
             aria-label="Cart"
             size={sm ? "md" : "md"}
+            color="gray"
             icon={<RiShoppingBagFill />}
             onClick={() => navigate("/mycart")}
           />{" "}
@@ -96,44 +96,6 @@ const ShopNavbar = () => {
         </HStack>
       </Box>
     </>
-  );
-};
-
-// user avatar if user is logged in
-const UserAvatar = ({ handleLogout }) => {
-  const navigate = useNavigate();
-  const { userInfo } = useSelector((state) => state.auth);
-
-  const handleUserProfilePage = (e) => {
-    e.preventDefault();
-    navigate(`user/${userInfo?.id}`);
-  };
-
-  return (
-    <Menu>
-      <MenuButton
-        as={IconButton}
-        shadow="md"
-        aria-label="Options"
-        variant="outline"
-        bg="orange.400"
-        children={GetInitials(userInfo?.fullname)}
-        border="2px solid"
-        borderColor={"orange.400"}
-        rounded={"lg"}
-        color="white"
-      />
-      <MenuList fontSize={"1rem"} color="gray.600" fontWeight="900">
-        <MenuItem icon={<FaUserCircle />} onClick={handleUserProfilePage}>
-          My Profile
-        </MenuItem>
-        <MenuItem icon={<FaCog />}>Settings</MenuItem>
-        <MenuItem icon={<FaInfo />}>Help</MenuItem>
-        <MenuItem icon={<FaSignOutAlt />} onClick={handleLogout}>
-          Logout
-        </MenuItem>
-      </MenuList>
-    </Menu>
   );
 };
 

@@ -8,9 +8,12 @@ import { getAllProducts } from "../features/product/productSlice";
 import SingleProduct from "../components/SingleProduct";
 import LoadingState from "../components/LoadingState";
 import ShopBanner from "../components/ShopBanner";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { userInfo } = useSelector((state) => state.auth);
   const { products, filterGroup, isLoading } = useSelector(
     (state) => state.products
   );
@@ -18,6 +21,12 @@ const Home = () => {
   useEffect(() => {
     dispatch(getAllProducts(filterGroup));
   }, [dispatch, filterGroup]);
+
+  useEffect(() => {
+    if (userInfo?.isAdmin) {
+      navigate("admin");
+    }
+  }, [navigate]);
 
   if (isLoading) {
     return <LoadingState />;

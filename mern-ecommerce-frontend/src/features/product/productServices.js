@@ -14,17 +14,18 @@ const getProductsService = async () => {
 
 // service to get all product by category provided
 const getProductByCategoryService = async (payload) => {
+  console.log(payload);
   const myUrl = new URL(window.location.href);
 
   const params = new URLSearchParams(myUrl.search);
 
-  const brand = params?.get("brand") || "all";
+  const brand = params?.get("brand") || null;
   const sort = params?.get("sort");
   const minPrice = params?.get("minPrice") || null;
   const maxPrice = params?.get("maxPrice") || null;
 
   const res = await instance.get(
-    `/product/${payload}?brand=${brand}&minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${sort}`
+    `/product/category/${payload}?brand=${brand}&minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${sort}`
   );
   return res;
 };

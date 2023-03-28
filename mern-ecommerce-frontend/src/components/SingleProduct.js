@@ -28,9 +28,9 @@ const SingleProduct = ({ product }) => {
       gap="30px"
       // border="2px"
       padding="2rem 1.3rem"
-      rounded="xl"
+      rounded="md"
       cursor="pointer"
-      shadow="md"
+      shadow="sm"
       border="1px solid #eee"
       bg="white"
       mx={sm && "2rem"}
@@ -64,7 +64,7 @@ const SingleProduct = ({ product }) => {
           ${price}
         </Text>
         <IconButton
-          colorScheme="purple"
+          colorScheme="blue"
           size="sm"
           shadow="lg"
           icon={

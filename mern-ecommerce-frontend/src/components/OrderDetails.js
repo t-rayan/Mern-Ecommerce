@@ -110,7 +110,7 @@ const OrderDetails = () => {
               </Flex>
 
               {/* order ID */}
-              <Flex gap={3} wrap={"wrap"} px="5">
+              <Flex wrap={"wrap"} px="5">
                 <Heading flex={"1 1 20%"} size="xs" textTransform="uppercase">
                   ID
                 </Heading>
@@ -120,7 +120,7 @@ const OrderDetails = () => {
               </Flex>
 
               {/* date */}
-              <Flex gap={3} wrap={"wrap"} px="5" alignItems={"start"}>
+              <Flex wrap={"wrap"} px="5" alignItems={"start"}>
                 <Heading flex={"1 1 20%"} size="xs" textTransform="uppercase">
                   Date
                 </Heading>
@@ -130,7 +130,7 @@ const OrderDetails = () => {
               </Flex>
 
               {/* total */}
-              <Flex gap={3} wrap={"wrap"} px="5" alignItems={"start"}>
+              <Flex wrap={"wrap"} px="5" alignItems={"start"}>
                 <Heading flex={"1 1 20%"} size="xs" textTransform="uppercase">
                   Total
                 </Heading>
@@ -140,13 +140,7 @@ const OrderDetails = () => {
               </Flex>
 
               {/* Payment Status */}
-              <Flex
-                gap={3}
-                rowGap={".7rem"}
-                wrap={"wrap"}
-                px="5"
-                alignItems={"start"}
-              >
+              <Flex rowGap={".7rem"} wrap={"wrap"} px="5" alignItems={"center"}>
                 <Heading flex={"1 1 20%"} size="xs" textTransform="uppercase">
                   Payment
                 </Heading>
@@ -158,13 +152,7 @@ const OrderDetails = () => {
               </Flex>
 
               {/* Delivery Status */}
-              <Flex
-                gap={3}
-                rowGap={".7rem"}
-                wrap={"wrap"}
-                px="5"
-                alignItems={"start"}
-              >
+              <Flex rowGap={".7rem"} wrap={"wrap"} px="5" alignItems={"center"}>
                 <Heading flex={"1 1 20%"} size="xs" textTransform="uppercase">
                   Delivery
                 </Heading>

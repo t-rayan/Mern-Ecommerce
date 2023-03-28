@@ -33,26 +33,28 @@ const FilterPanel = () => {
   }, [dispatch]);
 
   return (
-    <>
-      <Box
-        h="auto"
-        py={6}
-        display="flex"
-        gap={"2rem"}
-        justifyContent="space-between"
-      >
-        {/* catergory filter */}
-        <Box>
-          <HStack alignItems="start" spacing="5">
-            <BrandFilter />
-            <Box>
-              <PriceSlider />
-            </Box>
-          </HStack>
-        </Box>
-        <SortFilter />
+    <Box
+      h="auto"
+      py={6}
+      display="flex"
+      gap={"2rem"}
+      bg="white"
+      px="5"
+      shadow={"sm"}
+      rounded="md"
+      justifyContent="space-between"
+    >
+      {/* catergory filter */}
+      <Box>
+        <HStack alignItems="start" spacing="5">
+          <BrandFilter />
+          <Box>
+            <PriceSlider />
+          </Box>
+        </HStack>
       </Box>
-    </>
+      <SortFilter />
+    </Box>
   );
 };
 

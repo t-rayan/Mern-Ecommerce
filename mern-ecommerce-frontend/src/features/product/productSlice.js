@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 export const getAllProductsByCategoryAction = createAsyncThunk(
   "product/getAllByCategory",
   async (payload, thunkAPI) => {
+    console.log(payload);
     try {
       const { data, status } =
         await productServices.getProductByCategoryService(payload);
@@ -15,8 +16,6 @@ export const getAllProductsByCategoryAction = createAsyncThunk(
       if (status === 200) {
         return data;
       }
-
-      // return await productServices.getProductsService();
     } catch (error) {
       const message =
         (error.response && error.response.data && error.response.data.msg) ||

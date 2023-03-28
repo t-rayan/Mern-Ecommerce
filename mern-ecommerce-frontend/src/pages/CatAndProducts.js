@@ -45,7 +45,7 @@ const CatAndProducts = () => {
           <LoadingState />
         ) : (
           <>
-            <Box display="grid">
+            <Box display="grid" mt="10">
               {products?.length > 0 ? (
                 <Box
                   display="grid"

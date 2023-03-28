@@ -66,9 +66,11 @@ const MainLayout = () => {
         ml="auto"
         display="grid"
         pt="7.5rem"
+        bg="gray.100"
+        minH={"100vh"}
         pb="1rem"
       >
-        <Box>
+        <Box width={"100%"} overflowX="auto">
           <Outlet />
         </Box>
       </Box>

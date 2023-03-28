@@ -10,6 +10,7 @@ import {
 } from "../utils/validation.util.js";
 
 export const getAllProductsByCategory = async (req, res) => {
+  console.log(req.params);
   const reqCategory = req.params.category || null;
   const reqBrand = req.query?.brand || null;
   const reqSort = req.query.sort !== "null" ? req.query.sort : "asc";
@@ -34,6 +35,8 @@ export const getAllProductsByCategory = async (req, res) => {
           $lte: parseInt(req.query?.maxPrice),
         };
       }
+
+      console.log(query);
 
       if (reqSort === "asc") {
         sort.name = 1;
@@ -88,9 +91,9 @@ export const getAllProducts = async (req, res) => {
           ],
         },
       },
-    ])
-      .skip(skip)
-      .limit(size);
+    ]);
+    // .skip(skip)
+    // .limit(size);
 
     const count = await Product.countDocuments({});
     const totalPages = Math.ceil(count / size);
