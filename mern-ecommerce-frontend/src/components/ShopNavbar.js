@@ -1,26 +1,24 @@
+import { Box, HStack, IconButton } from "@chakra-ui/react";
 import {
-  Box,
-  HStack,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-} from "@chakra-ui/react";
-import { RiShoppingBagFill, RiUser2Line } from "react-icons/ri";
+  RiShoppingBag3Line,
+  RiShoppingBagFill,
+  RiShoppingCart2Line,
+  RiUser2Line,
+} from "react-icons/ri";
 import Searchbar from "./Searchbar";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
-import GetInitials from "../utils/GetInitials";
 
 import { logoutUser } from "../features/auth/authSlice";
 import useMedia from "../hooks/useMedia";
 import MenuToggler from "./MenuToggler";
-import { FaCog, FaInfo, FaSignOutAlt, FaUserCircle } from "react-icons/fa";
 import UserAvatar from "./UserAvatar";
+import { FaCartPlus } from "react-icons/fa";
+import { MdShoppingCart } from "react-icons/md";
 
 const ShopNavbar = () => {
   const { userInfo } = useSelector((state) => state.auth);
+  const { cartItems } = useSelector((state) => state.cart);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -72,24 +70,37 @@ const ShopNavbar = () => {
           </Box>
         </Box>
         <HStack>
-          <IconButton
-            variant={"ghost"}
-            aria-label="Cart"
-            size={sm ? "md" : "md"}
-            color="gray"
-            icon={<RiShoppingBagFill />}
-            onClick={() => navigate("/mycart")}
-          />{" "}
+          <Box pos="relative">
+            <IconButton
+              variant={"ghost"}
+              aria-label="Cart"
+              size={sm ? "md" : "md"}
+              icon={<RiShoppingBag3Line fontSize={"1.2rem"} />}
+              onClick={() => navigate("/mycart")}
+            />{" "}
+            {cartItems.length > 0 && (
+              <Box
+                pos="absolute"
+                top={"25%"}
+                right="25%"
+                w=".5rem"
+                h=".5rem"
+                bg="red"
+                rounded="full"
+              />
+            )}
+          </Box>
+
           {/* check if user is logged in */}
           {userInfo && <UserAvatar handleLogout={handleLogout} />}
           {!userInfo && (
             <IconButton
               rounded={"lg"}
-              shadow="md"
+              variant="ghost"
               colorScheme="gray"
               aria-label="Account"
               size={sm ? "md" : "md"}
-              icon={<RiUser2Line />}
+              icon={<RiUser2Line fontSize={"1.2rem"} color="gray.300" />}
               onClick={() => navigate("/login")}
             />
           )}

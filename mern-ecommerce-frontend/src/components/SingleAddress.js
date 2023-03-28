@@ -22,8 +22,8 @@ const SingleAddress = ({ nextStep, address }) => {
     <>
       <Box
         borderRadius="10px"
-        bg="gray.100"
-        borderColor={"#eee"}
+        border={"1px solid"}
+        borderColor={"gray.300"}
         px={"1.5rem"}
         py="1.5rem"
         // gap={5}

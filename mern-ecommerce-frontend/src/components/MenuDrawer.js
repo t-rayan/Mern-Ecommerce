@@ -28,7 +28,7 @@ const MenuDrawer = ({ onOpen }) => {
           {/* <DrawerCloseButton /> */}
 
           <DrawerBody width={"100%"} p={0}>
-            {userInfo?.isAdmin ? <AdminSideMenu /> : " <UserSideMenu />"}
+            {userInfo?.isAdmin ? <AdminSideMenu /> : <UserSideMenu />}
           </DrawerBody>
         </DrawerContent>
       </Drawer>

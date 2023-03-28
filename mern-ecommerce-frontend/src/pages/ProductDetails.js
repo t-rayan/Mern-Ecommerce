@@ -39,8 +39,11 @@ const ProductDetails = () => {
         display="grid"
         gridTemplateColumns="repeat( auto-fit, minmax(350px, 1fr) );"
         gap={"2rem"}
-        mt={"3rem"}
         alignItems="center"
+        bg="white"
+        p={5}
+        rounded="md"
+        shadow="sm"
       >
         <Box>
           <ImageSlider
@@ -108,11 +111,11 @@ const ProductDetails = () => {
           </Box>
         </Box>
       </Box>
-      <Box maxW="100%" mt={"4rem"}>
+      <Box maxW="100%" mt={"2rem"} bg="white" p={10} rounded="md" shadow={"sm"}>
         <Heading size="md">Product Specifications</Heading>
         {/* <Text  mt={1}>{product?.desc}</Text> */}
 
-        <Text mt={1} dangerouslySetInnerHTML={{ __html: product?.desc }} />
+        <Text mt={5} dangerouslySetInnerHTML={{ __html: product?.desc }} />
       </Box>
     </Box>
   );

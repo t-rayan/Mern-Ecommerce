@@ -10,7 +10,7 @@ const MyCart = () => {
 
   return (
     <>
-      <Box borderRadius="10px" w="100%">
+      <Box bg="white" p={5} rounded="md" shadow="sm" w="100%">
         <Flex gap={2} justifyContent="space-between" alignItems="center">
           <Box display="flex" alignItems="center">
             <Heading size="sm">Cart </Heading>{" "}

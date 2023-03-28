@@ -100,7 +100,14 @@ const OrderSummary = ({ pageTitles }) => {
   };
 
   return (
-    <Box display="grid" gap={"1.5rem"}>
+    <Box
+      display="grid"
+      p="5"
+      rounded="md"
+      shadow="sm"
+      gap={"1.5rem"}
+      bg="white"
+    >
       {shippingAddress && isPaymentScreen && (
         <Box p={5}>
           <Flex alignItems="center" justifyContent="space-between">
@@ -124,7 +131,7 @@ const OrderSummary = ({ pageTitles }) => {
       <>
         <Heading size="sm">Order Summary</Heading>
 
-        <Box px="5" py={"1.7rem"} bg="gray.100" borderRadius="5px">
+        <Box py={"1.7rem"} borderRadius="5px">
           <Box display="grid" gap={4}>
             <Flex
               color="gray.400"

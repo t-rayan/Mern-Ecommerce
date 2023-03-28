@@ -71,7 +71,7 @@ const BillandAddForm = () => {
 
   return (
     <>
-      <Box h="100%">
+      <Box h="100%" p={5} rounded="md">
         {/* list of address */}
         <Flex justifyContent={"space-between"}>
           <Heading fontSize={"1.1rem"} mb="1.5rem" fontWeight={"normal"}>
@@ -93,7 +93,8 @@ const BillandAddForm = () => {
         </Flex>
 
         <Box
-          border={"1px solid #ddd"}
+          // border={"1px solid #ddd"}
+          bg="white"
           p={"2rem"}
           rounded="xl"
           display={"flex"}

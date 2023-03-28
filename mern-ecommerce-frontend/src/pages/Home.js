@@ -38,7 +38,7 @@ const Home = () => {
       <Box>
         {/* <UtilityBar /> */}
         <Box mt="3rem">
-          <Heading size="md">All Products</Heading>
+          <Heading size="md">Recently Added</Heading>
 
           <Box
             mt={10}

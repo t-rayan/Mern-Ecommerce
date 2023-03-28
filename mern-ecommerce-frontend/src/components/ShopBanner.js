@@ -152,7 +152,7 @@ const ShopBanner = () => {
         px={4}
         colSpan={{ xl: 2, lg: "2", md: "2", sm: "1" }}
         rowSpan={{ xl: 1, lg: "2", md: "2", sm: "1" }}
-        bg="gray.100"
+        bg="white"
         rounded={"2xl"}
         maxH={sm ? "10rem" : "13rem"}
         pos={"relative"}
@@ -165,7 +165,7 @@ const ShopBanner = () => {
           <Heading fontSize={sm ? "1.1rem" : "1.4rem"}>
             Apple Watch Ultra Series
           </Heading>
-          <Button shadow="lg" mt={4} colorScheme={"purple"}>
+          <Button shadow="lg" mt={4} colorScheme={"blue"}>
             Learn More
           </Button>
         </Box>
