@@ -38,85 +38,88 @@ function App() {
       <ToastContainer />
       <Routes>
         {/* shop routes */}
-        <Route path="/" element={<MainLayout />}>
-          <Route index element={<Home />} />
-          <Route path="category/:name" element={<CatAndProducts />} />
-          <Route path="products/:productId" element={<ProductView />} />
 
-          <Route path="products/search" element={<SearchResults />} />
+        <Route path="/">
+          <Route path="shop" element={<MainLayout />}>
+            <Route index element={<Home />} />
+            <Route path="category/:name" element={<CatAndProducts />} />
+            <Route path="products/:productId" element={<ProductView />} />
 
-          {/* checkout process */}
-          <Route path="/mycart" element={<Cartpage />}>
-            <Route index element={<MyCart />} />
+            <Route path="products/search" element={<SearchResults />} />
+
+            {/* checkout process */}
+            <Route path="mycart" element={<Cartpage />}>
+              <Route index element={<MyCart />} />
+              <Route path="checkout" element={<Checkout />} />
+            </Route>
+
             <Route path="checkout" element={<Checkout />} />
+            <Route
+              path=":orderId/checkout-success"
+              element={<CheckoutSuccess />}
+            />
           </Route>
 
-          <Route path="checkout" element={<Checkout />} />
+          {/* user routes */}
+          <Route path="/user/:id" element={<MainLayout />}>
+            <Route
+              index
+              element={
+                <Protected>
+                  <User />
+                </Protected>
+              }
+            />
+            <Route
+              path="orders/:id"
+              element={
+                <Protected>
+                  <SingleOrder />
+                </Protected>
+              }
+            />
+          </Route>
+          {/* auth routes */}
           <Route
-            path=":orderId/checkout-success"
-            element={<CheckoutSuccess />}
-          />
-        </Route>
-
-        {/* user routes */}
-        <Route path="/user/:id" element={<MainLayout />}>
-          <Route
-            index
+            path="/register"
             element={
-              <Protected>
-                <User />
-              </Protected>
+              <Restricted>
+                <Register />
+              </Restricted>
             }
           />
+
+          <Route path="/login" element={<Login />} />
+
+          {/* admin Routes */}
           <Route
-            path="orders/:id"
+            path="/admin"
             element={
-              <Protected>
-                <SingleOrder />
-              </Protected>
+              <AdminRoute>
+                <AdminLayout />
+              </AdminRoute>
             }
-          />
-        </Route>
-        {/* auth routes */}
-        <Route
-          path="/register"
-          element={
-            <Restricted>
-              <Register />
-            </Restricted>
-          }
-        />
+          >
+            <Route index element={<Dashboard />} />
 
-        <Route path="/login" element={<Login />} />
-
-        {/* admin Routes */}
-        <Route
-          path="/admin"
-          element={
-            <AdminRoute>
-              <AdminLayout />
-            </AdminRoute>
-          }
-        >
-          <Route index element={<Dashboard />} />
-
-          <Route path="categories" element={<InnerLayout />}>
-            <Route index element={<Categories />} />
-            <Route path="add" element={<AddCategory />} />
-            <Route path=":id" element={<AddCategory />} />
+            <Route path="categories" element={<InnerLayout />}>
+              <Route index element={<Categories />} />
+              <Route path="add" element={<AddCategory />} />
+              <Route path=":id" element={<AddCategory />} />
+            </Route>
+            <Route path="products" element={<InnerLayout />}>
+              <Route index element={<Products />} />
+              <Route path="add" element={<AddProduct />} />
+              <Route path=":id" element={<EditProduct />} />
+            </Route>
+            {/* <Route path="products" element={<Products />} /> */}
+            <Route path="orders" element={<InnerLayout />}>
+              <Route index element={<Orders />} />
+              <Route path=":id" element={<OrderDetails />} />
+            </Route>
+            <Route path="customers" element={<Customers />} />
+            <Route path="settings" element={<Settings />} />
           </Route>
-          <Route path="products" element={<InnerLayout />}>
-            <Route index element={<Products />} />
-            <Route path="add" element={<AddProduct />} />
-            <Route path=":id" element={<EditProduct />} />
-          </Route>
-          {/* <Route path="products" element={<Products />} /> */}
-          <Route path="orders" element={<InnerLayout />}>
-            <Route index element={<Orders />} />
-            <Route path=":id" element={<OrderDetails />} />
-          </Route>
-          <Route path="customers" element={<Customers />} />
-          <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>
       <Outlet />

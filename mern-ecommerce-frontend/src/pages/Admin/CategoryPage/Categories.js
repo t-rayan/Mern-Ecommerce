@@ -35,6 +35,7 @@ import { RiAddFill } from "react-icons/ri";
 import UrlModifier from "../../../utils/_url_modifier";
 import Pagination from "../../../components/Pagination";
 import CardLayout from "../../../layouts/CardLayout";
+import LoadingState from "../../../components/LoadingState";
 
 const Categories = () => {
   const navigate = useNavigate();
@@ -44,7 +45,9 @@ const Categories = () => {
 
   const inputRef = useRef();
 
-  const { categories, pagination } = useSelector((state) => state.categories);
+  const { categories, pagination, isLoading } = useSelector(
+    (state) => state.categories
+  );
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -92,34 +95,40 @@ const Categories = () => {
         </Button>
       </Flex>
 
-      <Table variant="simple" size="md" colorScheme="gray">
-        <Thead>
-          <Tr>
-            <Th>NAME</Th>
-            <Th>OPTIONS</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {categories?.map((cat) => (
-            <Tr key={cat?._id}>
-              <Td>{cat?.name}</Td>
-              <Td>
-                <PopMenu
-                  deleteFunc={() => dispatch(removeCategory(cat?._id))}
-                  editFunc={() => {
-                    navigate(cat?._id);
-                  }}
-                />
-              </Td>
-            </Tr>
-          ))}
-        </Tbody>
-      </Table>
-      <Pagination
-        page={page}
-        setPage={setPage}
-        tPages={pagination?.totalPages}
-      />
+      {isLoading ? (
+        <LoadingState />
+      ) : (
+        <>
+          <Table variant="simple" size="md" colorScheme="gray">
+            <Thead>
+              <Tr>
+                <Th>NAME</Th>
+                <Th>OPTIONS</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {categories?.map((cat) => (
+                <Tr key={cat?._id}>
+                  <Td>{cat?.name}</Td>
+                  <Td>
+                    <PopMenu
+                      deleteFunc={() => dispatch(removeCategory(cat?._id))}
+                      editFunc={() => {
+                        navigate(cat?._id);
+                      }}
+                    />
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+          <Pagination
+            page={page}
+            setPage={setPage}
+            tPages={pagination?.totalPages}
+          />
+        </>
+      )}
     </CardLayout>
   );
 };

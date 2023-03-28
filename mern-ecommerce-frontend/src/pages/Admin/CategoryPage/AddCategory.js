@@ -64,7 +64,7 @@ const AddCategory = () => {
 
   return (
     <FormLayout title={id ? "Edit Category" : "Add Category"}>
-      <Box w={sm ? "100%" : "30rem"} borderRadius="md">
+      <Box bg={"white"} p={5} w={sm ? "100%" : "30rem"} borderRadius="md">
         <form onSubmit={handleSubmit}>
           <Stack spacing={4}>
             <AppInput

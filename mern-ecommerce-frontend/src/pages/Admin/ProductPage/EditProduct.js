@@ -115,16 +115,16 @@ const EditProduct = () => {
 
   return (
     <FormLayout title="Edit Product">
-      <Box borderRadius="md">
-        <form onSubmit={handleSubmit}>
-          {/* main form */}
-          <Box
-            display="grid"
-            gap="3rem"
-            gridTemplateColumns={sm || md ? "1fr" : "1fr .5fr"}
-          >
-            {/* left form controls */}
-            <Stack spacing={8} shadow="lg" p={"1.5rem"} borderRadius="10px">
+      <form onSubmit={handleSubmit}>
+        {/* main form */}
+        <Box
+          display="grid"
+          gap="3rem"
+          gridTemplateColumns={sm || md ? "1fr" : "1fr .5fr"}
+        >
+          {/* left form controls */}
+          <Stack spacing={8}>
+            <Stack bg="white" spacing={8} shadow="sm" p={"1.5rem"} rounded="md">
               <AppInput
                 name="name"
                 label="Product Name"
@@ -136,7 +136,6 @@ const EditProduct = () => {
 
               <FormControl>
                 <FormLabel htmlFor="cat-name"> Desc</FormLabel>
-
                 <JoditEditor
                   ref={joEditor}
                   value={currentProduct?.desc}
@@ -148,7 +147,9 @@ const EditProduct = () => {
                   }}
                 />
               </FormControl>
+            </Stack>
 
+            <Stack bg="white" spacing={8} shadow="sm" p={"1.5rem"} rounded="md">
               {/* multiple image upload */}
               <FormControl>
                 <FormLabel htmlFor="product-images"> Images</FormLabel>
@@ -262,101 +263,109 @@ const EditProduct = () => {
                 </Box>
               </FormControl>
             </Stack>
+          </Stack>
 
-            {/* right form controls */}
+          {/* right form controls */}
 
-            <Stack spacing={8}>
-              <VStack shadow="lg" p="1.5rem" borderRadius="10px" spacing={10}>
+          <Stack spacing={8}>
+            <VStack
+              bg="white"
+              spacing={8}
+              shadow="sm"
+              p={"1.5rem"}
+              rounded="md"
+            >
+              <AppInput
+                name="inventory"
+                label="Inventory"
+                type="text"
+                placeholder="Product inventory"
+                onChange={handleChange}
+                value={currentProduct?.inventory}
+              />
+
+              <AppInput
+                name="price"
+                label="Price"
+                type="number"
+                placeholder="Price"
+                onChange={handleChange}
+                value={currentProduct?.price}
+              />
+
+              {/* select brand */}
+              <BrandSelector
+                handleChange={handleChange}
+                value={currentProduct?.brand}
+              />
+            </VStack>
+
+            <VStack
+              bg="white"
+              spacing={8}
+              shadow="sm"
+              p={"1.5rem"}
+              rounded="md"
+            >
+              <HStack spacing={5}>
                 <AppInput
-                  name="inventory"
-                  label="Inventory"
+                  name="size"
+                  label="Storage"
                   type="text"
-                  placeholder="Product inventory"
+                  placeholder="Storage"
                   onChange={handleChange}
-                  value={currentProduct?.inventory}
+                  value={currentProduct?.size}
                 />
 
                 <AppInput
-                  name="price"
-                  label="Price"
-                  type="number"
-                  placeholder="Price"
+                  name="color"
+                  label="Color"
+                  type="text"
+                  placeholder="Product color"
                   onChange={handleChange}
-                  value={currentProduct?.price}
+                  value={currentProduct?.color}
                 />
+              </HStack>
 
-                {/* select brand */}
-                <BrandSelector
-                  handleChange={handleChange}
-                  value={currentProduct?.brand}
-                />
-              </VStack>
+              <FormControl>
+                <FormLabel htmlFor="product-cat"> Category </FormLabel>
+                <Select
+                  name="category"
+                  borderColor="gray.300"
+                  placeholder="Select category"
+                  fontSize=".9rem"
+                  size="lg"
+                  onChange={handleChange}
+                  value={currentProduct?.category}
+                >
+                  {categories?.map((category) => (
+                    <option value={category?._id} key={category?._id}>
+                      {category?.name}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+            </VStack>
 
-              <VStack spacing={10} shadow="lg" p="1.5rem" borderRadius="10px">
-                <HStack spacing={5}>
-                  <AppInput
-                    name="size"
-                    label="Storage"
-                    type="text"
-                    placeholder="Storage"
-                    onChange={handleChange}
-                    value={currentProduct?.size}
-                  />
+            {isError && <Alertbox msg={message} closeFunc={reset} />}
 
-                  <AppInput
-                    name="color"
-                    label="Color"
-                    type="text"
-                    placeholder="Product color"
-                    onChange={handleChange}
-                    value={currentProduct?.color}
-                  />
-                </HStack>
-
-                <FormControl>
-                  <FormLabel htmlFor="product-cat"> Category </FormLabel>
-                  <Select
-                    name="category"
-                    borderColor="gray.300"
-                    placeholder="Select category"
-                    fontSize=".9rem"
-                    size="lg"
-                    onChange={handleChange}
-                    value={currentProduct?.category}
-                  >
-                    {categories?.map((category) => (
-                      <option value={category?._id} key={category?._id}>
-                        {category?.name}
-                      </option>
-                    ))}
-                  </Select>
-                </FormControl>
-              </VStack>
-
-              {isError && <Alertbox msg={message} closeFunc={reset} />}
-
-              <Button
-                mt="1.5rem"
-                w="100%"
-                bg="gray.800"
-                color="gray.100"
-                height="55px"
-                type="submit"
-                fontSize=".9rem"
-                _hover={{ bg: "gray.700" }}
-                isLoading={
-                  isLoading && isEdit ? false : isLoading ? true : false
-                }
-                loadingText="Saving"
-              >
-                Update Product
-              </Button>
-            </Stack>
-          </Box>
-        </form>
-
-        {/* multiple images uploading form */}
-      </Box>
+            <Button
+              mt="1.5rem"
+              w="100%"
+              bg="gray.800"
+              color="gray.100"
+              height="55px"
+              type="submit"
+              fontSize=".9rem"
+              _hover={{ bg: "gray.700" }}
+              isLoading={isLoading && isEdit ? false : isLoading ? true : false}
+              loadingText="Saving"
+            >
+              Update Product
+            </Button>
+          </Stack>
+        </Box>
+      </form>
     </FormLayout>
   );
 };

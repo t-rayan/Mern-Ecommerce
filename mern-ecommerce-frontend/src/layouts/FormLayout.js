@@ -8,7 +8,7 @@ const FormLayout = ({ title, children }) => {
 
   return (
     <Box p={2}>
-      <Box display="flex" mb={10} alignItems="center" gap={3}>
+      <Box display="flex" mb={5} alignItems="center" gap={3}>
         <BackBtn btnTitle={title} />
       </Box>
       <Box>{children}</Box>

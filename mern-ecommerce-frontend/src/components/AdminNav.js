@@ -112,24 +112,22 @@ const UserAvatar = ({ handleLogout }) => {
 
   return (
     <Menu>
-      <MenuButton as={Box} borderRadius="30px" px="3" py="2" cursor={"pointer"}>
+      <MenuButton
+        bg="blue.100"
+        as={Box}
+        borderRadius="30px"
+        px="3"
+        py="2"
+        cursor={"pointer"}
+      >
         <Box display={"flex"} alignItems="center" gap={2}>
           <Avatar
-            size={sm ? "xs" : "sm"}
-            bg="blue.300"
+            size={sm ? "xs" : "xs"}
+            bg="blue.500"
             icon={<FaUserAlt fontSize={sm ? ".8rem" : ".9rem"} />}
           />
-          {/* <Flex direction={"column"} mr="1">
-            <Text
-              fontWeight={"bold"}
-              fontSize={".7rem"}
-              textTransform="capitalize"
-            >
-              {firstName}
-            </Text>
-            <Text fontSize={".7rem"}>{userInfo?.isAdmin && "Admin"}</Text>
-          </Flex> */}
-          <Icon w="1.3rem" h="1.3rem" as={ChevronDownIcon} color="gray.400" />
+
+          <Icon w="1.3rem" h="1.3rem" as={ChevronDownIcon} color="blue.500" />
         </Box>
       </MenuButton>
       <MenuList fontSize={"1rem"} color="gray.600" fontWeight="900">

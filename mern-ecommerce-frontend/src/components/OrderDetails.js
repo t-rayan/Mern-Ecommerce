@@ -9,6 +9,7 @@ import {
   Heading,
   HStack,
   Icon,
+  Spinner,
   Stack,
   Text,
   VStack,
@@ -22,6 +23,7 @@ import useMedia from "../hooks/useMedia";
 import { getFullDate, getTime } from "../utils/DateModifiers";
 import BackBtn from "./BackBtn";
 import DeliveryStatusChanger from "./DeliveryStatusChanger";
+import LoadingState from "./LoadingState";
 
 const OrderDetails = () => {
   const dispatch = useDispatch();
@@ -29,7 +31,7 @@ const OrderDetails = () => {
   // const { products } = order;
   const { isMobile } = useMedia();
 
-  const { order } = useSelector((state) => state.order);
+  const { order, isLoading } = useSelector((state) => state.order);
 
   const { id } = useParams();
 
@@ -38,6 +40,10 @@ const OrderDetails = () => {
       dispatch(fetchSingleOrder(id));
     }
   }, [dispatch, id]);
+
+  if (isLoading) {
+    return <LoadingState />;
+  }
 
   if (order)
     return (
@@ -67,14 +73,14 @@ const OrderDetails = () => {
           <CardBody px="0">
             <Stack divider={<Divider />} spacing="4">
               {/* customer name and address */}
-              <Flex wrap={"wrap"} px="5" w="100%" alignItems="start">
+              <Flex wrap={"wrap"} px="5" w="100%" alignItems="start" gap={3}>
                 <Heading flex={"1 1 20%"} size="xs" textTransform="uppercase">
                   Customer
                 </Heading>
                 <VStack flex={"1 1 80%"} alignItems="start">
                   <Text
                     fontWeight={"bold"}
-                    fontSize="md"
+                    fontSize="sm"
                     textTransform="capitalize"
                   >
                     {order?.shippingDetails?.name}
@@ -104,7 +110,7 @@ const OrderDetails = () => {
               </Flex>
 
               {/* order ID */}
-              <Flex wrap={"wrap"} px="5">
+              <Flex gap={3} wrap={"wrap"} px="5">
                 <Heading flex={"1 1 20%"} size="xs" textTransform="uppercase">
                   ID
                 </Heading>
@@ -114,7 +120,7 @@ const OrderDetails = () => {
               </Flex>
 
               {/* date */}
-              <Flex wrap={"wrap"} px="5" alignItems={"start"}>
+              <Flex gap={3} wrap={"wrap"} px="5" alignItems={"start"}>
                 <Heading flex={"1 1 20%"} size="xs" textTransform="uppercase">
                   Date
                 </Heading>
@@ -124,7 +130,7 @@ const OrderDetails = () => {
               </Flex>
 
               {/* total */}
-              <Flex wrap={"wrap"} px="5" alignItems={"start"}>
+              <Flex gap={3} wrap={"wrap"} px="5" alignItems={"start"}>
                 <Heading flex={"1 1 20%"} size="xs" textTransform="uppercase">
                   Total
                 </Heading>
@@ -134,7 +140,13 @@ const OrderDetails = () => {
               </Flex>
 
               {/* Payment Status */}
-              <Flex rowGap={".7rem"} wrap={"wrap"} px="5" alignItems={"start"}>
+              <Flex
+                gap={3}
+                rowGap={".7rem"}
+                wrap={"wrap"}
+                px="5"
+                alignItems={"start"}
+              >
                 <Heading flex={"1 1 20%"} size="xs" textTransform="uppercase">
                   Payment
                 </Heading>
@@ -146,7 +158,13 @@ const OrderDetails = () => {
               </Flex>
 
               {/* Delivery Status */}
-              <Flex rowGap={".7rem"} wrap={"wrap"} px="5" alignItems={"start"}>
+              <Flex
+                gap={3}
+                rowGap={".7rem"}
+                wrap={"wrap"}
+                px="5"
+                alignItems={"start"}
+              >
                 <Heading flex={"1 1 20%"} size="xs" textTransform="uppercase">
                   Delivery
                 </Heading>
@@ -167,14 +185,7 @@ const OrderDetails = () => {
 
           <CardBody px="0">
             {/* product details */}
-            <Flex
-              bg="gray.100"
-              wrap={"wrap"}
-              px="5"
-              w="100%"
-              py="5"
-              alignItems="center"
-            >
+            <Flex wrap={"wrap"} px="5" w="100%" py="5" alignItems="center">
               <Heading flex={"1 1 55%"} size="xs">
                 Product
               </Heading>
@@ -188,17 +199,17 @@ const OrderDetails = () => {
               </Text>
               <Text
                 flex={"1 1 15%"}
-                color="gray.500"
                 textTransform="capitalize"
                 fontSize=".9rem"
+                fontWeight={"bold"}
               >
                 Qty
               </Text>
               <Text
                 flex={"1 1 15%"}
-                color="gray.500"
                 textTransform="capitalize"
                 fontSize=".9rem"
+                fontWeight={"bold"}
               >
                 Total
               </Text>
