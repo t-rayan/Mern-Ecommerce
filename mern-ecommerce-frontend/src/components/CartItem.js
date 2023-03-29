@@ -14,7 +14,7 @@ const CartItem = ({ product }) => {
   return (
     <Flex
       p=".8rem"
-      borderRadius="10px"
+      rounded="md"
       alignItems="center"
       justifyContent="space-between"
       // shadow="2xl"

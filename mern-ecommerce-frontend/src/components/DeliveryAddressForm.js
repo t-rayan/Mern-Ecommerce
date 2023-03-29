@@ -32,7 +32,7 @@ const DeliveryAddressForm = () => {
 
   return (
     <Box bg="white" rounded="md" shadow="sm" p="5">
-      <Heading fontSize={"1.1rem"} fontWeight={"normal"} mb="1.5rem">
+      <Heading fontSize={"1.1rem"} fontWeight={"semibold"} mb="1.5rem">
         2. Delivery Options
       </Heading>
       {/* delivery options */}
@@ -42,7 +42,6 @@ const DeliveryAddressForm = () => {
             isDisabled={shippingAddress === null ? true : false}
             key={del.id}
             shadow="sm"
-            // colorScheme={shippingType === del.type ? "green" : "gray"}
             w="6rem"
             p={2}
             h="3rem"
@@ -52,9 +51,6 @@ const DeliveryAddressForm = () => {
             color={shippingType === del.type ? "blue.600" : "gray.500"}
             bg={shippingType === del.type ? "blue.100" : "gray.200"}
             onClick={handleDeliveryType}
-            // border={shippingType === del.type && "2px solid"}
-            // borderColor={shippingType === del.type && "blue.400"}
-            // bg={shippingType === del.type && "transparent"}
           >
             {del.option}
           </Button>

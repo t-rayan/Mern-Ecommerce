@@ -10,6 +10,7 @@ import {
   Text,
   VStack,
   useToast,
+  Flex,
 } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -45,21 +46,21 @@ const Register = () => {
 
   return (
     <AuthLayout>
-      <Box
-        w="28rem"
-        border="1px"
-        borderColor="gray.300"
-        borderRadius="lg"
-        p="3rem"
-      >
-        <VStack mb="3rem">
+      <Box w="25rem">
+        <VStack spacing="3" mb="3rem">
           <Heading size="md">Signup for new account</Heading>
-          <Text fontSize=".9rem">
-            Already have an account ?{" "}
+          <Flex gap="2" alignItems={"center"}>
+            <Text fontSize=".9rem">Already have an account ? </Text>
             <Link to="/login" color="blue">
-              Login
+              <Text
+                textDecoration={"undeline"}
+                _hover={{ textDecoration: "underline" }}
+                color="blue.600"
+              >
+                Login
+              </Text>
             </Link>{" "}
-          </Text>
+          </Flex>
         </VStack>
 
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -70,6 +71,8 @@ const Register = () => {
                 borderColor="gray.300"
                 type="text"
                 {...register("firstname")}
+                size="lg"
+                placeholder="Enter first name"
               />
             </FormControl>
             <FormControl>
@@ -78,6 +81,8 @@ const Register = () => {
                 borderColor="gray.300"
                 type="text"
                 {...register("lastname")}
+                size="lg"
+                placeholder="Enter last name"
               />
             </FormControl>
             <FormControl>
@@ -86,6 +91,8 @@ const Register = () => {
                 borderColor="gray.300"
                 type="email"
                 {...register("email")}
+                size="lg"
+                placeholder="Enter email"
               />
             </FormControl>
             <FormControl>
@@ -94,12 +101,14 @@ const Register = () => {
                 borderColor="gray.300"
                 type="password"
                 {...register("password")}
+                size="lg"
+                placeholder="Enter password"
               />
             </FormControl>
             <Button
               type="submit"
               colorScheme="blue"
-              size="md"
+              size="lg"
               w="100%"
               isLoading={isLoading}
               loadingText="Processing"

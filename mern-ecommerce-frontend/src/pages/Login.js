@@ -43,35 +43,17 @@ const Login = () => {
 
   return (
     <AuthLayout>
-      {/* <Button variant={"link"} mb={5} onClick={() => navigate("/")}>
-        Back to shop
-      </Button> */}
-      <Box textAlign={"center"}>
-        <Button
-          size={"lg"}
-          colorScheme="blue"
-          variant={"link"}
-          mb={5}
-          onClick={() => navigate("/")}
-        >
-          Tech-Hive
-        </Button>
-      </Box>
-
-      <Box
-        w="25rem"
-        border="1px"
-        borderColor="gray.300"
-        borderRadius="lg"
-        p="2rem 1rem"
-        h="100%"
-      >
+      <Box w="25rem" h="100%">
         <VStack mb="3rem">
           <Heading size="md">Login to your account</Heading>
-          <Flex gap={2}>
+          <Flex gap={2} alignItems="center">
             <Text fontSize=".9rem">Don`t have an account ? </Text>
             <Link to="/register">
-              <Text _hover={{ textDecoration: "underline" }} color="blue.600">
+              <Text
+                textDecoration={"undeline"}
+                _hover={{ textDecoration: "underline" }}
+                color="blue.600"
+              >
                 Signup
               </Text>
             </Link>{" "}

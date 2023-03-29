@@ -19,7 +19,7 @@ const PaymentForm = () => {
   return (
     <Box bg="white" rounded="md" shadow={"sm"} p={5}>
       {/* main contents */}
-      <Heading mb="1.5rem" fontSize={"1.1rem"} fontWeight={"normal"}>
+      <Heading mb="1.5rem" fontSize={"1.1rem"} fontWeight={"semibold"}>
         3. Payment Options
       </Heading>
       <HStack spacing="5">

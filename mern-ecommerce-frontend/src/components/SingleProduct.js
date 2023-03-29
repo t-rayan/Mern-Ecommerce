@@ -27,13 +27,13 @@ const SingleProduct = ({ product }) => {
       display="grid"
       gap="30px"
       // border="2px"
-      padding="2rem 1.3rem"
+      padding="2rem 2rem"
       rounded="md"
       cursor="pointer"
       shadow="sm"
       border="1px solid #eee"
       bg="white"
-      mx={sm && "2rem"}
+      // mx={sm && "2rem"}
 
       // border="1px solid #ddd"
     >

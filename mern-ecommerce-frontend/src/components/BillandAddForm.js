@@ -19,11 +19,15 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser, updateUserAddress } from "../features/auth/authSlice";
 import { showPaymentScreen } from "../features/ui/uiSlice";
+import useMedia from "../hooks/useMedia";
 import AppInput from "./AppInput";
 import SingleAddress from "./SingleAddress";
 
 const BillandAddForm = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const { sm } = useMedia();
+
   const { userInfo, currentUser } = useSelector((state) => state.auth);
 
   // local state
@@ -72,9 +76,17 @@ const BillandAddForm = () => {
 
   return (
     <>
-      <Box h="100%" p={5} rounded="md" bg="white" shadow="sm">
+      <Box
+        h="100%"
+        w="100%"
+        overflowX={"auto"}
+        p={5}
+        rounded="md"
+        bg="white"
+        shadow="sm"
+      >
         {/* list of address */}
-        <Flex justifyContent={"space-between"}>
+        <Flex alignItems={"center"} justifyContent={"space-between"}>
           <Heading fontSize={"1.1rem"} fontWeight={"semibold"}>
             1. Billing Information
           </Heading>
@@ -89,12 +101,13 @@ const BillandAddForm = () => {
             fontSize=".9rem"
             onClick={onOpen}
           >
-            Add new address
+            Add new
           </Button>
         </Flex>
 
         <Box
           // border={"1px solid #ddd"}
+          width={"100%"}
           display={"flex"}
           gap={"2rem"}
           py={5}
@@ -114,12 +127,12 @@ const BillandAddForm = () => {
       </Box>
 
       {/* modal */}
-      <Modal isOpen={isOpen} size="md" onClose={onClose}>
+      <Modal isOpen={isOpen} size={sm ? "sm" : "md"} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Add new address</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody w={"auto"}>
             <Grid height="320px">
               <Flex gap={2}>
                 <AppInput

@@ -50,7 +50,7 @@ const CatAndProducts = () => {
                 <Box
                   display="grid"
                   rowGap={"2rem"}
-                  columnGap="4rem"
+                  columnGap="2rem"
                   alignItems="stretch"
                   gridTemplateColumns="repeat( auto-fill, minmax(15rem, 1fr) );"
                 >
