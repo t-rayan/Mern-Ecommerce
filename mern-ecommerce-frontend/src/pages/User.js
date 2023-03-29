@@ -27,7 +27,7 @@ const User = () => {
   return (
     <Box display="grid" gridTemplateColumns={"1fr"} gap={10} alignItems="start">
       <Box display="grid" gap={10}>
-        <Box borderRadius="10px">
+        <Box>
           <Heading color="gray.700" size="md">
             Hello {userInfo?.fullname} ,
           </Heading>
@@ -40,13 +40,12 @@ const User = () => {
         </Box>
         {!order && (
           <Box>
-            <Heading mb="2rem" size="md">
-              Your Orders
-            </Heading>
+            <Heading size="md">Your Orders ({orders?.length})</Heading>
 
             <Grid
+              mt={"1.2rem"}
               gridTemplateColumns="repeat( auto-fill, minmax(270px, 1fr) );"
-              gap="2rem"
+              gap="1.5rem"
             >
               {orders?.map((order) => (
                 <UserOrder key={order._id} currentOrder={order} />

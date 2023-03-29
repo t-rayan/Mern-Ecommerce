@@ -19,15 +19,15 @@ const UserOrder = ({ currentOrder, isCustom }) => {
     <Box
       display="grid"
       gridTemplateColumns={"1fr"}
-      shadow={currentOrder?._id === order?._id && !isCustom && "lg"}
+      // shadow={currentOrder?._id === order?._id && !isCustom && "lg"}
       fontSize={[".8rem", ".9rem"]}
       p={["1rem"]}
-      border="1px solid"
-      // bg={currentOrder?._id === order?._id && !isCustom && "gray.100"}
+      // border="1px solid"
+      bg="white"
       borderColor="gray.300"
-      borderRadius="10px"
+      rounded="md"
+      shadow="sm"
       gap={5}
-      my={5}
       justifyContent="space-between"
       alignItems="center"
     >
@@ -38,19 +38,6 @@ const UserOrder = ({ currentOrder, isCustom }) => {
         alignItems="center"
         alignContent="center"
       >
-        {/* <Box display="flex" gap={2} flexDir="column">
-          <Text fontWeight="medium">#ID: </Text>
-          <Text color="gray.500">{currentOrder._id}</Text>
-        </Box>
-        <Box display="flex" gap={2} flexDir="column">
-          <Text fontWeight="medium">Total Items: </Text>
-          <Text color="gray.500"> {currentOrder?.products.length}</Text>
-        </Box>
-        <Box display="flex" gap={2} alignItems="start" flexDir="column">
-          <Text fontWeight="medium">Payment Status: </Text>
-          <Badge colorScheme="green">{currentOrder?.paymentStatus} </Badge>
-        </Box> */}
-
         <Flex justifyContent={"space-between"}>
           <Box display="flex" gap={2} flexDir="column">
             <Text fontWeight="medium">Order Date: </Text>

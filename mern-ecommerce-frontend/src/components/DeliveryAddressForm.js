@@ -31,24 +31,29 @@ const DeliveryAddressForm = () => {
   };
 
   return (
-    <Box>
+    <Box bg="white" rounded="md" shadow="sm" p="5">
       <Heading fontSize={"1.1rem"} fontWeight={"normal"} mb="1.5rem">
         2. Delivery Options
       </Heading>
       {/* delivery options */}
-      <HStack spacing={"5"} border={"1px solid #ddd"} p={"2rem"} rounded="xl">
+      <HStack spacing={"5"}>
         {deliveryOptions?.map((del) => (
           <Button
-            disabled={shippingAddress ? false : true}
+            isDisabled={shippingAddress === null ? true : false}
             key={del.id}
-            w="8rem"
-            h="3.8rem"
-            rounded={"xl"}
+            shadow="sm"
+            // colorScheme={shippingType === del.type ? "green" : "gray"}
+            w="6rem"
+            p={2}
+            h="3rem"
+            rounded={"md"}
             name={del.type}
             value={del.value}
+            color={shippingType === del.type ? "blue.600" : "gray.500"}
+            bg={shippingType === del.type ? "blue.100" : "gray.200"}
             onClick={handleDeliveryType}
-            border={shippingType === del.type && "2px solid"}
-            borderColor={shippingType === del.type && "green.400"}
+            // border={shippingType === del.type && "2px solid"}
+            // borderColor={shippingType === del.type && "blue.400"}
             // bg={shippingType === del.type && "transparent"}
           >
             {del.option}

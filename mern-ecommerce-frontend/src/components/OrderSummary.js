@@ -108,124 +108,102 @@ const OrderSummary = ({ pageTitles }) => {
       gap={"1.5rem"}
       bg="white"
     >
-      {shippingAddress && isPaymentScreen && (
-        <Box p={5}>
-          <Flex alignItems="center" justifyContent="space-between">
-            <Heading size="sm">Order Summary</Heading>
-            <Button leftIcon={<EditIcon />} colorScheme="green" variant="ghost">
-              Edit
-            </Button>
-          </Flex>
-          <Flex flexDir="column" gap={1}>
-            <Text>{shippingAddress?.name}</Text>
-            <Text>
-              {shippingAddress?.address},{shippingAddress?.city},
-              {shippingAddress?.state},{shippingAddress?.zipCode},
-              {shippingAddress?.country}
-            </Text>
-            <Text color="gray.500">{shippingAddress?.phone}</Text>
-          </Flex>
-        </Box>
-      )}
+      <Heading size="sm">Order Summary</Heading>
 
-      <>
-        <Heading size="sm">Order Summary</Heading>
-
-        <Box py={"1.7rem"} borderRadius="5px">
-          <Box display="grid" gap={4}>
-            <Flex
-              color="gray.400"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Text fontSize=".9rem">Sub Total</Text>
-              <Text fontSize=".9rem"> ${subTotal} </Text>
-            </Flex>
-            <Flex
-              color="gray.400"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Text fontSize=".9rem">Discounts</Text>
-              <Text fontSize=".9rem"> 0 </Text>
-            </Flex>
-            <Flex
-              color="gray.400"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Text fontSize=".9rem">Shipping</Text>
-              <Text fontSize=".9rem">
-                {" "}
-                {shippingCharge === 0 ? "Free" : shippingCharge}{" "}
-              </Text>
-            </Flex>
-          </Box>
-          <Divider my={5} />
+      <Box py={"1.7rem"} borderRadius="5px">
+        <Box display="grid" gap={4}>
           <Flex
-            color="black"
+            color="gray.400"
             justifyContent="space-between"
             alignItems="center"
-            fontWeight="medium"
-            fontSize="1.1rem"
           >
-            <Text fontSize=".9rem">Total</Text>
-            <Box>
-              <Text fontSize=".9rem" color="red.300">
-                {total}
-                {/* {cartItems.length > 0 && getCartSubtotal()}{" "} */}
-              </Text>
-            </Box>
+            <Text fontSize=".9rem">Sub Total</Text>
+            <Text fontSize=".9rem"> ${subTotal} </Text>
+          </Flex>
+          <Flex
+            color="gray.400"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Text fontSize=".9rem">Discounts</Text>
+            <Text fontSize=".9rem"> 0 </Text>
+          </Flex>
+          <Flex
+            color="gray.400"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Text fontSize=".9rem">Shipping</Text>
+            <Text fontSize=".9rem">
+              {" "}
+              {shippingCharge === 0 ? "Free" : shippingCharge}{" "}
+            </Text>
           </Flex>
         </Box>
-        <Box alignSelf="center" width="100%">
-          {pageTitles.length === 1 && (
-            <Button
-              disabled={isLoading}
-              bg="black"
-              size="lg"
-              h="3.5rem"
-              color={"white"}
-              onClick={handleCheckout}
-              w="100%"
-              _hover={{ bg: "blackAlpha.900" }}
-            >
-              {isLoading ? "Please Wait..." : "Checkout"}
-            </Button>
-          )}
+        <Divider my={5} />
+        <Flex
+          color="black"
+          justifyContent="space-between"
+          alignItems="center"
+          fontWeight="medium"
+          fontSize="1.1rem"
+        >
+          <Text fontSize=".9rem">Total</Text>
+          <Box>
+            <Text fontSize=".9rem" color="red.300">
+              {total}
+              {/* {cartItems.length > 0 && getCartSubtotal()}{" "} */}
+            </Text>
+          </Box>
+        </Flex>
+      </Box>
+      <Box alignSelf="center" width="100%">
+        {pageTitles.length === 1 && (
+          <Button
+            disabled={isLoading}
+            bg="black"
+            size="lg"
+            h="3.5rem"
+            color={"white"}
+            onClick={handleCheckout}
+            w="100%"
+            _hover={{ bg: "blackAlpha.900" }}
+          >
+            {isLoading ? "Please Wait..." : "Checkout"}
+          </Button>
+        )}
 
-          {paymentMode !== "PAYPAL" && pageTitles.length > 1 && (
-            <Button
-              disabled={isLoading}
-              bg="black"
-              size="lg"
-              h="3.5rem"
-              color={"white"}
-              onClick={handleCheckout}
-              w="100%"
-              _hover={{ bg: "blackAlpha.900" }}
-            >
-              {isLoading ? "Please Wait..." : "Payment"}
-            </Button>
-          )}
+        {paymentMode !== "PAYPAL" && pageTitles.length > 1 && (
+          <Button
+            disabled={isLoading}
+            bg="black"
+            size="lg"
+            h="3.5rem"
+            color={"white"}
+            onClick={handleCheckout}
+            w="100%"
+            _hover={{ bg: "blackAlpha.900" }}
+          >
+            {isLoading ? "Please Wait..." : "Payment"}
+          </Button>
+        )}
 
-          {paymentMode === "PAYPAL" && pageTitles.length > 1 && (
-            <PayPalScriptProvider options={{ "client-id": paypalClientId }}>
-              <PayPalButtons
-                createOrder={handlePaypalCreateOrder}
-                onApprove={handlePaypalOnApprove}
-              />
-            </PayPalScriptProvider>
-            // <Button
-            //   colorScheme="green"
-            //   size="lg"
-            //   onClick={handleOrderPaymentUpdate}
-            // >
-            //   Complete Order
-            // </Button>
-          )}
-        </Box>
-      </>
+        {paymentMode === "PAYPAL" && pageTitles.length > 1 && (
+          <PayPalScriptProvider options={{ "client-id": paypalClientId }}>
+            <PayPalButtons
+              createOrder={handlePaypalCreateOrder}
+              onApprove={handlePaypalOnApprove}
+            />
+          </PayPalScriptProvider>
+          // <Button
+          //   colorScheme="green"
+          //   size="lg"
+          //   onClick={handleOrderPaymentUpdate}
+          // >
+          //   Complete Order
+          // </Button>
+        )}
+      </Box>
     </Box>
   );
 };

@@ -21,11 +21,12 @@ const SingleAddress = ({ nextStep, address }) => {
   return (
     <>
       <Box
-        borderRadius="10px"
         border={"1px solid"}
-        borderColor={"gray.300"}
+        rounded="md"
+        borderColor={"gray.200"}
         px={"1.5rem"}
         py="1.5rem"
+        // bg="gray.100"
         // gap={5}
         h="fit-content"
         minW={sm ? "100%" : "16rem"}
@@ -37,8 +38,8 @@ const SingleAddress = ({ nextStep, address }) => {
             </Text>
             <Badge colorScheme="purple"> Default </Badge>
           </GridItem>
-          <GridItem> {address?.address}</GridItem>
-          <GridItem>
+          <GridItem color="gray.500"> {address?.address}</GridItem>
+          <GridItem color="gray.500">
             {address?.city}, {address?.state},{address.country},
             {address.zipCode}
           </GridItem>
@@ -69,7 +70,7 @@ const SingleAddress = ({ nextStep, address }) => {
                 <Button
                   _focus={{ outline: "none" }}
                   variant="solid"
-                  colorScheme="green"
+                  colorScheme="blue"
                   size="xs"
                 >
                   Selected address
@@ -78,7 +79,7 @@ const SingleAddress = ({ nextStep, address }) => {
                 <Button
                   _focus={{ outline: "none" }}
                   variant="outline"
-                  colorScheme="green"
+                  colorScheme="blue"
                   size="xs"
                   onClick={() => dispatch(setShippingAddress(address))}
                 >

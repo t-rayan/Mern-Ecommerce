@@ -9,7 +9,6 @@ import {
   Heading,
   HStack,
   Icon,
-  Spinner,
   Stack,
   Text,
   VStack,
@@ -29,8 +28,8 @@ const OrderDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // const { products } = order;
-  const { isMobile } = useMedia();
 
+  const { userInfo } = useSelector((state) => state.auth);
   const { order, isLoading } = useSelector((state) => state.order);
 
   const { id } = useParams();
@@ -157,7 +156,13 @@ const OrderDetails = () => {
                   Delivery
                 </Heading>
                 <Box color="gray.500" flex={"1 1 80%"} fontSize="sm">
-                  <DeliveryStatusChanger />
+                  {userInfo?.isAdmin ? (
+                    <DeliveryStatusChanger />
+                  ) : (
+                    <Badge colorScheme={order.isDelivered ? "green" : "orange"}>
+                      {order.isDelivered ? "DELIVERED" : "PENDING"}
+                    </Badge>
+                  )}
                 </Box>
               </Flex>
             </Stack>

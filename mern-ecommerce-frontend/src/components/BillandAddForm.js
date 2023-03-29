@@ -2,6 +2,7 @@ import { AddIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
+  ButtonGroup,
   Flex,
   Grid,
   Heading,
@@ -71,18 +72,18 @@ const BillandAddForm = () => {
 
   return (
     <>
-      <Box h="100%" p={5} rounded="md">
+      <Box h="100%" p={5} rounded="md" bg="white" shadow="sm">
         {/* list of address */}
         <Flex justifyContent={"space-between"}>
-          <Heading fontSize={"1.1rem"} mb="1.5rem" fontWeight={"normal"}>
+          <Heading fontSize={"1.1rem"} fontWeight={"semibold"}>
             1. Billing Information
           </Heading>
           <Button
             leftIcon={<AddIcon w="13px" h="13px" />}
-            bg="green.200"
+            bg="blue.200"
             size="sm"
-            color="green"
-            _hover={{ bg: "green.300", color: "green" }}
+            color="blue.600"
+            _hover={{ bg: "blue.300", color: "blue.600" }}
             _active={{ bg: "transparent" }}
             _focus={{ border: "none" }}
             fontSize=".9rem"
@@ -94,12 +95,9 @@ const BillandAddForm = () => {
 
         <Box
           // border={"1px solid #ddd"}
-          bg="white"
-          p={"2rem"}
-          rounded="xl"
           display={"flex"}
           gap={"2rem"}
-          py={10}
+          py={5}
           overflowX={"scroll"}
         >
           {currentUser?.addressDetails.length > 0 &&
@@ -116,14 +114,14 @@ const BillandAddForm = () => {
       </Box>
 
       {/* modal */}
-      <Modal isOpen={isOpen} size="lg" onClose={onClose}>
+      <Modal isOpen={isOpen} size="md" onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Add new address</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Grid height="340px" gap={5}>
-              <Flex gap={3}>
+            <Grid height="320px">
+              <Flex gap={2}>
                 <AppInput
                   size="lg"
                   onChange={handleChange}
@@ -174,19 +172,19 @@ const BillandAddForm = () => {
           </ModalBody>
 
           <ModalFooter>
-            <Flex gap={3}>
+            <ButtonGroup>
               <Button
                 variant="solid"
-                colorScheme="green"
+                colorScheme="blue"
                 onClick={handleAddressUpdate}
               >
                 Add Address
               </Button>
 
-              <Button variant="outline" mr={3} onClick={onClose}>
+              <Button variant="outline" onClick={onClose}>
                 Cancel
               </Button>
-            </Flex>
+            </ButtonGroup>
           </ModalFooter>
         </ModalContent>
       </Modal>

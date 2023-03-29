@@ -113,7 +113,7 @@ const PriceSlider = ({
               min={0}
               max={4000}
               defaultValue={[100, 2000]}
-              colorScheme="green"
+              colorScheme="blue"
               onChange={handleOnChange}
               onMouseEnter={() => setShowTooltip(true)}
               onMouseLeave={() => setShowTooltip(false)}

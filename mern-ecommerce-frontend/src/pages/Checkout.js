@@ -27,7 +27,7 @@ const Checkout = () => {
         templateColumns={"1fr"}
         gridTemplateRows="1fr"
         h="100%"
-        gap="4rem"
+        gap="2rem"
       >
         <BillandAddForm />
         <DeliveryAddressForm />
