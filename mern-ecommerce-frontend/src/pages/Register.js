@@ -46,7 +46,7 @@ const Register = () => {
 
   return (
     <AuthLayout>
-      <Box w="25rem">
+      <Box w="100%">
         <VStack spacing="3" mb="3rem">
           <Heading size="md">Signup for new account</Heading>
           <Flex gap="2" alignItems={"center"}>

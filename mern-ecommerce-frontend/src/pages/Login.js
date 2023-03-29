@@ -43,8 +43,8 @@ const Login = () => {
 
   return (
     <AuthLayout>
-      <Box w="25rem" h="100%">
-        <VStack mb="3rem">
+      <Box w="100%" h="100%">
+        <VStack w="100%" mb="3rem">
           <Heading size="md">Login to your account</Heading>
           <Flex gap={2} alignItems="center">
             <Text fontSize=".9rem">Don`t have an account ? </Text>

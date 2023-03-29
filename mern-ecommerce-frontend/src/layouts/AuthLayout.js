@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 const AuthLayout = ({ children }) => {
   const navigate = useNavigate();
   return (
-    <Grid placeItems={"center"} h="100vh" bg="gray.100">
-      <Grid placeItems="center">
+    <Grid w="100%" placeItems={"center"} h="100vh" bg="gray.100">
+      <Grid w="100%" px={5} placeItems="center">
         <Box textAlign={"center"}>
           <Button
             size={"lg"}
@@ -18,8 +18,7 @@ const AuthLayout = ({ children }) => {
             Tech-Hive
           </Button>
         </Box>
-
-        <Box bg={"white"} p={"1.8rem"} rounded="md" shadow={"sm"}>
+        <Box w="100%" bg={"white"} p={"1.8rem"} rounded="md" shadow={"sm"}>
           {children}
         </Box>
       </Grid>
