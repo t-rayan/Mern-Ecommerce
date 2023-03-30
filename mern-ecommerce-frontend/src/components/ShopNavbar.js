@@ -1,9 +1,11 @@
-import { Box, HStack, IconButton } from "@chakra-ui/react";
+import { Box, HStack, IconButton, Icon, Flex } from "@chakra-ui/react";
 import {
+  RiShoppingBag2Line,
   RiShoppingBag3Line,
   RiShoppingBagFill,
   RiShoppingCart2Line,
   RiUser2Line,
+  RiUser3Line,
 } from "react-icons/ri";
 import Searchbar from "./Searchbar";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,23 +71,22 @@ const ShopNavbar = () => {
             <Searchbar />
           </Box>
         </Box>
-        <HStack>
+        <Flex alignItems={"stretch"} gap={2}>
           <Box pos="relative">
-            <IconButton
-              variant={"ghost"}
-              aria-label="Cart"
-              size={sm ? "md" : "md"}
-              icon={<RiShoppingBag3Line fontSize={"1.2rem"} />}
+            <Icon
+              cursor={"pointer"}
+              as={RiShoppingBag2Line}
+              fontSize="1.3rem"
               onClick={() => navigate("/mycart")}
-            />{" "}
+            />
             {cartItems.length > 0 && (
               <Box
                 pos="absolute"
-                top={"25%"}
-                right="25%"
-                w=".5rem"
-                h=".5rem"
-                bg="red"
+                top={"-10%"}
+                right="-10%"
+                w=".6rem"
+                h=".6rem"
+                bg="red.500"
                 rounded="full"
               />
             )}
@@ -94,17 +95,15 @@ const ShopNavbar = () => {
           {/* check if user is logged in */}
           {userInfo && <UserAvatar handleLogout={handleLogout} />}
           {!userInfo && (
-            <IconButton
-              rounded={"lg"}
-              variant="ghost"
-              colorScheme="gray"
-              aria-label="Account"
-              size={sm ? "md" : "md"}
-              icon={<RiUser2Line fontSize={"1.2rem"} color="gray.300" />}
+            <Icon
+              cursor={"pointer"}
+              as={RiUser3Line}
+              fontSize="1.3rem"
+              ml={"0"}
               onClick={() => navigate("/login")}
             />
           )}
-        </HStack>
+        </Flex>
       </Box>
     </>
   );
