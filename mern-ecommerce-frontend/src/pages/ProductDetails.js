@@ -111,7 +111,15 @@ const ProductDetails = () => {
           </Box>
         </Box>
       </Box>
-      <Box maxW="100%" mt={"2rem"} bg="white" p={10} rounded="md" shadow={"sm"}>
+      <Box
+        maxW="100%"
+        overflowX={"auto"}
+        mt={"2rem"}
+        bg="white"
+        p={10}
+        rounded="md"
+        shadow={"sm"}
+      >
         <Heading size="md">Product Specifications</Heading>
         {/* <Text  mt={1}>{product?.desc}</Text> */}
 

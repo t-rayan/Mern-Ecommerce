@@ -1,12 +1,5 @@
-import { Box, HStack, IconButton, Icon, Flex } from "@chakra-ui/react";
-import {
-  RiShoppingBag2Line,
-  RiShoppingBag3Line,
-  RiShoppingBagFill,
-  RiShoppingCart2Line,
-  RiUser2Line,
-  RiUser3Line,
-} from "react-icons/ri";
+import { Box, Icon, Flex } from "@chakra-ui/react";
+import { RiShoppingBagLine, RiUser3Line } from "react-icons/ri";
 import Searchbar from "./Searchbar";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -15,8 +8,6 @@ import { logoutUser } from "../features/auth/authSlice";
 import useMedia from "../hooks/useMedia";
 import MenuToggler from "./MenuToggler";
 import UserAvatar from "./UserAvatar";
-import { FaCartPlus } from "react-icons/fa";
-import { MdShoppingCart } from "react-icons/md";
 
 const ShopNavbar = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -71,12 +62,12 @@ const ShopNavbar = () => {
             <Searchbar />
           </Box>
         </Box>
-        <Flex alignItems={"stretch"} gap={2}>
+        <Flex alignItems={"stretch"} gap={3}>
           <Box pos="relative">
             <Icon
               cursor={"pointer"}
-              as={RiShoppingBag2Line}
-              fontSize="1.3rem"
+              as={RiShoppingBagLine}
+              fontSize="1.2rem"
               onClick={() => navigate("/mycart")}
             />
             {cartItems.length > 0 && (
@@ -98,7 +89,7 @@ const ShopNavbar = () => {
             <Icon
               cursor={"pointer"}
               as={RiUser3Line}
-              fontSize="1.3rem"
+              fontSize="1.2rem"
               ml={"0"}
               onClick={() => navigate("/login")}
             />

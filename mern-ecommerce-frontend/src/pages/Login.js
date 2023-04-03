@@ -20,10 +20,13 @@ import { useNavigate } from "react-router-dom";
 import Alertbox from "../components/Alertbox";
 import { reset } from "../features/auth/authSlice";
 import AuthLayout from "../layouts/AuthLayout";
+import useMedia from "../hooks/useMedia";
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { sm } = useMedia();
   const { isLoading, isError, message, isSuccess, userInfo } = useSelector(
     (state) => state.auth
   );
@@ -43,8 +46,8 @@ const Login = () => {
 
   return (
     <AuthLayout>
-      <Box w="100%" h="100%">
-        <VStack w="100%" mb="3rem">
+      <Box w={"100%"} h="100%">
+        <VStack w={"100%"} mb="3rem">
           <Heading size="md">Login to your account</Heading>
           <Flex gap={2} alignItems="center">
             <Text fontSize=".9rem">Don`t have an account ? </Text>

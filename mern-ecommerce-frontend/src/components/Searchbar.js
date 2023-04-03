@@ -28,19 +28,20 @@ const Searchbar = () => {
 
   return (
     <form onSubmit={submitHandler} display="flex" gap={2}>
-      <InputGroup size={sm ? "md" : "md"} bg="gray.100" rounded="lg">
+      <InputGroup size={"sm"} bg="gray.100" rounded="lg">
         <InputLeftElement
           pointerEvents="none"
           children={<SearchIcon color="gray.400" />}
         />
         <Input
-          size={sm ? "md" : "md"}
-          rounded="lg"
+          size={"sm"}
+          rounded="md"
           // borderRadius="md"
           value={searchQuery}
+          bg="white"
           color="gray.500"
-          borderColor="inherit"
-          _focus={{ border: "2px solid", borderColor: "inherit" }}
+          border="none"
+          _focusVisible={{ border: "none" }}
           type="text"
           placeholder="Search producsts, brands, categories"
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -53,7 +54,7 @@ const Searchbar = () => {
               h="5"
               as={RiCloseCircleLine}
               color="gray.400"
-              _hover={{ color: "gray.500" }}
+              _hover={{ color: "red.400" }}
               onClick={() => setSearchQuery("")}
             />
           )}
